@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Cache-Control" content="no-cache">
+
+<head>
+<title>WHIST - DETAIL</title>
+<link rel="stylesheet" href="Whist.css">
+
+<script src="WhistCalc.js"></script>
+
+</head>
+
+<body BGCOLOR=WHITE>
+<FORM NAME="RES">
+
+<script>
+async function savePdf()
+    {
+    console.log("========================== Start process to generate PDF file ==========================");
+    const d = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const timeStamp =
+        d.getFullYear().toString() + "-" +
+        pad(d.getMonth() + 1).toString() + "-" +
+        pad(d.getDate()).toString() + "-" +
+        pad(d.getHours()).toString() + "-" +
+        pad(d.getMinutes()).toString() + "-" +
+        pad(d.getSeconds());
+
+    const strD = parent.frames['HDR'].document.getElementById('COOKIE').value;
+    const nbrJ = parent.frames['HDR'].document.getElementById('NPARTIE').value;
+    const element  = document.getElementById("RESULTATS").innerHTML;
+    const htmName  = strD+"-"+timeStamp+".htm";
+    const pdfName  = strD+"-"+timeStamp+".pdf";
+  
+    console.log("NAVIG|Generation PDF pour la partie ["+strD+"] de "+nbrJ+" jeu(x)...");
+    console.log("(W)-HTML DATA SIZE:"+element.toString().length)
+    
+    const swFOLD = true;
+    
+    if ( swFOLD )
+        {
+        // "TRUE" means using 'BLOB API'.   
+        // 1) HTML file will be saved in the folder hosting the WEB Application (ROOT Folder).
+        // 2) The default "download folder" of the browser has to be the same this ROOT folder.
+        var folder = saveHtmlToFile_2(htmName, element);
+        }
+    else {
+        // "FALSE" means using 'File System Access API'. Web application will ask you
+        // the FOLDER path where HTML file will be converted to PDF. 
+        var folder = saveHtmlToFile_1(htmName, element)
+        }
+   
+    const textINFO = 
+            {
+            in:  htmName,
+            out: pdfName,
+            nbr: nbrJ,
+            fld: folder
+            };
+    console.log("Generated PARAMETERS:"+JSON.stringify(textINFO, null, 2));
+
+    if (typeof folder  === "string" && folder.length > 0 ) 
+        {
+        var newURL2 = window.location.protocol + "//" + window.location.host + "/pdf/" + pdfName;
+        console.log("PDF URL: "+newURL2);
+        var oldURL = parent.frames["RESU"].location.href;
+        var newURL = window.location.protocol + "//" + window.location.host + "/pdfs";
+        
+        const res  = await sendHtmlFileToPdf(textINFO,'GET');
+        const info = await res;
+
+        console.log("OLD: "+oldURL+"\nNEW: "+newURL);
+        //parent.frames["RESU"].document.RES.RESULTS.innerHTML = newURL;
+        document.getElementById("RESULTS").src = newURL;
+        console.log("==="+info+"===");
+        }
+    else {
+        msgTXT = "Pas de folder trouvé. Requête PDF annulé!"
+        console.log(msgTXT);
+        }
+    }
+
+async function saveHtmlToFile_1(htmlName, htmlTEXT) 
+    {
+    try {
+        const dirHandle = await window.showDirectoryPicker({startIn: "downloads"});
+        //const fileHandle = await dirHandle.getFileHandle(htmlName, { create: true });
+        } 
+    catch (err) {
+        console.log(err.name, err.message);
+        }
+
+    const ficHandle  = await window.showSaveFilePicker({
+        suggestedName: htmlName,
+        types: [{
+            description: "WHIST HTML File",
+            accept: { "text/html": [".html"] }
+            }]
+        });
+    const writable = await handle.createWritable();
+    await writable.write(htmlTEXT);
+    await writable.close();
+
+    var msgTXT = "Le PDF se trouvera dans le folder: '"+fldrName+"'";
+    console.log(msgTXT);
+    document.getElementById("RESULTS").value = msgTXT;
+
+    return fldrName;
+    }
+
+function saveHtmlToFile_2(htmlName, htmlTEXT) 
+    { 
+    console.log("*** Pour une génération efficace de fichier PDF ***");
+    console.log("*** Le folder de téléchargement de votre BROWSER web");
+    console.log("*** doit être le même que le site web de l'application");
+
+    const blob = new Blob([htmlTEXT], { type: 'text/html' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = htmlName;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    
+    const pathName = String(window.location.pathname);
+    console.log("*** URLPATH...: '"+pathName+"'");
+    fldrName = pathName.substring(0, pathName.lastIndexOf('/'));
+    console.log("*** CHEMIN....: '"+fldrName+"'");
+    msgTXT = "Le parametre de téléchargement du browser DOIT ETRE '"+fldrName+"'";
+    document.getElementById("RESULTS").value = msgTXT;
+
+    return fldrName;
+    }
+
+async function sendHtmlFileToPdf(textINFO, swCONNECT) 
+    {
+    const jsonINFO = JSON.stringify(textINFO);
+    console.log(JSON.stringify(textINFO, null, 2));
+
+    let response;
+    switch (swCONNECT)
+        {
+        case "GET": 
+            params   = new URLSearchParams(textINFO);
+            console.log("GET\t\t"+params);           
+            try {             
+                response = await fetch(`http://localhost/api/generate2PDF?${params.toString()}`);
+                data = await response;
+                console.log("FETCH GET Response:\t"+Object.keys(data));
+                } 
+            catch (error) {
+                console.error('FETCH GET Error:', error);
+                }
+            break;
+        case "POST": 
+            console.log("POST\t\t"+jsonINFO );
+            try {
+                response = await fetch('/api/generate2PDF', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: jsonINFO 
+                    })
+                if (!response.ok) {
+                    throw new Error(`FETCH POST HTTP error: ${response.status}`);
+                    }
+                data = await response.json();
+                console.log('FETCH POST Response:\t', data);
+                } 
+            catch (error) 
+                {
+                console.error('FETCH POST Error:', error);
+                }
+            break;
+        default: 
+            return false;
+        }
+
+    var fld = textINFO["fld"];
+    var pdf = textINFO["out"];
+    msgTXT  = "PDF ["+fld+"/"+pdf+"] créé!";
+    document.getElementById("RESULTS").value = msgTXT;
+    console.log (msgTXT);
+    }
+
+</script>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
+<TR CLASS="GENERAL1" ALIGN="CENTER" VALIGN="MIDDLE">    
+<TD>
+<TEXTAREA CLASS="blink" name="RESULTS" id="RESULTS" ROWS=1 COLS=100 style="display:line; border:0px"> </TEXTAREA>
+<INPUT TYPE="TEXT" name="COOKIE" id="COOKIE" SIZE="15" style=" display:none; border:0px">
+</TD>
+</TR>
+
+<TR CLASS="GENERAL1">
+<TD><P name="RESULTATS" id="RESULTATS"></P>
+</TD>
+</TR></TABLE>
+
+</FORM>
+</body>
+
+</html>

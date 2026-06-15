@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<HTML>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Cache-Control" content="no-cache">
+
+<HEAD>
+<TITLE>WHIST - Menu</TITLE>
+<link rel="stylesheet" href="Whist.css">
+</HEAD>
+
+<script src="WhistCalc.js"></script>
+
+<script>
+
+function checkURL()
+	{
+	var xPOS = top.location.href.indexOf("?")
+	console.log("Controle URL sur '?'. Pos="+xPOS);
+	if ( xPOS > 1 )
+		{
+		document.WHIST.getElementById('switch').value = "?" ?? " ";				
+		}
+	listFramesIndex();
+	}
+
+</script>
+
+<BODY onLoad="checkURL()">
+
+<FORM NAME=WHIST>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
+<TR CLASS="GENERAL1" ALIGN="CENTER">	
+	
+<TD>
+<!input type="button" value="Rafraichir" onclick="JavaScript:resetAllFrames()">
+<input type="text" id="switch" 	name="switch" 		value="?" 		        SIZE="1"  DISABLED HIDDEN style='border-style: none; overflow: auto' >
+<input type="text" id="CKNAME" 	name="CKNAME" 		value="PARTIE-WHIST"   	SIZE="12" DISABLED HIDDEN style='border-style: none; overflow: auto' >
+<input type="text" id="PARPFX" 	name="PARPFX" 		value="WHIST-" 	    	SIZE="6"  DISABLED HIDDEN style='border-style: none; overflow: auto'>
+<INPUT TYPE="TEXT" 				NAME="NBRJOUEURS"  	VALUE="?" 				SIZE="05" DISABLED HIDDEN style='border-style: none; overflow: auto'>
+<INPUT TYPE="TEXT" 				NAME="NBRANNONCES" 	VALUE="?" 				SIZE="05" DISABLED HIDDEN style='border-style: none; overflow: auto'>
+<INPUT TYPE="TEXT"				NAME="NBRPARTIES"  	VALUE="?" 				SIZE="06" DISABLED HIDDEN style='border-style: none; overflow: auto'>
+<INPUT TYPE="TEXT" 				NAME="PARTIES" 		value=100				SIZE="03" DISABLED HIDDEN style='border-style: none; overflow: auto'>
+
+<BR><fieldset>
+<legend>ACTIONS</legend>
+<SELECT NAME="ACTION" ID="ACTION" SIZE=1 ONCHANGE="JavaScript:prepareActivity(this.options[this.selectedIndex].value)">
+<option value="?" class="GENERAL2">CHOISISSEZ UNE ACTIVITE</option>
+<option value="CNN">&nbsp;-&nbsp;1.&nbsp;CREER UNE NOUVELLE PARTIE DE WHIST</option>
+<option value="E">&nbsp;-&nbsp;2.&nbsp;EFFACE UN JEU D'UNE PARTIE EN COURS</option>
+<option value="A">&nbsp;-&nbsp;3.&nbsp;RECHARGE UNE PARTIE EN COURS MEMORISEE</option>
+<option value="C">&nbsp;-&nbsp;4.&nbsp;IMPORTE UNE PARTIE TERMINEE DEPUIS UN FICHIER</option>
+<option value="D">&nbsp;-&nbsp;5.&nbsp;EXPORTE UNE PARTIE EN COURS DANS UN FICHIER</option>
+<option value="F">&nbsp;-&nbsp;6.&nbsp;RESULTATS SUR TOUTE UNE SAISON</option>
+<option value="B">&nbsp;-&nbsp;7.&nbsp;REMISE A ZERO DE TOUTES LES PARTIES</option>
+<option value="G">&nbsp;-&nbsp;8.&nbsp;VOIR LA LISTE DES JOUEURS</option>
+<option value="H">&nbsp;-&nbsp;9.&nbsp;VOIR LA LISTE DES ANNONCES</option>
+<option value="I">&nbsp;-&nbsp;10.&nbsp;INFORMATION SUR l'APPLICATION</option>
+<option value="J">&nbsp;-&nbsp;11.&nbsp;SIMULE/GENERE UN "SEUL"</option>
+<option value="K">&nbsp;-&nbsp;12.&nbsp;SIMULE/GENERE UN "EMBALLAGE"</option>
+<option value="L">&nbsp;-&nbsp;13.&nbsp;RESET DES ANNONCES</option>
+<option value='M'>&nbsp;-&nbsp;14.&nbsp;AFFICHAGE DE LA MEMOIRE DU BROWSER</option>
+<option value='N'>&nbsp;-&nbsp;15.&nbsp;LISTE TOUS PDF DEMANDES</option>
+</SELECT>
+</fieldset>
+
+<script>
+const select = document.getElementById('ACTION');
+select.addEventListener('focus', () => {
+  	select.size = 15;
+});
+select.addEventListener('blur', () => {
+	select.selectedIndex = 0;
+  	select.size = 1;
+});
+select.addEventListener('change', () => {
+	select.selectedIndex = 0;
+  	select.size = 1;
+});
+
+function prepareActivity(strOption) 
+	{
+	console.clear();
+	switch (strOption)
+		{
+		case "A":
+			reloadPointsArray();
+			break;
+		case "B":
+			initialiseData();
+			break;
+		case "C":
+			displayParameters('IMPORTE');
+			break;
+		case "D":
+			manageWhistRes('EJ');
+			break;
+		case "E":
+			effaceUnJeu();
+			break;
+		case "F":
+			displayCompile();
+			break;
+		case "G":
+			displayParameters('J');
+			break;
+		case "H":
+			displayParameters('A');
+			break;
+		case "I":
+			displayParameters('H');
+			break;
+		case "J":
+			specialSet(1);
+			break;
+		case "K":
+			specialSet(2);
+			break;
+		case "L":
+			resetJeu();
+			break;
+		case "M":
+			viewLocalStorage(false);
+			break;
+		case "N":
+			const inf = "<";
+			const sup = ">";
+			var pdfURL = window.location.protocol + "//" + window.location.host + "/pdfs";
+			var aHref  = inf+'A HREF="'+pdfURL+'"'+sup+'LISTE DE TOUS LES PDF'+inf+'/A'+sup;
+        	console.log("URL: "+aHref);
+			var htmlText = "";
+			htmlText += inf+'TABLE BORDER="1" WIDTH="100%"" HEIGHT="100vh"'+sup;
+			htmlText += inf+'TR ALIGN=CENTER VALIGN=MIDDLE'+sup+inf+'TD'+sup;
+			htmlText += inf+'H2'+sup+aHref+inf+'/H2'+sup;
+			htmlText += inf+"/TD"+sup+inf+'/TR'+sup+inf+'/TABLE'+sup;
+        	parent.frames[2].document.getElementById("RESULTATS").innerHTML = htmlText;
+			document.write
+			break;
+		case "CNN":
+			choosePartie("CNN");
+			break;
+		default:
+			// RAF
+		}
+	}
+</script>
+
+<TEXTAREA NAME="AIDEAPP" ROWS=3 COLS=30 style="display:none;">
+Jean-Jacques Lieffrig 
+Cortaille 82, B-6800 Freux 
+Mobile: +32 491 636 675 
+E-mail: jj.lieffrig@gmail.com
+(C) - 2026
+</TEXTAREA>
+
+<SCRIPT>
+	document.write("<BR><INPUT TYPE TEXT NAME='COOKIENAME' ID='COOKIENAME' VALUE='PARTIES-WHIST' SIZE=12 DISABLED HIDDEN style='border-style: none; overflow: auto'");
+	console.log("1) Check switch sur URL " + top.location.href);
+	var xPOS = top.location.href.indexOf("?")
+	console.log("1) Controle URL sur '?'. Pos="+xPOS);
+	document.WHIST.switch.value === "";
+	if ( xPOS > -1) 
+		{
+		document.WHIST.switch.value = "?";
+		}
+	console.log("1) switch='"+document.WHIST.switch.value+"'");
+	if ( document.WHIST.switch.value === "?" )
+		{
+		document.write("<TEXTAREA NAME='PARAM' id='PARAM' ROWS=6 COLS=40 style='none'></TEXTAREA>");
+		}
+	else {
+		document.write("<TEXTAREA NAME='PARAM' id='PARAM' ROWS=6 COLS=40 style='none'></TEXTAREA>");
+		}
+</SCRIPT>
+
+
+<TEXTAREA NAME="JOUEURS" ROWS=3 COLS=30 style="display:none;">
+1 ! JiPé ! Jean-Pierre Zevenne
+2 ! JiJi ! Jean-Jacques Lieffrig
+3 ! Robi ! Robert Hansen
+4 ! José ! José Robin
+5 ! Francis ! Francis Lanners
+6 ! JMarc ! Jean-Marc Hansen
+</TEXTAREA>
+
+<TEXTAREA NAME="ANNONCES" ROWS=3 COLS=30 style="display:none;">
+1!2-P.Miseres!1/2!-18!3
+2!2-G.Miseres!1/2!-36!3
+3!2-GM/Trou!1/2!-72!3
+4!EMBALLAGE!8!4!2
+5!EMBALLAGE!8+1!5!2
+6!EMBALLAGE!8+2!6!2
+7!EMBALLAGE!8+3!7!2
+8!EMBALLAGE!8+4!8!2
+9!EMBALLAGE!9!5!2
+10!EMBALLAGE!9+1!6!2
+11!EMBALLAGE!9+2!7!2
+12!EMBALLAGE!9+3!8!2
+13!EMBALLAGE!10!6!2
+14!EMBALLAGE!10+1!7!2
+15!EMBALLAGE!10+2!8!2
+16!EMBALLAGE!11!7!2
+17!EMBALLAGE!11+1!8!2
+18!EMBALLAGE!12!8!2
+19!EMBALLAGE!Double!12!2
+20!EMBALLAGE!8-1!-4!2
+21!EMBALLAGE!8-2!-8!2
+22!EMBALLAGE!8-3!-12!2
+23!EMBALLAGE!8-4!-16!2
+24!EMBALLAGE!9-1!-8!2
+25!EMBALLAGE!9-2!-12!2
+26!EMBALLAGE!9-3!-16!2
+27!EMBALLAGE!10-1!-12!2
+28!EMBALLAGE!10-2!-16!2
+29!EMBALLAGE!10-3!-18!2
+30!EMBALLAGE!11-1!-16!2
+31!EMBALLAGE!11-2!-18!2
+32!EMBALLAGE!12-1!-18!2
+33!2-P.Miseres!Gagnees!15!2
+34!2-P.Miseres!Perdues!-30!2
+35!2-G.Miseres!Gagnees!24!2
+36!2-G.Miseres!Perdues!-48!2
+37!Trou-8!8!8!2
+38!Trou-8!Double!12!2
+39!Trou-9!9!8!2
+40!Trou-9!Double!12!2
+41!Trou-8!Perdu!-24!2
+42!Trou-9!Perdu!-24!2
+43!2-GM/Trou!Gagnees!40!2
+44!2-GM/Trou!Perdues!-40!2
+45!Seul!6!6!1
+46!Seul!6+1!9!1
+47!Seul!6+2!12!1
+48!Seul!6-1!-9!1
+49!Seul!6-2!-12!1
+50!Seul!7!9!1
+51!Seul!7+1!12!1
+52!Seul!7-1!-9!1
+53!Seul!7-2!-12!1
+54!Seul!8!12!1
+55!Seul!8-1!-15!1
+56!Seul!8-2!-18!1
+57!8 sur P.Misere!Gagne!15!1
+58!8 sur P.Misere!Perdu!-30!1
+59!1-P.Misere!Gagnee!12!1
+60!1-P.Misere!Perdue!-24!1
+61!1-G.Misere!Gagnee!24!1
+62!1-G.Misere!Perdue!-48!1
+63!Abondance-9!Gagnee!18!1
+64!Abondance-10!Gagnee!24!1
+65!Abondance-11!Gagnee!30!1
+66!Abondance!Double!36!1
+67!Abondance-9!Perdue!-36!1
+68!Abondance-10!Perdue!-48!1
+69!Abondance-11!Perdue!-60!1
+70!1-GM/Trou!Gagnee!36!1
+71!1-GM/Trou!Perdu!-72!1
+72!P-Schlem!Gagne!120!1
+73!P-Schlem!Perdu!-120!1
+74!G-Schlem!Gagne!240!1
+75!G-Schlem!Perdu!-240!1
+</TEXTAREA>
+
+<SCRIPT>
+
+function noRepeatRandom(){
+    nextList = sourceList.filter(function(x){return x!=lastNumber});
+    randomIndex = Math.floor(Math.random() * nextList.length);
+    lastNumber = nextList[randomIndex] 
+    return lastNumber
+}
+
+function specialSet(xSTR)
+	{
+	const min = 1;
+	const max = 5;
+	const listNumbers = new Array(6).fill(0);
+	var randomNumber = 0;
+
+	for(var k = 1; k < listNumbers.length; k++) 
+		{ 
+		do 	{
+			var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+			//console.log(k+"\t"+randomNumber+"\t"+listNumbers.includes(randomNumber))
+			}
+		while ( listNumbers.includes(randomNumber) );
+		listNumbers[k] = randomNumber;
+		}		
+	console.log(listNumbers);
+	let min1 = 0;
+	let max1 = 0;
+	let min2 = 0;
+	let max2 = 0;
+	var nbrAnnonces = document.WHIST.ANNONCES.value;
+	let arrayM = nbrAnnonces.split('\n');
+	for(var k = 0; k < arrayM.length; k++) 
+		{ 
+		let lineAnn = arrayM[k].split("!");
+		switch ( parseInt(lineAnn[4]) )
+			{
+			case 1:
+				if ( min1 === 0 ) { min1 = parseInt(lineAnn[0]); } 
+				if ( min1 !== 0 ) { max1 = parseInt(lineAnn[0]); } 
+				break;
+			case 2:
+				if ( min2 === 0 ) { min2 = parseInt(lineAnn[0]); } 
+				if ( min2 !== 0 ) { max2 = parseInt(lineAnn[0]); } 
+				break;
+			default:
+				console.log("K="+k+"\t("+lineAnn[4]+")>("+lineAnn[0]+")\t["+min1+"]"+"["+max1+"]"+"\t\t["+min2+"]"+"["+max2+"]");
+			}
+		}
+	var annSeul = Math.floor(Math.random() * (max1 - min1 + 1)) + min1;
+	var annEmb  = Math.floor(Math.random() * (max2 - min2 + 1)) + min2;
+	console.log("RANDOM JEU - SEUL:"+annSeul+"\tEMBALLAGE:"+annEmb);
+
+	resetJeu("NO");
+	var strD = getCookie2(document.WHIST.CKNAME.value);
+	console.log("VALEUR COOKIE:'"+strD+"'");
+
+	if ( strD === undefined ) 
+		{
+		msgTXT = "VEUILLEZ D'ABORD CREER UNE PARTIE. REQUETE IMPOSSIBLE";
+		console.log(msgTXT);
+		//alert(msgTXT);
+		parent.frames['RESU'].document.getElementById('RESULTS').value = msgTXT;
+		return;
+		}
+
+	if ( xSTR === 1 )
+		{
+		k=listNumbers[0]; var elms = document.querySelectorAll("[name='HOTEPAR']");  elms[k].checked = true;
+		k=listNumbers[1]; var elms = document.querySelectorAll("[name='DONNEPAR']"); elms[k].checked = true;
+		k=listNumbers[2]; var elms = document.querySelectorAll("[name='ENJEUPAR']"); elms[k].checked = true;
+		k=listNumbers[3]; var elms = document.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
+		k=listNumbers[4]; var elms = document.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
+		k=listNumbers[5]; var elms = document.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
+		document.forms['WHIST'].elements['RESULTATSJEU'].options.selectedIndex = annSeul;
+		}
+	if ( xSTR === 2 )
+		{
+		k=listNumbers[0]; var elms = document.querySelectorAll("[name='HOTEPAR']");  elms[k].checked = true;
+		k=listNumbers[1]; var elms = document.querySelectorAll("[name='DONNEPAR']"); elms[k].checked = true;
+		k=listNumbers[2]; var elms = document.querySelectorAll("[name='ENJEUPAR']"); elms[k].checked = true;
+		k=listNumbers[3]; var elms = document.querySelectorAll("[name='ENJEUPAR']"); elms[k].checked = true;
+		k=listNumbers[4]; var elms = document.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
+		k=listNumbers[5]; var elms = document.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
+		document.forms['WHIST'].elements['RESULTATSJEU'].options.selectedIndex = annEmb;
+		}
+	}
+
+function resetJeu(xCODE)
+    {
+	var elms = document.querySelectorAll("[name='DONNEPAR']");
+ 	for(var i = 0; i < elms.length; i++) { elms[i].checked = false; }
+	var elms = document.querySelectorAll("[name='ENJEUPAR']");
+ 	for(var i = 0; i < elms.length; i++) { elms[i].checked = false; }
+	var elms = document.querySelectorAll("[name='JOUERPAR']");
+	for(var i = 0; i < elms.length; i++) { elms[i].checked = false; }
+    }
+ 
+function displayParameters(strINFO)
+	{
+	
+	var HtmlParams = "";	
+	HtmlParams += "<"+"!DOCTYPE html"+">\n";
+	HtmlParams += "<"+"BODY"+">\n"
+	HtmlParams += "<CENTER>\n";
+	HtmlParams += "<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=33% HEIGHT=50%>\n";
+
+	switch(strINFO) 
+		{
+		case "IMPORTE": 
+			var nbrPARAM = document.WHIST.AIDEAPP.value;
+			var lblTEXT1 = "CLIQUEZ SUR LE BOUTON ET CHOISISSEZ LE FICHIER";
+			var lblTEXT2 = "";
+			var lblTEXT3 = "";
+			var lblDISPO = " ALIGN=RIGHT";
+			var swMETHOD = "HTML";
+			break;		
+		case "A":
+			var nbrPARAM = document.WHIST.ANNONCES.value;
+			var lblTEXT1 = "ANNONCé";
+			var lblTEXT2 = "REALISé";
+			var lblTEXT3 = "POINTS";
+			var lblDISPO = " ALIGN=RIGHT";
+			var swMETHOD = "FRAME";
+			break;
+		case "J":
+			var nbrPARAM = document.WHIST.JOUEURS.value;
+			var lblTEXT1 = "INDEX";
+			var lblTEXT2 = "CODE";
+			var lblTEXT3 = "JOUEUR"
+			var lblDISPO = " ALIGN=CENTER";
+			var swMETHOD = "FRAME";
+			break;
+		default:
+			var nbrPARAM = document.WHIST.AIDEAPP.value;
+			var lblTEXT1 = "Aide définie dans l'application";
+			var lblTEXT2 = "Contact";
+			var lblTEXT3 = "-";
+			var lblDISPO = " ALIGN=RIGHT";
+			var swMETHOD = "FRAME";
+		}
+	
+	HtmlParams += "<TR BGCOLOR=LIGHTGREEN ALIGN=CENTER><TD>Nbr</TD>\n";
+	HtmlParams += "<TD>"+lblTEXT1+"</TD><TD>"+lblTEXT2+"</TD><TD>"+lblTEXT3+"</TD></TR>\n";
+
+	const arrayP = nbrPARAM.split('\n');
+
+	for (i = 0; i < arrayP.length-1; i++) 
+		{
+		count = i + 1;
+		if ( strINFO === "A" )
+			{
+			var key   = arrayP[i].split('!')[1].trim();
+			var data1 = arrayP[i].split('!')[2].trim();
+			var data2 = arrayP[i].split('!')[3].trim();
+			var opt	  = arrayP[i].split('!')[4].trim();
+			}	
+		if ( strINFO === "J" )
+			{
+			var key   = arrayP[i].split('!')[0].trim();
+			var data1 = arrayP[i].split('!')[1].trim();
+			var data2 = arrayP[i].split('!')[2].trim();
+			var opt	  = "3";
+			}
+		if ( strINFO === "IMPORTE" )
+			{
+			var key   = "<input id='fileInput' type='file' accept='.csv'>"; 
+			console.log(key);
+			var data1 = "&nbsp;";
+			var data2 = "&nbsp;";
+			var opt	  = "4";
+			count = "&nbsp;";
+			i = arrayP.length;
+			}
+
+		switch (opt)
+			{
+			case "1":
+				var bgcol1 = "BGCOLOR=LIGHTGREY";
+				break;
+			case "2":
+				var bgcol1 = "BGCOLOR=LIGHTGREEN";
+				break;
+			case "3":
+				var bgcol1 = "BGCOLOR=LIGHTBLUE";
+				break;
+			case "4":
+				var bgcol1 = "";
+				break;
+			default:
+				var bgcol1 = "";
+			}
+
+		HtmlParams += "<TR><TD BGCOLOR=YELLOW ALIGN=CENTER>"+count+"</TD>\n"
+		HtmlParams += "<TD "+lblDISPO+" "+bgcol1+">\n"+key+"\n";
+		HtmlParams += "</TD>";
+		HtmlParams += "<TD ALIGN=CENTER "+bgcol1+">"+data1+"</TD>";
+		HtmlParams += "<TD ALIGN=CENTER "+bgcol1+">"+data2+"</TD>";
+		HtmlParams += "</TR>";
+		}
+	HtmlParams += "</TABLE>\n";
+	HtmlParams += "</CENTER>";
+	HtmlParams += "<"+"/BODY"+">";
+	HtmlParams += "<"+"/HTML"+">";
+	
+	if ( strINFO ==="A" || strINFO === "J" || strINFO === "IMPORTE" )
+		{
+		switch (swMETHOD) 
+			{
+			case "HTML": 
+				parent.frames['RESU'].location.href = "importFile.html";
+				break;									
+			default:
+				parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = HtmlParams;
+			}
+		}
+	else {
+		var strAIDE = "";
+		strAIDE += '<TABLE BORDER=0 WIDTH=100% HEIGHT=100%><TR ALIGN=CENTER VALIGN=MIDDLE><TD><PRE><SPAN CLASS="WHISTEURS"><STRONG>';
+		strAIDE += document.WHIST.AIDEAPP.value;
+		strAIDE += '</STRONG></SPAN></PRE></TD></TR></TABLE>';
+		parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = strAIDE;
+		}
+
+	}
+</SCRIPT>
+
+<fieldset>
+<legend>JEUX</legend>
+<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="100%">
+<TR ALIGN=CENTER VALIGN="TOP">
+<TD BGCOLOR=LIGHTBLUE>H<BR>O<BR>T<BR>E</TD>
+<TD BGCOLOR=ORANGE>D<BR>O<BR>N<BR>N<BR>E</TD>
+<TD BGCOLOR=PINK>E<BR>N<BR>J<BR>E<BR>U</TD>
+<TD BGCOLOR=LIGHTGREY>C<BR>O<BR>N<BR>T<BR>R<BR>E</TD>
+<TD BGCOLOR=LIGHTGREEN><BR><B><U><SPAN CLASS='WHISTEURS'>Joueurs</SPAN></U></B><BR><BR>
+<SCRIPT>
+	console.log("2) Check switch sur URL: " + top.location.href);
+	var xPOS = top.location.href.indexOf("?")
+	console.log("2) Controle URL sur '?'. Pos="+xPOS);
+	document.WHIST.switch.value === "";
+	if ( xPOS > -1 ) { document.WHIST.switch.value = "?"; }
+	console.log("2) switch='"+document.WHIST.switch.value+"'");
+</SCRIPT>
+</TD></TR>
+<SCRIPT>
+var nbrJoueurs  = document.WHIST.JOUEURS.value;
+var nbrAnnonces = document.WHIST.ANNONCES.value;
+const arrayJ = nbrJoueurs.split('\n');
+const arrayM = nbrAnnonces.split('\n');
+var dictJ = {};
+for (i = 0; i < arrayJ.length-1; i++) 
+	{
+	var key   = arrayJ[i].split('!')[0].trim();
+	var data1 = arrayJ[i].split('!')[1].trim();
+	var data2 = arrayJ[i].split('!')[2].trim();
+	dictJ[key] = data2;
+	}
+document.WHIST.NBRJOUEURS.value  = "#W: "+(arrayJ.length-1).toString();
+document.WHIST.NBRANNONCES.value = "#M: "+(arrayM.length-1).toString();
+document.WHIST.NBRPARTIES.value  = "#J: "+document.WHIST.PARTIES.value.toString();
+
+for (i = 0; i < arrayJ.length-1; i++) 
+	{
+	var key  = arrayJ[i].split('!')[0].trim()+"-"+arrayJ[i].split('!')[1].trim();
+	var data = arrayJ[i].split('!')[2].trim();
+	document.write("<TR>");
+
+	document.write("<TD BGCOLOR=LIGHTBLUE>	<input type='checkbox' value='"+key+"' NAME='HOTEPAR'  id='HOTEPAR'  unchecked onchange='JavaScript:checkHote()'></TD>");
+	document.write("<TD BGCOLOR=ORANGE>		<input type='checkbox' value='"+key+"' NAME='DONNEPAR' id='DONNEPAR' unchecked ></TD>");
+	document.write("<TD BGCOLOR=PINK> 		<input type='checkbox' value='"+key+"' NAME='ENJEUPAR' id='ENJEUPAR' unchecked ></TD>");
+	document.write("<TD BGCOLOR=LIGHTGREY>  <input type='checkbox' value='"+key+"' NAME='JOUERPAR' id='JOUERPAR' unchecked ></TD>");
+	
+	document.write("<TD BGCOLOR=LIGHTGREY> 	<SPAN CLASS='WHISTEURS'><b>&nbsp;["+key+"] "+data+"&nbsp;</b></SPAN></TD>");
+	document.write("<TR>");
+	}
+</SCRIPT>
+</TABLE>
+</fieldset>
+
+<BR><fieldset>
+<legend>ANNONCES</legend>
+<TABLE BORDER=0 WIDTH="100%">
+<TR>
+<TD>
+	<SELECT name="RESULTATSJEU" id="RESULTATSJEU" SIZE="1">
+    	<option value='' class="GENERAL2">CHOISISSEZ UNE ANNONCE REALISEE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+<script>
+const select2 = document.getElementById('RESULTATSJEU');
+select2.addEventListener('focus', function () {
+//  select2.size = 20;
+    const optionHeight = this.options[0].offsetHeight;
+    this.scrollTop = this.selectedIndex * optionHeight;
+});
+select2.addEventListener('blur', () => {
+	select.selectedIndex = 0;
+  	select2.size = 1;
+});
+</script>               	 
+<SCRIPT>
+	var tabPts = "" 
+	tabPts += "<"+"HTML"+">";
+	tabPts += "<"+"HEAD"+">";
+	tabPts += "<"+"link rel='stylesheet' href='Whist.css'"+">";
+	tabPts += "<"+"/HEAD"+">";
+	tabPts += "<"+"BODY"+">";
+	tabPts += "<TABLE BORDER=1 CELLSPACING = 0 CELLPADDING=0 >";
+	tabPts += "<TR><TD>ANNONCES</TD><TD>JEUX</TD><TD>POINTS</TD></TR>";
+	
+	var nbrAnnonces = document.WHIST.ANNONCES.value;
+	const arrayA = nbrAnnonces.split('\n');
+	var dictA = {};
+	var esp = '\xa0'.repeat(25);
+	//var esp  = "_".repeat(25);
+	var spa1 = "&nbsp;".repeat(25);
+	var spa2 = "&nbsp;".repeat(3);
+	var sep1 = "!";
+	var sep2 = String.fromCharCode(173)
+	var CTL1 = "?";
+
+	for (i = 0; i < arrayA.length - 1; i++) {
+		var key  = arrayA[i].split('!')[0].trim();
+		var key2 = arrayA[i].split('!')[0].trim().concat(esp).substring(0, 2);
+		var jeu  = arrayA[i].split('!')[1].trim().concat(esp).substring(0, 20);
+		var res  = arrayA[i].split('!')[2].trim().concat(esp).substring(0, 7);
+		var pts  = arrayA[i].split('!')[3].trim().concat(esp).substring(0, 4);
+		var CTL2 = arrayA[i].split('!')[4].trim().concat(esp).substring(0, 1);
+		var msg1 = sep1+jeu+sep1+res+sep1+pts+sep1+CTL2;
+		var msg2 = jeu+spa2+sep2+res+spa2+sep2+"Pts:"+pts;
+
+		dictA[key] = jeu;
+
+		tabPts += "<TR><TD>"+jeu+"<TD>"+res+"</TD><TD>"+pts+"</TD></TR>"
+
+		switch (CTL2) 
+			{
+			case "1":
+				var colr = " CLASS='couleur1'";
+				var disa = "";
+				break;
+			case "2":	  
+				var colr = " CLASS='couleur2'";
+				var disa = "";
+				break;
+			default:
+				var colr = " CLASS='couleur3'";
+				var disa = "disabled";
+			}
+		tabPts += "<TR "+colr+"><TD>"+jeu+"<TD>"+res+"</TD><TD>"+pts+"</TD></TR>"
+		var opt2 = "	<option "+disa+" value='" + msg1 + "' "+colr+">&nbsp;" + msg2 + spa1 +"</option>";
+		document.write(opt2);
+		}
+	tabPts += "</TABLE>";
+	tabPts += "<"+"/BODY"+">";
+	tabPts += "<"+"/HTML"+">";
+
+function imprimePoints()
+	{
+	//window.open("", "POINTS-WHIST", "resizable=yes", true);
+	//console.log(tabPts);
+	var opts = "height=250,width=950,top=350,left=450,resizable=yes";
+	var myWindow = window.open("", "WHIST", opts);
+	myWindow.document.write(tabPts);
+	//myWindow.close();
+	}
+</SCRIPT>
+
+</SELECT>
+</TD></TR>
+
+<TR>
+	<TD VALIGN="MIDDLE" ALIGN="CENTER">
+	&nbsp;
+	<input type="button" class="BOUTON" value="IMPRIME" ONCLICK="JavaScript:imprimePoints()">
+	&nbsp;
+	<input type="button" value="CALCUL" ONCLICK="JavaScript:calculator()">
+	</TD>
+
+</TR>
+</TABLE>
+
+</TD>
+</TR></TABLE>
+</fieldset>
+
+<CENTER>
+<P>
+</CENTER>
+</FONT>
+</TD></TR></TABLE> 
+</FORM>
+<CENTER>
+
+</TD></TR></TABLE>
+
+</CENTER>
+</BODY>
+</HTML>
+

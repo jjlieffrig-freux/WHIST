@@ -1,0 +1,527 @@
+[
+    {
+        "ID": "1",
+        "MISE": "2-P.Miseres",
+        "JEU": "1/2",
+        "POINTS": "-18",
+        "TYPE": "3"
+    },
+    {
+        "ID": "2",
+        "MISE": "2-G.Miseres",
+        "JEU": "1/2",
+        "POINTS": "-36",
+        "TYPE": "3"
+    },
+    {
+        "ID": "3",
+        "MISE": "2-GM/Trou",
+        "JEU": "1/2",
+        "POINTS": "-80",
+        "TYPE": "3"
+    },
+    {
+        "ID": "4",
+        "MISE": "EMBALLAGE",
+        "JEU": "8",
+        "POINTS": "8",
+        "TYPE": "2"
+    },
+    {
+        "ID": "5",
+        "MISE": "EMBALLAGE",
+        "JEU": "8+1",
+        "POINTS": "11",
+        "TYPE": "2"
+    },
+    {
+        "ID": "6",
+        "MISE": "EMBALLAGE",
+        "JEU": "8+2",
+        "POINTS": "14",
+        "TYPE": "2"
+    },
+    {
+        "ID": "7",
+        "MISE": "EMBALLAGE",
+        "JEU": "8+3",
+        "POINTS": "17",
+        "TYPE": "2"
+    },
+    {
+        "ID": "8",
+        "MISE": "EMBALLAGE",
+        "JEU": "8+4",
+        "POINTS": "20",
+        "TYPE": "2"
+    },
+    {
+        "ID": "9",
+        "MISE": "EMBALLAGE",
+        "JEU": "9",
+        "POINTS": "11",
+        "TYPE": "2"
+    },
+    {
+        "ID": "10",
+        "MISE": "EMBALLAGE",
+        "JEU": "9+1",
+        "POINTS": "14",
+        "TYPE": "2"
+    },
+    {
+        "ID": "11",
+        "MISE": "EMBALLAGE",
+        "JEU": "9+2",
+        "POINTS": "17",
+        "TYPE": "2"
+    },
+    {
+        "ID": "12",
+        "MISE": "EMBALLAGE",
+        "JEU": "9+3",
+        "POINTS": "20",
+        "TYPE": "2"
+    },
+    {
+        "ID": "13",
+        "MISE": "EMBALLAGE",
+        "JEU": "10",
+        "POINTS": "14",
+        "TYPE": "2"
+    },
+    {
+        "ID": "14",
+        "MISE": "EMBALLAGE",
+        "JEU": "10+1",
+        "POINTS": "17",
+        "TYPE": "2"
+    },
+    {
+        "ID": "15",
+        "MISE": "EMBALLAGE",
+        "JEU": "10+2",
+        "POINTS": "20",
+        "TYPE": "2"
+    },
+    {
+        "ID": "16",
+        "MISE": "EMBALLAGE",
+        "JEU": "11",
+        "POINTS": "17",
+        "TYPE": "2"
+    },
+    {
+        "ID": "17",
+        "MISE": "EMBALLAGE",
+        "JEU": "11+1",
+        "POINTS": "20",
+        "TYPE": "2"
+    },
+    {
+        "ID": "18",
+        "MISE": "EMBALLAGE",
+        "JEU": "12",
+        "POINTS": "20",
+        "TYPE": "2"
+    },
+    {
+        "ID": "19",
+        "MISE": "EMBALLAGE",
+        "JEU": "Double",
+        "POINTS": "26",
+        "TYPE": "2"
+    },
+    {
+        "ID": "20",
+        "MISE": "EMBALLAGE",
+        "JEU": "8-1",
+        "POINTS": "-8",
+        "TYPE": "2"
+    },
+    {
+        "ID": "21",
+        "MISE": "EMBALLAGE",
+        "JEU": "8-2",
+        "POINTS": "-11",
+        "TYPE": "2"
+    },
+    {
+        "ID": "22",
+        "MISE": "EMBALLAGE",
+        "JEU": "8-3",
+        "POINTS": "-14",
+        "TYPE": "2"
+    },
+    {
+        "ID": "23",
+        "MISE": "EMBALLAGE",
+        "JEU": "8-4",
+        "POINTS": "-17",
+        "TYPE": "2"
+    },
+    {
+        "ID": "24",
+        "MISE": "EMBALLAGE",
+        "JEU": "9-1",
+        "POINTS": "-11",
+        "TYPE": "2"
+    },
+    {
+        "ID": "25",
+        "MISE": "EMBALLAGE",
+        "JEU": "9-2",
+        "POINTS": "-14",
+        "TYPE": "2"
+    },
+    {
+        "ID": "26",
+        "MISE": "EMBALLAGE",
+        "JEU": "9-3",
+        "POINTS": "-17",
+        "TYPE": "2"
+    },
+    {
+        "ID": "27",
+        "MISE": "EMBALLAGE",
+        "JEU": "10-1",
+        "POINTS": "-14",
+        "TYPE": "2"
+    },
+    {
+        "ID": "28",
+        "MISE": "EMBALLAGE",
+        "JEU": "10-2",
+        "POINTS": "-17",
+        "TYPE": "2"
+    },
+    {
+        "ID": "29",
+        "MISE": "EMBALLAGE",
+        "JEU": "10-3",
+        "POINTS": "-17",
+        "TYPE": "2"
+    },
+    {
+        "ID": "30",
+        "MISE": "EMBALLAGE",
+        "JEU": "11-1",
+        "POINTS": "-20",
+        "TYPE": "2"
+    },
+    {
+        "ID": "31",
+        "MISE": "EMBALLAGE",
+        "JEU": "11-2",
+        "POINTS": "-20",
+        "TYPE": "2"
+    },
+    {
+        "ID": "32",
+        "MISE": "EMBALLAGE",
+        "JEU": "12-1",
+        "POINTS": "-23",
+        "TYPE": "2"
+    },
+    {
+        "ID": "33",
+        "MISE": "2-P.Miseres",
+        "JEU": "Gagnees",
+        "POINTS": "36",
+        "TYPE": "2"
+    },
+    {
+        "ID": "34",
+        "MISE": "2-P.Miseres",
+        "JEU": "Perdues",
+        "POINTS": "-18",
+        "TYPE": "2"
+    },
+    {
+        "ID": "35",
+        "MISE": "2-G.Miseres",
+        "JEU": "Gagnees",
+        "POINTS": "36",
+        "TYPE": "2"
+    },
+    {
+        "ID": "36",
+        "MISE": "2-G.Miseres",
+        "JEU": "Perdues",
+        "POINTS": "-36",
+        "TYPE": "2"
+    },
+    {
+        "ID": "37",
+        "MISE": "Trou-8",
+        "JEU": "8",
+        "POINTS": "13",
+        "TYPE": "2"
+    },
+    {
+        "ID": "38",
+        "MISE": "Trou-8",
+        "JEU": "Double",
+        "POINTS": "26",
+        "TYPE": "2"
+    },
+    {
+        "ID": "39",
+        "MISE": "Trou-9",
+        "JEU": "9",
+        "POINTS": "13",
+        "TYPE": "2"
+    },
+    {
+        "ID": "40",
+        "MISE": "Trou-9",
+        "JEU": "Double",
+        "POINTS": "26",
+        "TYPE": "2"
+    },
+    {
+        "ID": "41",
+        "MISE": "Trou-8",
+        "JEU": "Perdu",
+        "POINTS": "-26",
+        "TYPE": "2"
+    },
+    {
+        "ID": "42",
+        "MISE": "Trou-9",
+        "JEU": "Perdu",
+        "POINTS": "-26",
+        "TYPE": "2"
+    },
+    {
+        "ID": "43",
+        "MISE": "2-GM/Trou",
+        "JEU": "Gagnees",
+        "POINTS": "80",
+        "TYPE": "2"
+    },
+    {
+        "ID": "44",
+        "MISE": "2-GM/Trou",
+        "JEU": "Perdues",
+        "POINTS": "-80",
+        "TYPE": "2"
+    },
+    {
+        "ID": "45",
+        "MISE": "Seul",
+        "JEU": "6",
+        "POINTS": "12",
+        "TYPE": "1"
+    },
+    {
+        "ID": "46",
+        "MISE": "Seul",
+        "JEU": "6+1",
+        "POINTS": "15",
+        "TYPE": "1"
+    },
+    {
+        "ID": "47",
+        "MISE": "Seul",
+        "JEU": "6+2",
+        "POINTS": "21",
+        "TYPE": "1"
+    },
+    {
+        "ID": "48",
+        "MISE": "Seul",
+        "JEU": "6-1",
+        "POINTS": "-12",
+        "TYPE": "1"
+    },
+    {
+        "ID": "49",
+        "MISE": "Seul",
+        "JEU": "6-2",
+        "POINTS": "-15",
+        "TYPE": "1"
+    },
+    {
+        "ID": "50",
+        "MISE": "Seul",
+        "JEU": "7",
+        "POINTS": "15",
+        "TYPE": "1"
+    },
+    {
+        "ID": "51",
+        "MISE": "Seul",
+        "JEU": "7+1",
+        "POINTS": "21",
+        "TYPE": "1"
+    },
+    {
+        "ID": "52",
+        "MISE": "Seul",
+        "JEU": "7-1",
+        "POINTS": "-15",
+        "TYPE": "1"
+    },
+    {
+        "ID": "53",
+        "MISE": "Seul",
+        "JEU": "7-2",
+        "POINTS": "-21",
+        "TYPE": "1"
+    },
+    {
+        "ID": "54",
+        "MISE": "Seul",
+        "JEU": "8",
+        "POINTS": "21",
+        "TYPE": "1"
+    },
+    {
+        "ID": "55",
+        "MISE": "Seul",
+        "JEU": "8-1",
+        "POINTS": "-21",
+        "TYPE": "1"
+    },
+    {
+        "ID": "56",
+        "MISE": "Seul",
+        "JEU": "8-2",
+        "POINTS": "-24",
+        "TYPE": "1"
+    },
+    {
+        "ID": "57",
+        "MISE": "8 sur P.Misere",
+        "JEU": "Gagne",
+        "POINTS": "6",
+        "TYPE": "1"
+    },
+    {
+        "ID": "58",
+        "MISE": "8 sur P.Misere",
+        "JEU": "Perdu",
+        "POINTS": "6",
+        "TYPE": "1"
+    },
+    {
+        "ID": "59",
+        "MISE": "1-P.Misere",
+        "JEU": "Gagnee",
+        "POINTS": "18",
+        "TYPE": "1"
+    },
+    {
+        "ID": "60",
+        "MISE": "1-P.Misere",
+        "JEU": "Perdue",
+        "POINTS": "-18",
+        "TYPE": "1"
+    },
+    {
+        "ID": "61",
+        "MISE": "1-G.Misere",
+        "JEU": "Gagnee",
+        "POINTS": "36",
+        "TYPE": "1"
+    },
+    {
+        "ID": "62",
+        "MISE": "1-G.Misere",
+        "JEU": "Perdue",
+        "POINTS": "-36",
+        "TYPE": "1"
+    },
+    {
+        "ID": "63",
+        "MISE": "Abondance 9",
+        "JEU": "Gagnee",
+        "POINTS": "30",
+        "TYPE": "1"
+    },
+    {
+        "ID": "64",
+        "MISE": "Abondance 10",
+        "JEU": "Gagnee",
+        "POINTS": "42",
+        "TYPE": "1"
+    },
+    {
+        "ID": "65",
+        "MISE": "Abondance 11",
+        "JEU": "Gagnee",
+        "POINTS": "60",
+        "TYPE": "1"
+    },
+    {
+        "ID": "66",
+        "MISE": "Abondance",
+        "JEU": "Double",
+        "POINTS": "60",
+        "TYPE": "1"
+    },
+    {
+        "ID": "67",
+        "MISE": "Abondance 9",
+        "JEU": "Perdue",
+        "POINTS": "-30",
+        "TYPE": "1"
+    },
+    {
+        "ID": "68",
+        "MISE": "Abondance 10",
+        "JEU": "Perdue",
+        "POINTS": "-42",
+        "TYPE": "1"
+    },
+    {
+        "ID": "69",
+        "MISE": "Abondance 11",
+        "JEU": "Perdue",
+        "POINTS": "-60",
+        "TYPE": "1"
+    },
+    {
+        "ID": "70",
+        "MISE": "1-GM/Trou",
+        "JEU": "Gagnee",
+        "POINTS": "80",
+        "TYPE": "1"
+    },
+    {
+        "ID": "71",
+        "MISE": "1-GM/Trou",
+        "JEU": "Perdu",
+        "POINTS": "-80",
+        "TYPE": "1"
+    },
+    {
+        "ID": "72",
+        "MISE": "P-Schlem",
+        "JEU": "Gagne",
+        "POINTS": "120",
+        "TYPE": "1"
+    },
+    {
+        "ID": "73",
+        "MISE": "P-Schlem",
+        "JEU": "Perdu",
+        "POINTS": "-120",
+        "TYPE": "1"
+    },
+    {
+        "ID": "74",
+        "MISE": "G-Schlem",
+        "JEU": "Gagne",
+        "POINTS": "240",
+        "TYPE": "1"
+    },
+    {
+        "ID": "75",
+        "MISE": "G-Schlem",
+        "JEU": "Perdu",
+        "POINTS": "-240",
+        "TYPE": "1"
+    }
+]

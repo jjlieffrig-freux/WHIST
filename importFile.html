@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Cache-Control" content="no-cache">
+<head>
+<TITLE>WHIST - Menu</TITLE>
+<link rel="stylesheet" href="Whist.css"></head>
+<body>
+<table border="1" WIDTH="100%" HEIGHT="100%"><TR CLASS="GENERAL2" ALIGN=CENTER VALIGN=MIDDLE><TD>
+<input type="file" id="csvFile" accept=".csv">
+</TD></TR></table>
+<script>
+const fileInput = document.getElementById("csvFile");
+fileInput.addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    console.log("Chargement du fichier "+file);
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const csvText = e.target.result;
+        storeInLS(file.name, csvText);
+        };
+    reader.readAsText(file);
+    window.history.back();
+    });	
+    
+function storeInLS(strFile, csvText)
+    {
+    console.log("SAUVE LE FICHIER '"+strFile+"' EN MEMOIRE.");
+    const rows = csvText.trim().split("\n");
+    for (i=0; i<rows.length; i++)
+        {
+        rowLine = rows[i].split(",")
+        cleLS = rowLine[0];
+        valLS = rowLine.slice(1).join(",");
+        localStorage.removeItem(cleLS);
+        localStorage.setItem(cleLS, valLS);
+        console.log("INSERTION CLE '"+cleLS+"'\t\t"+valLS);
+        }
+    const storeArray = Object.keys(localStorage).map(key => [ key, localStorage.getItem(key)]);
+    var storageArray = storeArray.sort(
+        function (a, b) 
+            {
+            if (a[0] === b[0]) 
+                {
+                return 0;
+                } 
+            else {
+                return (a[0] < b[0]) ? -1 : 1;
+                }
+            }
+        );
+    console.log(storageArray)
+    }
+</script>
+</body>
+</html>

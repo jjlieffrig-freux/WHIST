@@ -1,0 +1,38 @@
+[
+    {
+        "ID": "001",
+        "CODE": "JJL",
+        "NOM": "Lieffrig",
+        "PRENOM": "Jean-Jacques"
+    },
+    {
+        "ID": "002",
+        "CODE": "RHA",
+        "NOM": "Hansen",
+        "PRENOM": "Robert"
+    },
+    {
+        "ID": "003",
+        "CODE": "JMH",
+        "NOM": "Hansen",
+        "PRENOM": "Jean-Marc"
+    },
+    {
+        "ID": "004",
+        "CODE": "JPZ",
+        "NOM": "Zevenne",
+        "PRENOM": "Jean-Pierre"
+    },
+    {
+        "ID": "005",
+        "CODE": "JRO",
+        "NOM": "Robin",
+        "PRENOM": "Jose"
+    },
+    {
+        "ID": "006",
+        "CODE": "FLA",
+        "NOM": "Lanners",
+        "PRENOM": "Francis"
+    }
+]

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<HTML>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Cache-Control" content="no-cache">
+
+<HEAD>
+<TITLE>WHIST - Header</TITLE>
+<link rel="stylesheet" href="Whist.css">
+<script src="WhistCalc.js"></script>
+
+<script>
+setInterval(refreshTime, 1000);
+checkHote();
+
+function analyseCookie()
+	{
+	var ckNameDef = parent.frames['TITRE'].document.getElementById("CKNAME").value;
+	var ckNamePfx = parent.frames['TITRE'].document.getElementById("PARPFX").value;
+	var strCookie = getCookie2(ckNameDef);
+
+	console.log("ckNameDef:"+ckNameDef+"\t\tckNamePfx:"+ckNamePfx+"\t\tCOOKIE:"+strCookie);
+
+	document.getElementById("ckNameDef").value = ckNameDef; 
+	document.getElementById("ckNamePfx").value = ckNamePfx;
+	document.getElementById("COOKIE").value = strCookie;
+
+	const userAgent = navigator.userAgent;
+	console.log("BROWSER:"+userAgent);
+
+	let browser = "Unknown";
+	if ( userAgent.includes("Firefox") ) { browser = "Firefox"; }
+	if ( userAgent.includes("Edg")     ) { browser = "Edge";    }
+	if ( userAgent.includes("Safari")  ) { browser = "Safari";  }
+	if ( userAgent.includes("Brave")   ) { browser = "Brave";   }
+	if ( userAgent.includes("Chrome")  ) { browser = "Chrome";  }
+
+	document.getElementById("WEBBRW").value = browser;
+
+	checkHote();
+	listAllParties();
+	}
+
+function refreshTime() {
+  	const hString = String(new Date().getHours()).padStart(2, '0');
+	const mString = String(new Date().getMinutes()).padStart(2, '0');
+	const sString = String(new Date().getSeconds()).padStart(2, '0');
+	document.HEADER.HEURE1.value = hString+":"+mString+":"+sString;
+	}
+
+function listAllParties()
+	{
+	const sParties = viewLocalStorage(true);
+	var strBUTTON  = "";
+	sParties.forEach(partie => {
+		strBUTTON += "<input type='button' value='"+partie+"' ONCLICK='JavaScript:chargePartie(this.value)'>&nbsp;"
+		});
+	document.getElementById("pButtons").innerHTML = strBUTTON;
+	}
+
+function chargePartie(xPartie)
+	{
+	reloadPointsArray();
+	}
+
+</SCRIPT>
+
+</HEAD>
+
+<BODY BGCOLOR="LIGHTGREY" onLoad="JavaScript:analyseCookie()">
+<FORM NAME=HEADER>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
+<TR CLASS="GENERAL1"><TD> 
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0">
+
+<thead>
+<TR>
+<TH SCOPE="TD1"></TH>
+<TH SCOPE="TD3"></TH>
+<TH SCOPE="TD4"></TH>
+</TH>
+</thead>
+
+<TR VALIGN="TOP">
+	<TD ALIGN="LEFT">
+	<br><INPUT TYPE="TEXT" NAME="HEURE1"    ID="HEURE1"    VALUE="H:M:S" SIZE="10" style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS"><BR>
+	<br><INPUT TYPE="TEXT" NAME="ckNamePfx" ID="ckNamePfx" VALUE="?"     SIZE="12" style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS">	
+	<br><INPUT TYPE="TEXT" NAME="ckNameDef"	ID="ckNameDef" VALUE="?"     SIZE="12" style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS">
+	<br><INPUT TYPE="TEXT" NAME="sizeLS"	ID="sizeLS"    VALUE="0"     SIZE="15" style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS">
+	<BR><INPUT TYPE="TEXT" NAME="NHOTE"     ID="NHOTE"     VALUE="?"     SIZE="30" style="background-color:lightblue; border-style : hidden;" CLASS="WHISTEURS" onchange="JavaScript:checkHote()">
+	</TD>
+
+<TD>
+	
+	<TABLE BORDER="1" cellspacing="0" cellpadding="0" WIDTH="95%" HEIGHT="100%">
+	<TR ALIGN="center"><TD>
+	<SELECT CLASS="select2" WIDTH=100% name='NOMPARTIE' id='NOMPARTIE' SIZE=1 ONCLICK="JavaScript:choosePartie(this.options[this.selectedIndex].value)"">
+	<option value='??' class="GENERAL2">LES PARTIES EN COURS ET MEMORISEES</option>"
+	</SELECT>
+	</TD></TR> 	
+	<TR><TD><div id="pButtons"></div></TD></TR></TABLE>
+</TD>
+
+<TD>
+	<BR><U CLASS="WHISTEURS">STATISTIQUES PARTIE EN COURS</U>
+	<BR>Partie......:&nbsp;<INPUT TYPE="TEXT" VALUE="?"   ID="COOKIE"  NAME="COOKIE"  SIZE="20"  style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS">
+	<BR>Nombre Jeux.:&nbsp;<INPUT TYPE="TEXT" VALUE=0     ID="NPARTIE" NAME="NPARTIE" SIZE="9"   style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS"> 
+	<BR>Total Points:&nbsp;<INPUT TYPE="TEXT" VALUE=0     ID="ENJEU"   NAME="ENJEUX"  SIZE="9"   style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS"> 	
+	<BR>Durée Partie:&nbsp;<INPUT TYPE="TEXT" VALUE=365   ID="DUREE"   NAME="DUREE"   SIZE="3"   style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS">Jours	
+	<BR>Browser.....:&nbsp;<INPUT TYPE="TEXT" VALUE="?"   ID="WEBBRW"  NAME="WEBBRW"  SIZE="10"  style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS">
+	</TD>
+</TR></TABLE>
+</fieldset>
+</div>
+
+</TD></TR></TABLE>
+</FORM>
+
+
+<SCRIPT>
+
+</SCRIPT>
+
+</BODY>
+</HTML>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>IMPORTE FICHIER DE JEUX</title>
+</head>
+<body>
+<input type="file" id="csvFile" accept=".csv">
+<pre id="output"></pre>
+<script>
+const fileInput = document.getElementById("csvFile");
+fileInput.addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    console.log("Chargement du fichier "+file);
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const csvText = e.target.result;
+        const rows = csvText.trim().split("\n");
+        const headers = rows[0].split(",");
+        console.log(headers);
+        const data1 = rows.slice(1).map(row => {
+            const values = row.split(",");
+            return headers.reduce((obj, header, index) => {
+                obj[header.trim()] = values[index]?.trim();
+                return obj;
+                }, {});
+            });
+        document.getElementById("output").textContent = JSON.stringify(data1);
+        console.log(JSON.stringify(data1));
+        };
+    reader.readAsText(file);
+    });
+</script>
+</body>
+</html>
