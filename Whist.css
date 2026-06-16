@@ -144,7 +144,13 @@ td {
 	width: 100%;
   	}
 
-.select{
+option:checked, option:hover {
+  background-color: black;
+  color: yellow;
+  font-size: 120%;
+}
+
+select{
 	background-color: white;
    	font-family: 'Courier New', Courier, monospace;
    	font-weight: Normal;
@@ -153,6 +159,8 @@ td {
 	padding: 1px;
 	border-radius: 5px;
 	width: 100%;
+  	white-space: nowrap;    /* Prevents the text from wrapping to multiple lines */
+  	text-overflow: ellipsis; 
   	}
 	
 .MSGTXT{

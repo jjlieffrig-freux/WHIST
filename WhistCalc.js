@@ -756,7 +756,7 @@ function calculator2()
 		data.push(strValue);			
     	count++;
   		}
-	//console.log(data);
+	console.log(data);
 	memorise(data);
 
 	return false;  
@@ -789,27 +789,29 @@ function memorise(strDATA1)
 		//console.log("Matrice existante!");
 		}
 	console.log(strDATA2);
+	var indic = document.WHIST.switch.value;
 	p1=strDATA2.indexOf("@")+1; p2=strDATA2.indexOf("&")-1; sANNONCE=strDATA2.substring(p1,p2);  
-	if ( document.WHIST.switch.value === "?" ) console.log(p1+"/"+p2+"/"+sANNONCE);
+	if ( indic === "?" ) console.log(p1+"/"+p2+"/"+sANNONCE);
 	p1=strDATA2.indexOf("&")+1; p2=strDATA2.indexOf("?")-1; sPOINTS=strDATA2.substring(p1,p2);
-	if ( document.WHIST.switch.value === "?" ) console.log(p1+"/"+p2+"/"+sPOINTS);
+	if ( indic === "?" ) console.log(p1+"/"+p2+"/"+sPOINTS);
 	p1=strDATA2.indexOf("?")+1; p2=strDATA2.indexOf("€")-2; sDONNEUR=strDATA2.substring(p1,p2); 
-	if ( document.WHIST.switch.value === "?" ) console.log(p1+"/"+p2+"/"+sDONNEUR);
+	if ( indic === "?" ) console.log(p1+"/"+p2+"/"+sDONNEUR);
 	p1=strDATA2.indexOf("€")+1; p2=strDATA2.indexOf("£")-2; sBONNI=strDATA2.substring(p1,p2); 
-	if ( document.WHIST.switch.value === "?" ) console.log(p1+"/"+p2+"/"+sBONNI);   	
+	if ( indic === "?" ) console.log(p1+"/"+p2+"/"+sBONNI);   	
 	p1=strDATA2.indexOf("£")+1; p2=strDATA2.indexOf("$")-1; sMALUS=strDATA2.substring(p1,p2);  
-	if ( document.WHIST.switch.value === "?" ) console.log(p1+"/"+p2+"/"+sMALUS); 
+	if ( indic === "?" ) console.log(p1+"/"+p2+"/"+sMALUS); 
 
 	sANNONCE = sPOINTS.split('!')[1].trim() + " " + sPOINTS.split('!')[2].trim();
-	sPOINTS	 = sPOINTS.split('!')[3].trim();
 	sTYPEJEU = sPOINTS.split('!')[4];
+	sPOINTS	 = sPOINTS.split('!')[3].trim();
 	sDONNEUR = sDONNEUR.split('-')[0];
 	console.log("DONNEUR:"+sDONNEUR);
 	sBONNI	 = sBONNI.replaceAll("[","");
 	sMALUS 	 = sMALUS.replaceAll("[","");
 
 	nPARTIE  = Math.floor(parent.frames['HDR'].document.HEADER.NPARTIE.value) + 1;
-	strDATA4 = "ANN:"+sANNONCE+"\nPTS:"+sPOINTS+"\nDON:"+sDONNEUR+"\nJEU:"+sBONNI+"\nOPP:"+sMALUS+"\nPAR:"+nPARTIE; 
+	strDATA4 = "ANN:"+sANNONCE+"\nPTS:"+sPOINTS+"\nDON:"+sDONNEUR+"\nJEU:"+sBONNI+"\nOPP:"+sMALUS+"\nPAR:"+nPARTIE+"\nTYPE:"+sTYPEJEU;
+
 	console.log(strDATA4);
 	if ( document.WHIST.switch.value === "?")
 		{
@@ -859,6 +861,22 @@ function memorise(strDATA1)
 	console.log("#ENJEU:"+strJENJEU.length+"\t\t#CONTRE:"+strJCONTRE.length+"\t\tIND-DONNEUR:"+xDONNEUR);
 	//console.log("#".repeat(50));
 
+	if ( sTYPEJEU === "3" ) {
+		var msgTXT = "";
+		var vainq1 = strJENJEU.toString().split(",")[0]; var v1 = vainq1.substring(0,1);
+		var vainq2 = strJENJEU.toString().split(",")[1]; var v2 = vainq2.substring(0,1);
+		msgTXT += "Qui a gagné UNE des '"+sANNONCE+"'?\n";
+		msgTXT += "entre "+vainq1+" et "+vainq2+"\n";
+		msgTXT += "Entrez la valeur ["+ v1 + "] ou [" + v2 + "] pour valider le vainqueur";
+		do {
+			var vainqueur = prompt(msgTXT, 0);
+			}
+		while (vainqueur != v1 && vainqueur != v2);
+		winOnTwo = vainq1;
+		if ( vainqueur === v2 ) { winOnTwo = vainq2; }
+		console.log("Vainqueur de la partie "+nPARTIE+" est "+winOnTwo);
+		}
+
 	var htmlTAB="<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=100%>";
 	var limHTML = aRES.length;
 	//var limHTML = nPARTIE;
@@ -884,6 +902,9 @@ function memorise(strDATA1)
 				aRES[i][0] = nPARTIE;
 				aRES[i][1] = txtDONNE;
 				aRES[i][2] = sANNONCE + txtWIN;
+				if ( sTYPEJEU === "3" ) {
+					aRES[i][2] = sANNONCE + txtWIN + " (WIN:" + winOnTwo + ")";
+					}
 				aRES[i][3] = sPOINTS;
 					
 				//==============================================
@@ -899,26 +920,40 @@ function memorise(strDATA1)
 					else {
 						aRES[i][xDONNEUR-1] = parseInt(aRES[i-1][xDONNEUR-1]);
 						}
-					console.log("LIGNE:"+i+"\t\tPas de changement pour le donneur. Colonne listing = "+xDONNEUR+"\t\tPts précédents:"+aRES[i-1][xDONNEUR-1]);
+					//console.log("LIGNE:"+i+"\t\tPas de changement pour le donneur. Colonne listing = "+xDONNEUR+"\t\tPts précédents:"+aRES[i-1][xDONNEUR-1]);
 					}
 
 				//==============================================
 				//===== AJUSTE LES DONNEES DES ANNONCES ========
 				//==============================================
 
-				//console.log("-".repeat(25)+"ANNONCES"+"-".repeat(25)+" ARRAY ["+i+"]["+j+"]\t\tDATA:"+aRES[i][j]);
+				console.log("-".repeat(25)+"ANNONCES"+"-".repeat(25)+" ARRAY ["+i+"]["+j+"]\t\tDATA:"+aRES[i][j]);
+
 				for (let k = 0; k < strJENJEU.length; k++)
 					{
+					var sGAINS = sPOINTS;
+					indexJ = parseInt(strJENJEU[k]);
 					indexJoueur = parseInt(strJENJEU[k]) + 3;
-					if ( nPARTIE === 1 )
-						{
-						//console.log("-PARTIE:"+i+"\t\tW-JOUEUR="+k+"\t\tAVANT:"+aRES[i][indexJoueur]+"\t\tAPRES=POINTS:"+sPOINTS);
-						aRES[i][indexJoueur] = parseInt(sPOINTS);
-						}					
-					   else	{
-						//console.log("=PARTIE:"+i+"\t\tW-JOUEUR="+k+"\t\tAVANT:"+aRES[i-1][indexJoueur]+"\t\tPOINTS:"+sPOINTS+"\t\tAPRES:"+aRES[i][indexJoueur]);
-						aRES[i][indexJoueur] = parseInt(aRES[i-1][indexJoueur]) + parseInt(sPOINTS);	
-						}			
+					if ( indexJoueur === j ) 
+						{ 	
+						if ( parseInt(sTYPEJEU) === 3 ) {	
+							if ( indexJ === parseInt(vainqueur) ) { 	
+								sGAINS = ( parseInt(sPOINTS) / -6 ) * 5; 
+								}
+							if ( indexJ != parseInt(vainqueur) ) { 	
+								sGAINS = ( parseInt(sPOINTS) / -6 ) * -7; 
+								}
+							} 
+						if ( nPARTIE === 1 )
+							{
+							//console.log("-PARTIE:"+i+"\t\tW-JOUEUR="+k+"\t\tAVANT:"+aRES[i][indexJoueur]+"\t\tAPRES=POINTS:"+sGAINS);
+							aRES[i][indexJoueur] = parseInt(sGAINS);
+							}					
+						else	{
+							console.log("=PARTIE:"+i+"\tWIN:"+vainqueur+"\tW-index-JOUEUR="+indexJ+"\t\tAVANT:"+aRES[i-1][indexJoueur]+"\t\tPOINTS:"+sGAINS+"\t\tAPRES:"+aRES[i][indexJoueur]);
+							aRES[i][indexJoueur] = parseInt(aRES[i-1][indexJoueur]) + parseInt(sGAINS);	
+							}
+						}													
 					}
 					
 				//==============================================
@@ -928,23 +963,32 @@ function memorise(strDATA1)
 				//console.log("=".repeat(25)+"ADVERSAIRES"+"=".repeat(25));	
 				for (let k = 0; k < strJCONTRE.length; k++)
 					{
-					divPTS = sPOINTS;
-					if ( strJENJEU.length < strJCONTRE.length )
-							{
-							nbrDIV = strJCONTRE.length;
-							divPTS = parseInt(sPOINTS) / nbrDIV;
-							//console.log("Division des points par "+nbrDIV+" ==> "+sPOINTS+"/"+nbrDIV+"="+divPTS);
-							}
 					indexJoueur = parseInt(strJCONTRE[k]) + 3;
-					if ( nPARTIE === 1 )
+					if ( indexJoueur === j )
 						{
-						aRES[i][indexJoueur] = parseInt( 0 - parseInt(divPTS));
-						//console.log("-PARTIE:"+i+"\t\tL-JOUEUR="+k+"\t\tAVANT:"+aRES[i][indexJoueur]+"\t\tAPRES=POINTS:"+divPTS);
-						}					
-					   else	{
-						aRES[i][indexJoueur] = parseInt(aRES[i-1][indexJoueur]) - parseInt(divPTS);
-						//console.log("=PARTIE:"+i+"\t\tL-JOUEUR="+k+"\t\tAVANT:"+aRES[i-1][indexJoueur]+"\t\tPOINTS:"+divPTS+"\t\tAPRES:"+aRES[i][indexJoueur]);
-						}					
+						divPTS = sPOINTS;
+						if ( parseInt(sTYPEJEU) === 3 ) { 	
+							divPTS = ( parseInt(sPOINTS) / 6 ); 
+							console.log("Division des points par 6 ==> "+sPOINTS+"/6="+divPTS);
+							}
+						else {
+							if ( strJENJEU.length < strJCONTRE.length )
+									{
+									nbrDIV = strJCONTRE.length;
+									divPTS = parseInt(sPOINTS) / nbrDIV;
+									//console.log("Division des points par "+nbrDIV+" ==> "+sPOINTS+"/"+nbrDIV+"="+divPTS);
+									}
+							}
+						if ( nPARTIE === 1 )
+							{
+							aRES[i][indexJoueur] = parseInt( 0 - parseInt(divPTS));
+							//console.log("-PARTIE:"+i+"\t\tL-JOUEUR="+k+"\t\tAVANT:"+aRES[i][indexJoueur]+"\t\tAPRES=POINTS:"+divPTS);
+							}					
+						else	{
+							aRES[i][indexJoueur] = parseInt(aRES[i-1][indexJoueur]) - parseInt(divPTS);
+							console.log("=PARTIE:"+i+"\tWIN:"+vainqueur+"\tL-Index-JOUEUR="+indexJoueur+"\t\tAVANT:"+aRES[i-1][indexJoueur]+"\t\tPOINTS:"+divPTS+"\t\tAPRES:"+aRES[i][indexJoueur]);
+							}	
+						}				
 					}					
 				}
 
