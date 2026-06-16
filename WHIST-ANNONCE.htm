@@ -29,7 +29,7 @@ function checkURL()
 
 <FORM NAME=WHIST>
 
-<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
+<TABLE CLASS="table1" BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
 <TR CLASS="GENERAL1" ALIGN="CENTER">	
 	
 <TD>
@@ -120,7 +120,7 @@ function prepareActivity(strOption)
 			resetJeu();
 			break;
 		case "M":
-			viewLocalStorage(false);
+			viewLocalStorage(1);
 			break;
 		case "N":
 			const inf = "<";
@@ -546,38 +546,38 @@ for (i = 0; i < arrayJ.length-1; i++)
 <TABLE BORDER=0 WIDTH="100%">
 <TR>
 <TD>
-	<SELECT name="RESULTATSJEU" id="RESULTATSJEU" SIZE="10">
+	<SELECT name="RESULTATSJEU" id="RESULTATSJEU" SIZE="1">
     	<option value='' class="GENERAL2">CHOISISSEZ UNE ANNONCE REALISEE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
 <script>
 const select2 = document.getElementById('RESULTATSJEU');
 select2.addEventListener('select', () => {
   	select2.style.color = "yellow";
   	select2.style.backgroundColor = "black";
-	select2.style.fontSize = "100%";
+	select2.style.fontSize = "120%";
 	select2.style.fontFamily = "'Courier New', Courier, monospace";
-	select2.size = 10;
+	select2.size = 1;
 	//alert("selected");
 });
 select2.addEventListener('change', () => {
   	select2.style.color = "yellow";
   	select2.style.backgroundColor = "black";
-	select2.style.fontSize = "100%";
-	select2.size = 10;
+	select2.style.fontSize = "120%";
+	select2.size = 1;
 	//alert("change");
 });
 select2.addEventListener('focus',() =>{
 //  select2.size = 20;
     const optionHeight = this.options[0].offsetHeight;
     this.scrollTop = this.selectedIndex * optionHeight;
-	select2.style.fontSize = "100%";
-	select2.size = 10;
+	select2.style.fontSize = "120%";
+	select2.size = 1;
 	select2.style.color = "yellow";
   	select2.style.backgroundColor = "black";
 	//alert("focus");
 });
 select2.addEventListener('blur', () => {
 	//select2.selectedIndex = 0;
-  	select2.size = 10;
+  	select2.size = 1;
 	select2.style.fontSize = "120%";
 	select2.style.color = "yellow";
   	select2.style.backgroundColor = "black";

@@ -45,10 +45,15 @@ function listFramesIndex()
 		}
 	}
 
-function viewLocalStorage(swButton)
+function viewLocalStorage(swOPTION)
 	{
-	cookieName  = parent.frames['TITRE'].document.getElementById('CKNAME').value;
-	var strCookie = getCookie2(cookieName)
+	// swOPTION = 0 => return list of available parties to build buttons in ENTETE.htm
+	// swOPTION = 1 => display all localStorage content in frame RESU.htm
+	// swOPTION = 2 => display all localStorage content in pop-up window
+	var cookieName   = parent.frames['TITRE'].document.getElementById('CKNAME').value;
+	if ( typeof cookieName !== "undefined" ) {
+		var strCookie = getCookie2(cookieName);
+		}
 	var arrayParties = [];
 	
 	const storeArray = Object.keys(localStorage).map(key => [ key, localStorage.getItem(key)]);
@@ -63,30 +68,42 @@ function viewLocalStorage(swButton)
 				return (a[0] < b[0]) ? -1 : 1;
 				}
 			}
-		);		
-	var saveString = strCookie + "\n\n";
+		);
+	console.log(storageArray);
+	var saveString = "";
 	for (let i = 0; i < storageArray.length; i++) 
 		{ 
 		if ( storageArray[i].toString().split(",")[0].endsWith(".00") ) 
 			{ 
+			var sCOOK  = storageArray[i].toString().split(",")[0].split(".")[0];
+			saveString = sCOOK + "\n\n";
 			saveString += "\n"; 
-			sPartie = storageArray[i].toString().split(",")[0].split(".")[0];
+			sPartie    = sCOOK;
 			arrayParties.push(sPartie);
 			} 
 		msgTXT  = "ROW("+String(i).padStart(3, "0")+") "+storageArray[i];
 		saveString += msgTXT + "\n"; 
 		}
-	console.log(saveString);
-	if (swButton )
+	switch (swOPTION)
 		{
-		console.log("Parties en mémoire:\n"+arrayParties)
-		return arrayParties;
+		case 0:
+			console.log("Parties en mémoire:\n"+arrayParties)
+			return arrayParties;
+			break;
+		case 1:
+			// Display all localStorage content in frame RESU.htm
+			saveString = "<PRE>"+saveString+"</PRE>";
+			//parent.frames['RESU'].history.go(-2);
+			parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = saveString;	
+			break;
+		case 2:
+			// Display all localStorage content in pop
+			return storageArray;
+			break;
+		default:
+			//RAF
 		}
-	else {
-		saveString = "<PRE>"+saveString+"</PRE>";
-		//parent.frames['RESU'].history.go(-2);
-		parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = saveString;
-		}
+
 	}
 
 function initialiseData()
@@ -394,6 +411,7 @@ function manageWhistRes(sTYPE)
 
 function displayCompile()
 	{
+	console.clear();
 	console.log("Debut calculs...");
 		
 	Object.entries(localStorage).forEach(([k,v]) => console.log(k.padEnd(50), v, v.length, (v.length / 1024).toFixed(1) + 'KB'))	
@@ -660,7 +678,7 @@ function handle(evnt)
 	}
 function calculator()
 	{
-
+	console.clear();
 	var cptDON = 0;
 	var cptJEU = 0;
 	var cptPAR = 0;
@@ -672,6 +690,7 @@ function calculator()
 	var elms = document.querySelectorAll("[name='JOUERPAR']");
 	for(var i = 0; i < elms.length; i++) { if (elms[i].checked) { cptPAR ++ }; }
 	var configJeu = cptDON.toString()+cptJEU.toString()+cptPAR.toString();
+	console.log("CONFIG JEU: "+configJeu);
 
 	switch (configJeu)
 		{
@@ -757,15 +776,15 @@ function calculator2()
     	count++;
   		}
 	console.log(data);
+	var sCook = parent.frames['HDR'].document.HEADER.COOKIE.value;
+	reloadPointsArray(sCook);
 	memorise(data);
-
 	return false;  
-
  	}
 
 function memorise(strDATA1)
 	{
-
+	console.log("*".repeat(50)+"\n"+strDATA1+"\n"+"*".repeat(50));
 	var strDATA2 = strDATA1.toString()+"$";
 	strDATA3 = strDATA2.split(",").join("\n");
 
@@ -1032,11 +1051,12 @@ function rebuildHTML(nTR, keyName,sKEY)
 	var htmlTAB  = "";
 
 	htmlTAB += "<button onclick='savePdf()'>Export PDF</button>";
+	console.log("REBUILD\n"+htmlTAB);	
 	htmlTAB += "<TABLE ID='POINTS' BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=100%>";
 	for (let i = 0; i< limHTML; i++) 
 		{	
 		htmlTAB += "<TR>";	
-		if ( i === 0 ) { htmlTAB += "<TR>";}
+		if ( i === 0 ) { htmlTAB += '<TR>'; }
 		if ( i === nTR+1 && sKEY === "1") { htmlTAB += "<TR BGCOLOR=LIGHTGREEN>";}
 		var rowSIZE = aRES[i].length;
         for (let j = 0; j< rowSIZE; j++) 
@@ -1062,18 +1082,18 @@ function rebuildHTML(nTR, keyName,sKEY)
 					if ( parseInt(aRES[i][3]) < 0 ) { var tdHTML = "<TD align=CENTER BGCOLOR=RED>";}
 					break;
 				default:
-						var tdHTML = "<TD align=CENTER>";
+					var tdHTML = "<TD align=CENTER>";
 				}
 			if ( i === 0 ) 
 				{ 
-				var tdHTML = "<TD CLASS='SPECIAL' align=center>";
+				var tdHTML = '<TD CLASS="SPECIAL" align=center>';
 				}
 			htmlTAB += tdHTML+aRES[i][j]+"</TD>";
         	}
 		htmlTAB += "</TR>";
     	}
 	htmlTAB += "</TABLE>";
-
+	
 	sizeLS = getLocalStorageSize();
 
 	parent.frames['HDR'].document.HEADER.sizeLS.value  = String(sizeLS)+ " Bytes.";
@@ -1149,9 +1169,13 @@ function savePointsArray(xARR, ind)
 
 function reloadPointsArray(strCookParam)
 	{
+	console.log("$".repeat(80));
+	console.log("RELOAD POINTS ARRAY DEPUIS LA CLE ["+strCookParam+"]");
+	console.log("$".repeat(80));
 	if (typeof strCookParam !== "undefined" && strCookParam !== null) 
 		{
     	var cookParam = strCookParam; 
+		parent.frames['HDR'].document.HEADER.COOKIE.value = cookParam;
 		}
 	else {
 		var cookParam = recupererCookie(ckNameDef); 
@@ -1188,8 +1212,8 @@ function reloadPointsArray(strCookParam)
 			var keyName = ckNamePfx;
 			keyName = cookParam;
 			console.log("RECHERCHE DES INFORMATIONS DE JEU AVEC LA CLEF '"+keyName+"'");
-			console.log("SYSTEM STORAGE SIZE:"+localStorage.length);
-			console.log("CREATE STORAGE SIZE:"+localStorageArray.length);
+			console.log("La 'localStorage' actuelle contient "+localStorage.length+" record(s)");
+			//console.log("CREATE STORAGE SIZE:"+localStorageArray.length+" record(s)");
 
 			for (i=0;i<localStorage.length;i++)
 				{
@@ -1197,7 +1221,7 @@ function reloadPointsArray(strCookParam)
 					{
 					xcpt += 1;
 					localStorageArray[xcpt] = localStorage.key(i)+"|"+localStorage.getItem(localStorage.key(i));
-					console.log("OK POUR CETTE LIGNE "+xcpt+"/" +i+"'"+localStorageArray[xcpt]+"'");
+					//console.log("OK POUR CETTE LIGNE "+xcpt+"/" +i+"'"+localStorageArray[xcpt]+"'");
 					}
 				}
 			}
@@ -1248,14 +1272,14 @@ function reloadPointsArray(strCookParam)
 
 	console.log("LOCALSTORAGE triée par clefs ("+keyName+')');
 	var sortedArray = localStorageArray.sort();
-	console.log("CREATE STORAGE SIZE:"+localStorageArray.length);
+	console.log("CREATE STORAGE SIZE:"+localStorageArray.length+" record(s)");
 
 	for ( var ii=0; ii < sortedArray.length; ii++ )
 		{
 		infoROW = keyName + "."+ii.toString().padStart(2, '0');
 		var strInfoArray1 = sortedArray[ii].toString().split("|")[1];
 		var strInfoArray2 = strInfoArray1.toString().split(",");
-		console.log(strInfoArray2);
+		//console.log(strInfoArray2);
 		for ( let j=0; j < strInfoArray2.length; j++)
 			{
 			aRES[ii][j] = strInfoArray2[j];
@@ -1269,7 +1293,7 @@ function reloadPointsArray(strCookParam)
 function twoDimensionArray(a, b, typeTable) 
 	{
 
-	console.log("Creation table des parties: ["+a+"x"+b+"]");
+	console.log("Creation table des parties: ["+a+"x"+b+"]. TYPE: "+typeTable);
 
 	var arrRES = [];
 	xCPT=0;
@@ -1372,6 +1396,7 @@ function getCookie3()
 
 function choosePartie(nomPAR)
 	{
+	console.clear();
 	var strD      = new Date().toISOString().slice(0, 10).replace(/-/g, '');
 	var select1   = parent.frames['HDR'].document.getElementById("NOMPARTIE");
 	console.log("CHOIX PARTIE:"+nomPAR);
@@ -1390,6 +1415,7 @@ function choosePartie(nomPAR)
 				var strPartie = key.split(".")[0];
 				keys.push(strPartie); 
 				select1.add(new Option(strPartie, strPartie));
+				console.log("Ajout <option> au tag HTML <SELECT>: "+strPartie);
 				}
 			}
 		console.log(keys);
@@ -1400,7 +1426,7 @@ function choosePartie(nomPAR)
 		var nomPAR = prompt("Entrez le nom de votre nouvelle partie",strD);
 		nomPAR = nomPAR.toUpperCase();
 		nomPAR = nomPAR.replace(ckNamePfx,"");
-		console.log("VOUS AVEZ CHOISI DE NOMMER LA NOUVELLE PARTIE: '"+nomPAR+"'");
+		console.log("VOUS AVEZ CHOISI DE NOMMER UNE NOUVELLE PARTIE: '"+nomPAR+"'");
 
 		switch (nomPAR)
 			{
@@ -1440,7 +1466,7 @@ function choosePartie(nomPAR)
 				{
 				var xPARTIE = nomPAR + "."+i.toString().padStart(2, '0');
 				var parName = localStorage.getItem(xPARTIE);
-				console.log("("+i+") Recherche jeu(x) ["+xPARTIE+"]\t\tTrouvé: "+parName);
+				//console.log("("+i+") Recherche jeu(x) ["+xPARTIE+"]\t\tTrouvé: "+parName);
 				if ( ! parName ){ break; }	
 				xCPT +=1;
 				}
@@ -1479,7 +1505,7 @@ function choosePartie(nomPAR)
 					}
 				if ( xCPT > 0 )
 					{
-					msgTXT = "LA NOUVELLE PARTIE ["+nomPAR+"] EXISTE DEJA. CREATION REFUSEE";
+					msgTXT = "LA NOUVELLE PARTIE SOUHAITEE ["+nomPAR+"] EXISTE DEJA. CREATION REFUSEE";
 					//top.RESU.document.getElementById("RESULTS").value = msgTXT;
 					top.RESU.document.getElementById("RESULTATS").innerHTML = "";
 					}
@@ -1489,6 +1515,7 @@ function choosePartie(nomPAR)
 					var ckName = creerCookie(ckNameDef, nomPAR);
 					var ckName = createNewOptionSelect(nomPAR)
 					var msgTXT = "LE SYSTEME EST PRET A L'ENTREE DE JEUX POUR CETTE NOUVELLE PARTIE ["+ckName+"]";
+					console.log(msgTXT);
 					//top.RESU.document.getElementById("RESULTS").value = msgTXT;
 					refreshPageDetail("HDR",msgTXT);
 					refreshPageDetail("RESU",msgTXT);
@@ -1500,7 +1527,9 @@ function choosePartie(nomPAR)
 				//var ckName = createNewOptionSelect(nomPAR);
 				var msgTXT = "Sélectionnez l'activité [RECHARGE PARTIE] pour charger la partie ["+ckName+"] en mémoire";
 				//top.RESU.document.getElementById("RESULTS").value = msgTXT;
+				console.log(msgTXT);
 				refreshPageDetail("RESU",msgTXT);
+				reloadPointsArray(ckName);
 				}
 			}
 		}
@@ -1567,9 +1596,9 @@ function getCookie2(cname)
     return ckName
 	}
 
-	manageNomPartie()
+manageNomPartie();
 
-	function manageNomPartie()
+function manageNomPartie()
 	{
 	console.log("Recherche de parties en traitement...");
 	var x = "";

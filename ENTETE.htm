@@ -10,7 +10,13 @@
 
 <script>
 setInterval(refreshTime, 1000);
-checkHote();
+//checkHote();
+
+function checkChargementPage(){
+	analyseCookie();
+	checkHote();
+	listAllParties();
+}
 
 function analyseCookie()
 	{
@@ -34,10 +40,40 @@ function analyseCookie()
 	if ( userAgent.includes("Brave")   ) { browser = "Brave";   }
 	if ( userAgent.includes("Chrome")  ) { browser = "Chrome";  }
 
-	document.getElementById("WEBBRW").value = browser;
+	var btnBROWSER = '<button type="button" ONCLICK="JavaScript:viewLS()">'+browser+'</button>';
+	document.getElementById("BRWBOUT").innerHTML = btnBROWSER;
+}
 
-	checkHote();
-	listAllParties();
+function viewLS() 
+	{
+	var preText = '<ol style="Courier New", Courier, monospace;>\n';
+	var data = viewLocalStorage(2);
+	console.log(data);
+	var oldLine = ""; var oldKey  = "";
+	for (let i = 0; i < data.length; i++) {
+		var skipLine = "";
+		var curLine = data[i].toString();
+		var curKey  = curLine.split(".")[0];
+		if ( oldLine !== null && oldKey !== curKey ) { skipLine = '<hr style="height: 10px; border: none; background-color: red;">'; }
+		oldLine = curLine; oldKey = curKey;
+		preText += skipLine + `<LI>&nbsp;&nbsp;${curLine}</LI>\n`;
+		}
+	preText += "</OL>\n";
+	var newWindow = window.open("", "", "height=250,width=950,top=350,left=450,resizable=yes");
+	newWindow.document.body.innerHTML = preText;
+	};
+
+function listAllParties()
+	{
+	const sParties = viewLocalStorage(0);
+	var strBUTTON  = "";
+	var cpt=0
+	sParties.forEach(partie => {
+		cpt++;
+		if (cpt%3==0) { strBUTTON += "<BR>"; } 
+		strBUTTON += "<input type='button' value='"+partie+"' ONCLICK='JavaScript:choosePartie(this.value)'>&nbsp;"
+		});
+	document.getElementById("pButtons").innerHTML = strBUTTON;
 	}
 
 function refreshTime() {
@@ -47,35 +83,19 @@ function refreshTime() {
 	document.HEADER.HEURE1.value = hString+":"+mString+":"+sString;
 	}
 
-function listAllParties()
-	{
-	const sParties = viewLocalStorage(true);
-	var strBUTTON  = "";
-	sParties.forEach(partie => {
-		strBUTTON += "<input type='button' value='"+partie+"' ONCLICK='JavaScript:chargePartie(this.value)'>&nbsp;"
-		});
-	document.getElementById("pButtons").innerHTML = strBUTTON;
-	}
-
-function chargePartie(xPartie)
-	{
-	reloadPointsArray();
-	}
-
 </SCRIPT>
 
 </HEAD>
 
-<BODY BGCOLOR="LIGHTGREY" onLoad="JavaScript:analyseCookie()">
+<BODY BGCOLOR="LIGHTGREY" onLoad="JavaScript:checkChargementPage()">
 <FORM NAME=HEADER>
 
-<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
+<TABLE CLASS="table1" BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
 <TR CLASS="GENERAL1"><TD> 
 
 <TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0">
 
 <thead>
-<TR>
 <TH SCOPE="TD1"></TH>
 <TH SCOPE="TD3"></TH>
 <TH SCOPE="TD4"></TH>
@@ -94,12 +114,18 @@ function chargePartie(xPartie)
 <TD>
 	
 	<TABLE BORDER="1" cellspacing="0" cellpadding="0" WIDTH="95%" HEIGHT="100%">
+	
 	<TR ALIGN="center"><TD>
-	<SELECT CLASS="select2" WIDTH=100% name='NOMPARTIE' id='NOMPARTIE' SIZE=1 ONCLICK="JavaScript:choosePartie(this.options[this.selectedIndex].value)"">
-	<option value='??' class="GENERAL2">LES PARTIES EN COURS ET MEMORISEES</option>"
-	</SELECT>
-	</TD></TR> 	
-	<TR><TD><div id="pButtons"></div></TD></TR></TABLE>
+		<SELECT CLASS="select2" WIDTH=100% name='NOMPARTIE' id='NOMPARTIE' SIZE=1 ONCLICK="JavaScript:choosePartie(this.options[this.selectedIndex].value)"">
+		<option value='??' class="GENERAL2">LES PARTIES EN COURS ET MEMORISEES</option>"
+		</SELECT>
+	</TD></TR> 
+
+	<TR><TD>
+		<div id="pButtons"></div>
+	</TD></TR>
+	</TABLE>
+
 </TD>
 
 <TD>
@@ -108,13 +134,17 @@ function chargePartie(xPartie)
 	<BR>Nombre Jeux.:&nbsp;<INPUT TYPE="TEXT" VALUE=0     ID="NPARTIE" NAME="NPARTIE" SIZE="9"   style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS"> 
 	<BR>Total Points:&nbsp;<INPUT TYPE="TEXT" VALUE=0     ID="ENJEU"   NAME="ENJEUX"  SIZE="9"   style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS"> 	
 	<BR>Durée Partie:&nbsp;<INPUT TYPE="TEXT" VALUE=365   ID="DUREE"   NAME="DUREE"   SIZE="3"   style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS">Jours	
-	<BR>Browser.....:&nbsp;<INPUT TYPE="TEXT" VALUE="?"   ID="WEBBRW"  NAME="WEBBRW"  SIZE="10"  style="background-color:lightblue; border-style : hidden;" disabled CLASS="WHISTEURS">
+	<BR>Browser.....:&nbsp;<DIV ID="BRWBOUT"  NAME="BRWBOUT" CLASS="WHISTEURS" STYLE="display:inline-block; background-color:lightblue; border-style : hidden;" disabled></DIV>
 	</TD>
-</TR></TABLE>
+</TR>
+
+<TR><TD colspan="3">&nbsp;</TD></TR>
+</TABLE>
 </fieldset>
 </div>
 
 </TD></TR></TABLE>
+<BR>
 </FORM>
 
 
