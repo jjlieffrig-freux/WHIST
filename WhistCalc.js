@@ -1064,7 +1064,7 @@ function memorise(strDATA1)
 	htmlTAB += "</TABLE>";
 
 	parent.frames['HDR'].document.HEADER.NPARTIE.value = nPARTIE;
-	parent.frames['HDR'].document.HEADER.ENJEUX.value  = totauxPts;
+	parent.frames['HDR'].document.HEADER.ENJEUX.value  = totalPTS;
 	parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = htmlTAB;
 
 	savePointsArray(aRES, nPARTIE);	
