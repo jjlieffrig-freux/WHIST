@@ -48,7 +48,7 @@ function listFramesIndex()
 function viewLocalStorage(swOPTION)
 	{
 	// swOPTION = 0 => return list of available parties to build buttons in ENTETE.htm
-	// swOPTION = 1 => display all localStorage content in frame RESU.htm
+	// swOPTION = 1 => display/clean issues of all localStorage content in frame RESU.htm
 	// swOPTION = 2 => display all localStorage content in pop-up window
 	var cookieName   = parent.frames['TITRE'].document.getElementById('CKNAME').value;
 	if ( typeof cookieName !== "undefined" ) {
@@ -69,21 +69,44 @@ function viewLocalStorage(swOPTION)
 				}
 			}
 		);
-	console.log(storageArray);
+	//console.log(storageArray);
+	var sINFOOK    = true;
 	var saveString = "";
+	var cptParties = 0;
+
+	saveString += "PARTIE DE WHIST EN ACTIVITE DANS LE NAVIGATEUR: "+strCookie+"\n\n";
 	for (let i = 0; i < storageArray.length; i++) 
-		{ 
-		if ( storageArray[i].toString().split(",")[0].endsWith(".00") ) 
+		{
+		var sINFO = storageArray[i].toString().split(",")[0] + "]\t[";
+		sINFO += storageArray[i].toString().split(",")[1] + "]\t[";
+		sINFO += storageArray[i].toString().split(",")[2] + "]\t[";
+		sINFO += storageArray[i].toString().split(",")[3] + "]\t";
+
+		var chkCELLS = "("+storageArray[i].toString().split(",")[2]+"|"+storageArray[i].toString().split(",")[3]+")";
+		var curKey   = storageArray[i].toString().split(",")[0];
+		if ( curKey.endsWith(".00") ) { sINFOOK = true; }
+		if ( chkCELLS === "(|)" ) { sINFOOK = false; }
+		if (!sINFOOK)
+			{
+			console.log("["+sINFOOK+"]\t"+chkCELLS+"\t REC:"+i+"\tEFFACEMENT DE LA CLEF ["+curKey+"] DU 'LOCALSTORAGE'");
+			localStorage.removeItem(curKey);
+			}
+		
+		if ( curKey.endsWith(".00") ) 
 			{ 
+			cptParties ++;
+			sINFOOK = true;
 			var sCOOK  = storageArray[i].toString().split(",")[0].split(".")[0];
-			saveString = sCOOK + "\n\n";
-			saveString += "\n"; 
+			saveString += "\nPARTIE #"+cptParties+" ["+sCOOK + "] EN MEMOIRE. LES JEUX SONT LES SUIVANTS:\n\n"; 
 			sPartie    = sCOOK;
 			arrayParties.push(sPartie);
 			} 
-		msgTXT  = "ROW("+String(i).padStart(3, "0")+") "+storageArray[i];
-		saveString += msgTXT + "\n"; 
+		msgTXT = "["+sINFOOK+"]\tROW("+String(i).padStart(3, "0")+") "+storageArray[i];
+		saveString += msgTXT + "\n";
 		}
+	var yBrowser   = parent.frames["HDR"].document.getElementById('BRWBOUT').outerHTML;
+	var maxParties = arrayParties.length;
+	saveString += "\nVOUS AVEZ "+maxParties+" PARTIES DANS LA MEMOIRE DE VOTRE NAVIGATEUR ["+yBrowser+"]:\n" + arrayParties+"\n\n\n\n"; 
 	switch (swOPTION)
 		{
 		case 0:
@@ -281,7 +304,8 @@ function manageWhistRes(sTYPE)
 	const dString = String(new Date().getDate()).padStart(2, '0');
 	
 	var ficName = ckNamePfx+yString+"-"+xString+"-"+dString+"-jeux.csv";
-	ficName = parent.frames['HDR'].document.HEADER.COOKIE.value + "-jeux.csv";;
+	var strCOOKIE = parent.frames['HDR'].document.HEADER.COOKIE.value;
+	ficName = strCOOKIE + "-jeux.csv";
 
 	var ficENTRY = prompt("ENTREZ UN NOM DE FICHIER:",ficName);
 	if ( ficENTRY != "") { ficName = ficENTRY; }
@@ -307,11 +331,15 @@ function manageWhistRes(sTYPE)
 			var saveString = "";
 			for (let i = 0; i < storageArray.length; i++) 
 				{ 
-				console.log("ROW("+i+") "+storageArray[i]);
-				saveString += storageArray[i]+"\n"; 
-				//saveString += JSON.stringify(storageArray[i]);
+				//console.log(storageArray[i][0]+"\t"+storageArray[i][1]);
+				if ( storageArray[i][0].includes(strCOOKIE) )
+					{
+					console.log("---> ROW("+i+")("+strCOOKIE+") "+storageArray[i]);
+					saveString += storageArray[i]+"\n"; 
+					//saveString += JSON.stringify(storageArray[i]);
+					}
 				}
-			console.log(saveString);
+			//console.log(saveString);
 			
 			const blob = new Blob([saveString], { type: "text/plain;charset=utf-8" });
 			const link = document.createElement("a");
@@ -1036,7 +1064,7 @@ function memorise(strDATA1)
 	htmlTAB += "</TABLE>";
 
 	parent.frames['HDR'].document.HEADER.NPARTIE.value = nPARTIE;
-	parent.frames['HDR'].document.HEADER.ENJEUX.value  = totalPTS;
+	parent.frames['HDR'].document.HEADER.ENJEUX.value  = totauxPts;
 	parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = htmlTAB;
 
 	savePointsArray(aRES, nPARTIE);	
@@ -1050,13 +1078,31 @@ function rebuildHTML(nTR, keyName,sKEY)
 	var limHTML  = aRES.length;
 	var htmlTAB  = "";
 
-	htmlTAB += "<button onclick='savePdf()'>Export PDF</button>";
+	//htmlTAB += "<button onclick='savePdf()'>Export PDF</button>";
 	console.log("REBUILD\n"+htmlTAB);	
 	htmlTAB += "<TABLE ID='POINTS' BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=100%>";
 	for (let i = 0; i< limHTML; i++) 
 		{	
 		htmlTAB += "<TR>";	
 		if ( i === 0 ) { htmlTAB += '<TR>'; }
+		if ( i === nTR - 1 )
+			{
+			console.log("DERNIERE LIGNE N° "+ i +" --- CALCUL DES TOTAUX");
+			var sommeLinePos = 0; var sommeLineNeg = 0;
+			for(ix=4; ix<aRES[i].length; ix++)
+				{
+				var ptJoueur = parseInt(aRES[i][ix]);
+				if ( ptJoueur > 0 )
+					{
+					sommeLinePos += ptJoueur;	
+					}
+				else {
+					sommeLineNeg += ptJoueur;
+					}
+				}
+			var totauxPts = sommeLineNeg.toString()+"/"+sommeLinePos.toString();
+			console.log(">>>>>> TOTAUX: "+totauxPts);
+			}
 		if ( i === nTR+1 && sKEY === "1") { htmlTAB += "<TR BGCOLOR=LIGHTGREEN>";}
 		var rowSIZE = aRES[i].length;
         for (let j = 0; j< rowSIZE; j++) 
@@ -1095,10 +1141,12 @@ function rebuildHTML(nTR, keyName,sKEY)
 	htmlTAB += "</TABLE>";
 	
 	sizeLS = getLocalStorageSize();
+	
+	//var totauxPts = totalPTS;
 
 	parent.frames['HDR'].document.HEADER.sizeLS.value  = String(sizeLS)+ " Bytes.";
 	parent.frames['HDR'].document.HEADER.NPARTIE.value = nTR - 1;
-	parent.frames['HDR'].document.HEADER.ENJEUX.value  = totalPTS;
+	parent.frames['HDR'].document.HEADER.ENJEUX.value  = totauxPts;
 	parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = htmlTAB;
 	
 	}

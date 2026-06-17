@@ -65,11 +65,14 @@ function viewLS()
 
 function listAllParties()
 	{
+	console.log("ANALYSE LA MEMOIRE DU NVIGATEUR");
 	const sParties = viewLocalStorage(0);
+	console.log(sParties);
 	var strBUTTON  = "";
 	var cpt=0
 	sParties.forEach(partie => {
 		cpt++;
+		console.log("ENTETE: Trouvé PARTIE n°"+cpt+": "+partie);
 		if (cpt%3==0) { strBUTTON += "<BR>"; } 
 		strBUTTON += "<input type='button' value='"+partie+"' ONCLICK='JavaScript:choosePartie(this.value)'>&nbsp;"
 		});
@@ -113,15 +116,15 @@ function refreshTime() {
 
 <TD>
 	
-	<TABLE BORDER="1" cellspacing="0" cellpadding="0" WIDTH="95%" HEIGHT="100%">
+	<TABLE BORDER="0" cellspacing="0" cellpadding="0" WIDTH="95%" HEIGHT="100px">
 	
-	<TR ALIGN="center"><TD>
-		<SELECT CLASS="select2" WIDTH=100% name='NOMPARTIE' id='NOMPARTIE' SIZE=1 ONCLICK="JavaScript:choosePartie(this.options[this.selectedIndex].value)"">
+	<TR VALIGN=TOP ALIGN="center"><TD>
+		<SELECT CLASS="select1" WIDTH=100% name='NOMPARTIE' id='NOMPARTIE' SIZE=1 ONCLICK="JavaScript:choosePartie(this.options[this.selectedIndex].value)"">
 		<option value='??' class="GENERAL2">LES PARTIES EN COURS ET MEMORISEES</option>"
 		</SELECT>
 	</TD></TR> 
 
-	<TR><TD>
+	<TR ALIGN="BOTTOM"><TD>
 		<div id="pButtons"></div>
 	</TD></TR>
 	</TABLE>
@@ -146,11 +149,6 @@ function refreshTime() {
 </TD></TR></TABLE>
 <BR>
 </FORM>
-
-
-<SCRIPT>
-
-</SCRIPT>
 
 </BODY>
 </HTML>

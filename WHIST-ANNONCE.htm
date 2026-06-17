@@ -44,7 +44,7 @@ function checkURL()
 
 <BR><fieldset>
 <legend>ACTIONS</legend>
-<SELECT NAME="ACTION" ID="ACTION" SIZE=1 ONCHANGE="JavaScript:prepareActivity(this.options[this.selectedIndex].value)">
+<SELECT CLASS="select2" NAME="ACTION" ID="ACTION" SIZE=1 ONCHANGE="JavaScript:prepareActivity(this.options[this.selectedIndex].value)">
 <option value="?" class="GENERAL2">CHOISISSEZ UNE ACTIVITE</option>
 <option value="CNN">&nbsp;-&nbsp;1.&nbsp;CREER UNE NOUVELLE PARTIE DE WHIST</option>
 <option value="E">&nbsp;-&nbsp;2.&nbsp;EFFACE UN JEU D'UNE PARTIE EN COURS</option>
@@ -59,7 +59,7 @@ function checkURL()
 <option value="J">&nbsp;-&nbsp;11.&nbsp;SIMULE/GENERE UN "SEUL"</option>
 <option value="K">&nbsp;-&nbsp;12.&nbsp;SIMULE/GENERE UN "EMBALLAGE"</option>
 <option value="L">&nbsp;-&nbsp;13.&nbsp;RESET DES ANNONCES</option>
-<option value='M'>&nbsp;-&nbsp;14.&nbsp;AFFICHAGE DE LA MEMOIRE DU BROWSER</option>
+<option value='M'>&nbsp;-&nbsp;14.&nbsp;AFFICHAGE+AJUSTEMENT DE LA MEMOIRE DU NAVIGATEUR</option>
 <option value='N'>&nbsp;-&nbsp;15.&nbsp;LISTE TOUS PDF DEMANDES</option>
 </SELECT>
 </fieldset>
@@ -146,33 +146,38 @@ function prepareActivity(strOption)
 </script>
 
 <TEXTAREA NAME="AIDEAPP" ROWS=3 COLS=30 style="display:none;">
-<CENTER>
-&copy; 2026&nbsp;&nbsp;&nbsp;&nbsp;Jean-Jacques Lieffrig <BR>
-E-mail: jj.lieffrig@gmail.com
-<hr style="border: none; height: 2px; background-color: blue;"></CENTER>
-<P ALIGN="LEFT"><OL>
-<LI>OBECTIF APPLICATION: ASSISTANCE DANS COMPTAGE DES POINTS DURANT UNE PARTIE DE WHIST.</LI>
-<LI>UNE PARTIE DE WHIST POUVANT MEMORISER UNE SERIE MAXIMUM DE 99 JEUX/ANNONCES.</LI>
-<LI>LES DONNEES SONT SAUVEGARDEES EN LOCAL DANS VOTRE NAVIGATEUR (CHROME/FIREFOX/EDGE...)
-	<BR>FAITES ATTENTION LORS DU NETTOYAGE DE VOTRE 'HISTORY'. GARDEZ COOKIES,LOCALSTORAGE!
-</LI>
-<LI>VEUILLEZ UTILISER LE MEME NAVIGATEUR POUR LA MEMORISATION/RECHARGE DE VOS PARTIES.</LI>
-<LI>PREVU POUR 6 JOUEURS:<UL>
-	<LI>1 HOTE... : LA PERSONNE CHEZ QUI ON JOUE AU WHIST. NE JOUE PAS DU TOUT</LI>
-	<LI>1 DONNEUR.: UNE DES 5 AUTRES PERSONNES. NE JOUE PAS PENDANT LA DONNE</LI>
-	<LI>4 AUTRES..: LES 4 AUTRES JOUEURS QUI SE DISPUTENT UN JEU / UNE MANCHE</LI>
+<TABLE BORDER=0><TR><TD VALIGN="MIDDLE" ALIGN="CENTER">
+<SPAN CLASS="WHISTEURS3">
+<a href="mailto:jj.lieffrig@gmail.com?subject=WHIST%20Information&body=Bonjour,">E-mail: jj.lieffrig@gmail.com</a><br>
+</SPAN>
+<hr style="border: none; height: 2px; background-color: blue;">
+</TD></TR>
+<TR VALIGN="TOP" ALIGN="LEFT"><TD>
+<SPAN CLASS="WHISTEURS3">
+<OL>
+<LI>- OBECTIF APPLICATION: ASSISTANCE DANS COMPTAGE DES POINTS DURANT UNE PARTIE DE WHIST.</LI><BR>
+<LI>- UNE PARTIE DE WHIST PEUT MEMORISER UN MAXIMUM DE 99 JEUX (ANNONCES).</LI><BR>
+<LI>- LES DONNEES SONT SAUVEGARDEES EN LOCAL DANS VOTRE NAVIGATEUR (CHROME/FIREFOX/EDGE...)
+	<BR>&nbsp;&nbsp;&nbsp;FAITES ATTENTION LORS DU NETTOYAGE DE VOTRE 'HISTORY'. GARDEZ COOKIES,LOCALSTORAGE!
+</LI><BR>
+<LI>- VEUILLEZ UTILISER LE MEME NAVIGATEUR POUR LA MEMORISATION/RECHARGE DE VOS PARTIES.</LI><BR>
+<LI>- LES FICHIERS DE SAUVEGARDE SE TROUVENT DANS LE FOLDER "TELECHARGEMENT" DE VOTRE NAVIGATEUR</LI><BR>
+<LI>- <U>PREVU POUR 6 JOUEURS</U>:<UL>
+	<LI>- 1 HOTE... : LA PERSONNE CHEZ QUI ON JOUE AU WHIST. NE JOUE PAS DU TOUT</LI><BR>
+	<LI>- 1 DONNEUR.: UNE DES 5 AUTRES PERSONNES. NE JOUE PAS PENDANT LA DONNE</LI><BR>
+	<LI>- 4 AUTRES..: LES 4 AUTRES JOUEURS QUI SE DISPUTENT UN JEU / UNE MANCHE</LI><BR>
 	</UL>
-<LI>IMPERATIF: AU WHIST MINUMUM 4 PERSONNES. COCHEZ LES ABSENTS COMME HOTE/DONNEUR</LI>
-<LI>POUR DEBUTER:
-<BR>- CHOISIR ACTIVITE #1-CREER UNE PARTIE ET LUI DONNER UN NOM. DEFAUT: LA DATE DU JOUR.
-<BR>- ENSUITE CHOISIR LE JEU (COCHEZ QUI "INVITE/DONNE/JOUE/ANNONCE")
-<BR>- PUIS CLIQUEZ SUR LE BOUTON [CALCUL] POUR AFFICHER LES POINTS.
-<BR>PS: LES ACTIVITES #11/12 PERMETTENT DE "SIMULER" DES "EMBALLAGES/SEULS"
-<BR>PS: L'ACTIVITE #3 REACTIVE L'AFFICHAGE DES POINTS EN COURS...
-</LI>
+<LI>- <U>IMPERATIF</U>: AU WHIST MINUMUM 4 PERSONNES. COCHEZ LES ABSENTS COMME HOTE/DONNEUR</LI><BR>
+<LI>- <U>POUR DEBUTER</U>:
+<BR>&nbsp;&nbsp;&nbsp;- CHOISIR <B><U>ACTIVITE #1-CREER UNE PARTIE</U></B> ET LUI DONNER UN NOM. DEFAUT: LA DATE DU JOUR.
+<BR>&nbsp;&nbsp;&nbsp;- ENSUITE CHOISIR LE JEU (COCHEZ QUI "INVITE/DONNE/JOUE/ANNONCE")
+<BR>&nbsp;&nbsp;&nbsp;- PUIS CLIQUEZ SUR LE BOUTON [CALCUL] POUR AFFICHER LES POINTS.
+<BR>&nbsp;&nbsp;&nbsp;PS: LES ACTIVITES #11/12 PERMETTENT DE "SIMULER" DES "EMBALLAGES/SEULS"
+<BR>&nbsp;&nbsp;&nbsp;PS: L'ACTIVITE #3 REACTIVE L'AFFICHAGE DES POINTS EN COURS...
+</LI><BR>&copy;-2026&nbsp;&nbsp;
 </OL>
-</P>
-</p>
+</SPAN>
+</TD></TR></TABLE>
 </TEXTAREA>
 
 <SCRIPT>
@@ -201,7 +206,7 @@ E-mail: jj.lieffrig@gmail.com
 2!JiJi!Jean-Jacques ROUSSEAU
 3!Robi!Robert DELON
 4!José!José DEPARDIEU
-5!Francis!Francis PERRIN
+5!Francis!Francis GABIN
 6!JMarc!Jean-Marc BELMONDO
 </TEXTAREA>
 
@@ -399,6 +404,7 @@ function displayParameters(strINFO)
 			var lblTEXT3 = "";
 			var lblDISPO = " ALIGN=RIGHT";
 			var swMETHOD = "HTML";
+			var swMETHOD = "WIN";
 			break;		
 		case "A":
 			var nbrPARAM = document.WHIST.ANNONCES.value;
@@ -494,6 +500,12 @@ function displayParameters(strINFO)
 			{
 			case "HTML": 
 				parent.frames['RESU'].location.href = "importFile.html";
+				break;
+			case "WIN": 
+				var opts = "height=250,width=950,top=350,left=450,resizable=yes";
+				var myWindow = window.open("importFile.html", "WHIST-IMPORT", opts);
+				//myWindow.document.write(tabPts);
+				//myWindow.close();
 				break;									
 			default:
 				parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = HtmlParams;
@@ -571,7 +583,7 @@ for (i = 0; i < arrayJ.length-1; i++)
 <TABLE BORDER=0 WIDTH="100%">
 <TR>
 <TD>
-	<SELECT name="RESULTATSJEU" id="RESULTATSJEU" SIZE="1">
+	<SELECT CLASS="select2" name="RESULTATSJEU" id="RESULTATSJEU" SIZE="1">
     	<option value='' class="GENERAL2">CHOISISSEZ UNE ANNONCE REALISEE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
 <script>
 const select2 = document.getElementById('RESULTATSJEU');
