@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+      <title>Bienvenue sur le site de comptage des points au Whist</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin-top: 100px;
+        }
+        .btn {
+          padding: 10px 15px;
+          background: #007bff;
+          color: white;
+          text-decoration: none;
+          border-radius: 5px;
+        }
+      </style>
+    <script>
+    function checkURL()
+        {
+        var pdfAvert = window.location.href;
+		console.log(pdfAvert);
+        if ( pdfAvert.includes("/WHIST00") )
+            {
+            console.log("HREF");
+            var sAnchor = '<a href="/Users/chef/WHIST/WHIST-NJS/public/dev/index.html" class="btn">ACCES à WHIST</a>';
+            }
+        else {
+            console.log("CLOSE");
+            var sAnchor = '<input type="button" value="FERMER" ONCLICK="JavaScript:window.close()"></input>';
+            }
+        document.getElementById("BTN").innerHTML = sAnchor;       
+        }
+    </script>
+    </head>
+    <body onload="checkURL()">
+    <TABLE border=0 cellspacing=0 cellpadding=0 width=100% HEIGHT=100%>
+    <TR ALIGN=CENTER VALIGN=MIDDLE><TD>
+        <table border=0>
+        <tr><td><h1>Bonjour!</h1></td></tr>
+        <tr><td>Petites recommendations avant de continuer...
+            <BR>
+            Afin d'utiliser cette application de façon "efficace", il est conseillé:
+            <OL> 
+            <LI>D'utiliser le navigateur "GOOGLE CHROME"</LI>
+            <LI>Toutes les activités sur des fichiers (<B>Lecture/Ecriture</B>)
+            s'opèrent depuis le folder défini dans votre navigateur
+            </LI>
+            <LI>Les données encodées sont sauvées dans la memoire de votre
+                navigateur connu sous le nom de '<B><U>localStorage</U></B>'.<BR>
+                <U>Il est important de savoir</U>:
+                <OL>
+                <LI>Si vous changer de navigateur, les données sur l'un ne se 
+                    retrouveront pas automatiquement sur l'autre.
+                    <BR><U>Ex</U>: Vous êtes sur <B>Firefox</B>. Vous quittez <B>Firefox</B> pour ouvrir 
+                        <B>Chrome</B>... vous ne verrez pas les données dans <B>Chrome</B>. 
+                        <BR>Il vous faudra sauver les données
+                        dans un fichier depuis <B>Firefox</B> et les relire ensuite depuis <B>Chrome</B>.
+                    </LI>
+                <LI>Quand vous nettoyez l'<B>History</B> de votre navigateur, sachez que 
+                    vous pouvez tout perdre si vous avez sélectioné:
+                    <BR><B><U>Cookies and other data</U></B>
+                </LI>
+                </OL>
+            </LI>
+            </OL>
+            </td></tr>
+        <tr><td align=center>
+            <div name="BTN" ID="BTN"></div>
+            </td></tr>
+        </table>
+    </TD></TR></TABLE>
+    </body>
+    </html>

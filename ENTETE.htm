@@ -40,9 +40,68 @@ function analyseCookie()
 	if ( userAgent.includes("Brave")   ) { browser = "Brave";   }
 	if ( userAgent.includes("Chrome")  ) { browser = "Chrome";  }
 
-	var btnBROWSER = '<button type="button" ONCLICK="JavaScript:viewLS()">'+browser+'</button>';
+	const swDisplay = 2;
+	switch (swDisplay)
+		{
+		case 1: 
+			// Affichage du LOCALSTORAGE & COOKIE du navigateur
+			var btnBROWSER = '<button type="button" ONCLICK="JavaScript:viewLS()">'+browser+'</button>';
+			break;
+		case 2: 
+			// Affichage des infos sur le navigateur
+			var btnBROWSER = '<button type="button" ONCLICK="JavaScript:getBrowserInfo()">'+browser+'</button>';
+			break;
+		default: 
+			// Sinon..... Affichage des infos sur le navigateur
+			var btnBROWSER = '<button type="button" ONCLICK="JavaScript:getBrowserInfo()">'+browser+'</button>';
+		}
 	document.getElementById("BRWBOUT").innerHTML = btnBROWSER;
 }
+
+function getBrowserInfo()
+	{
+	const browserInfo = {
+		userAgent: navigator.userAgent,
+		appName: navigator.appName,
+		appVersion: navigator.appVersion,
+		platform: navigator.platform,
+		language: navigator.language,
+		languages: navigator.languages,
+		cookieEnabled: navigator.cookieEnabled,
+		onLine: navigator.onLine,
+		hardwareConcurrency: navigator.hardwareConcurrency,
+		deviceMemory: navigator.deviceMemory,
+		vendor: navigator.vendor,
+
+		screenWidth: screen.width,
+		screenHeight: screen.height,
+		availableWidth: screen.availWidth,
+		availableHeight: screen.availHeight,
+		colorDepth: screen.colorDepth,
+		pixelDepth: screen.pixelDepth,
+
+		windowWidth: window.innerWidth,
+		windowHeight: window.innerHeight,
+
+		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+		currentURL: location.href,
+		hostname: location.hostname,
+		protocol: location.protocol
+		};
+
+	var dataBRW = "<OL>";
+	Object.keys(navigator).forEach(function(key) {
+    	dataBRW += "<LI>"+key + " = " + navigator[key] + "</LI>";
+		});
+	dataBRW += "</OL>"
+	//dataBRW += JSON.stringify(browserInfo);
+	for (let i = 0; i < navigator.plugins.length; i++) {
+    	dataBRW += "<br>"+navigator.plugins[i].name;
+		}
+
+	var newWindow = window.open("", "", "height=250,width=950,top=350,left=450,resizable=yes");
+	newWindow.document.body.innerHTML = "<pre>" + dataBRW  + "</pre>";;
+	}
 
 function viewLS() 
 	{
@@ -65,7 +124,7 @@ function viewLS()
 
 function listAllParties()
 	{
-	console.log("ANALYSE LA MEMOIRE DU NVIGATEUR");
+	console.log("ANALYSE LA MEMOIRE DU NAVIGATEUR");
 	const sParties = viewLocalStorage(0);
 	console.log(sParties);
 	var strBUTTON  = "";
@@ -73,8 +132,8 @@ function listAllParties()
 	sParties.forEach(partie => {
 		cpt++;
 		console.log("ENTETE: Trouvé PARTIE n°"+cpt+": "+partie);
-		if (cpt%3==0) { strBUTTON += "<BR>"; } 
-		strBUTTON += "<input type='button' value='"+partie+"' ONCLICK='JavaScript:choosePartie(this.value)'>&nbsp;"
+		if (cpt%4==0) { strBUTTON += "<BR>"; } 
+		strBUTTON += "<input type='button'  CLASS='pButtons' value='"+partie+"' ONCLICK='JavaScript:choosePartie(this.value)'>&nbsp;"
 		});
 	document.getElementById("pButtons").innerHTML = strBUTTON;
 	}
@@ -84,6 +143,16 @@ function refreshTime() {
 	const mString = String(new Date().getMinutes()).padStart(2, '0');
 	const sString = String(new Date().getSeconds()).padStart(2, '0');
 	document.HEADER.HEURE1.value = hString+":"+mString+":"+sString;
+	}
+
+function rafraichir2Pages() {
+		console.log("§§§§§§§§§§§§§ RELOAD §§§§§§§§§§§§§");
+		window.location.replace(window.location.href);
+		parent.frames['RESU'].document.getElementById("RESULTATS").innerHTML = "";
+		nomCookie = document.getElementById("ckNameDef").value;
+		var delKeyCookie = nomCookie + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+		document.cookie = delKeyCookie;
+		console.log("DELETE COOKIE: "+delKeyCookie);
 	}
 
 </SCRIPT>
@@ -118,14 +187,22 @@ function refreshTime() {
 	
 	<TABLE BORDER="0" cellspacing="0" cellpadding="0" WIDTH="95%" HEIGHT="100px">
 	
-	<TR VALIGN=TOP ALIGN="center"><TD>
-		<SELECT CLASS="select1" WIDTH=100% name='NOMPARTIE' id='NOMPARTIE' SIZE=1 ONCLICK="JavaScript:choosePartie(this.options[this.selectedIndex].value)"">
-		<option value='??' class="GENERAL2">LES PARTIES EN COURS ET MEMORISEES</option>"
-		</SELECT>
+	<TR VALIGN=TOP ALIGN="center">
+	<TD>
+		<TABLE BORDER="0" style="border: 2px solid green;">
+		<TR><TD>
+				<button type="button" style="background-color: red; color: white;" onclick="rafraichir2Pages()">R</button>		
+			</TD><TD>
+				<SELECT CLASS="select1" WIDTH=100% name='NOMPARTIE' id='NOMPARTIE' SIZE=1 ONCLICK="JavaScript:choosePartie(this.options[this.selectedIndex].value)"">
+				<option value='??' class="GENERAL2">LES PARTIES EN COURS ET MEMORISEES</option>"
+				</SELECT>
+			</TD>
+		</TR></TABLE> 
+
 	</TD></TR> 
 
-	<TR ALIGN="BOTTOM"><TD>
-		<div id="pButtons"></div>
+	<TR class=".div1" VALIGN="BOTTOM" ALIGN="ALIGN" style="height: 55px;"><TD>
+		<p id="pButtons"></p>
 	</TD></TR>
 	</TABLE>
 

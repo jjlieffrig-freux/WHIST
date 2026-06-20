@@ -9,10 +9,14 @@ html, body {
 }
 
 .table-container {
-    height: 500px;
-    overflow-y: auto;
+    height: 450px;
+    overflow-y: scroll;
+	background-color: lightblue;
 }
 
+.table-container:empty {
+    background-color: white;
+}
 #mySelect, #mySelect option {
     font-family: "Courier New", Courier, monospace;
     font-size: 100%;
@@ -43,7 +47,11 @@ fieldset {
 }
 
 div {
-  	background-color: lightblue;
+  	background-color: white;
+}
+
+div1 {
+  	background-color: lightblue;;
 }
 
 .WHISTEURS {
@@ -61,6 +69,12 @@ div {
     font-weight: bold;
 }
 
+ol {
+    list-style-type: decimal;
+    padding-left: 40px;
+}
+
+/*
 ol li:not(:last-child) {
     margin-bottom: 10px;
 }
@@ -68,6 +82,7 @@ ol li:not(:last-child) {
 li {
 	display: inline-block;
 }
+*/
 
 .WHISTEURS3 {
 	display: flex;
@@ -114,15 +129,15 @@ th[scope="td4"]{
 	background-color: lightblue;
 	}
 
-tr1 {
+tr {
+	background-color: lightblue;		
+	}
+
+.ENTETE {
 	background-color: yellow;	
 	font-size: 24px;
     color: black;
     font-weight: bold;	
-	}
-
-tr {
-	background-color: lightblue;		
 	}
 
 td {
@@ -145,7 +160,7 @@ td {
 }
 .GENERAL2 {
 	font-family: "Arial";
-	font-size: 120%;
+	font-size: 140%;
 	font-weight: bold;
 	color: black;
 	background-color: lightgrey;
@@ -177,12 +192,26 @@ td {
 	background-color: white;
    	font-family: 'Courier New', Courier, monospace;
    	font-weight: Normal;
-   	font-size: 180%;
+   	font-size: 200%;
 	color: black;
 	padding: 1px;
 	border-radius: 5px;
 	width: 100%;
   	}
+
+.pButtons {
+  background-color: #0078d7;
+  color: white;
+  border: none;
+  padding: 0px 2px;
+  border-radius: 2px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pButtons:hover {
+  background-color: #005fa3;
+}
 
 .select2 {
 	background-color: white;
@@ -195,10 +224,46 @@ td {
 	width: 100%;
   	}
 
+.select3 {
+	background-color: white;
+   	font-family: 'Courier New', Courier, monospace;
+   	font-weight: Normal;
+   	font-size: 140%;
+	color: black;
+	padding: 1px;
+	border-radius: 5px;
+	width: 100%;
+  	}
+
+.infoMEM {
+   	font-family: 'Courier New', Courier, monospace;
+   	font-weight: Normal;
+   	font-size: 100%;
+	color: black;
+	padding: 1px;
+	border-radius: 5px;
+	width: 100%;
+  	}
+
+.persLI1 {
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 100%;
+	list-style-type: decimal;
+	color: RED; 
+	font-weight: bold;
+}
+.persLI2 {
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 75%;
+	list-style-type: decimal;
+	color: black;
+	font-weight: none;
+}
+
 option:checked, option:hover {
   background-color: black;
-  color: yellow;
-  font-size: 120%;
+  color: greenyellow;
+  font-size: 100%;
 }
 
 select{

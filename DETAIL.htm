@@ -12,7 +12,6 @@
 </head>
 
 <body BGCOLOR=WHITE>
-<FORM NAME="RES">
 
 <script>
 async function savePdf()
@@ -185,18 +184,23 @@ async function sendHtmlFileToPdf(textINFO, swCONNECT)
 
 </script>
 
-<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
-<TR CLASS="GENERAL1" ALIGN="CENTER" VALIGN="MIDDLE">    
-<TD>
-<TEXTAREA CLASS="blink" name="RESULTS" id="RESULTS" ROWS=1 COLS=100 style="display:line; border:0px"> </TEXTAREA>
-<INPUT TYPE="TEXT" name="COOKIE" id="COOKIE" SIZE="15" style=" display:none; border:0px">
-</TD>
-</TR>
+<FORM NAME="RES">
+<TABLE CLASS="table1" BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
 
-<TR CLASS="GENERAL1">
-<TD><P name="RESULTATS" id="RESULTATS"></P>
-</TD>
-</TR></TABLE>
+<TR CLASS="GENERAL1" ALIGN="CENTER" VALIGN="MIDDLE">    
+    <TD>
+    <TEXTAREA CLASS="blink" name="RESULTS" id="RESULTS" ROWS=1 COLS=100 style="display:line; border:0px"> </TEXTAREA>
+    <INPUT TYPE="TEXT" name="COOKIE" id="COOKIE" SIZE="15" style=" display:none; border:0px">
+    </TD>
+    </TR>
+
+<TR CLASS="GENERAL2">
+    <TD>
+        <div CLASS="table-container" name="RESULTATS" id="RESULTATS"></div>
+    </TD>
+    </TR>
+
+</TABLE>
 
 </FORM>
 </body>

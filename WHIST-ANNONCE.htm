@@ -49,25 +49,28 @@ function checkURL()
 <option value="CNN">&nbsp;-&nbsp;1.&nbsp;CREER UNE NOUVELLE PARTIE DE WHIST</option>
 <option value="E">&nbsp;-&nbsp;2.&nbsp;EFFACE UN JEU D'UNE PARTIE EN COURS</option>
 <option value="A">&nbsp;-&nbsp;3.&nbsp;RECHARGE UNE PARTIE EN COURS MEMORISEE</option>
-<option value="C">&nbsp;-&nbsp;4.&nbsp;IMPORTE UNE PARTIE TERMINEE DEPUIS UN FICHIER</option>
-<option value="D">&nbsp;-&nbsp;5.&nbsp;EXPORTE UNE PARTIE EN COURS DANS UN FICHIER</option>
-<option value="F">&nbsp;-&nbsp;6.&nbsp;RESULTATS SUR TOUTE UNE SAISON</option>
-<option value="B">&nbsp;-&nbsp;7.&nbsp;REMISE A ZERO DE TOUTES LES PARTIES</option>
-<option value="G">&nbsp;-&nbsp;8.&nbsp;VOIR LA LISTE DES JOUEURS</option>
-<option value="H">&nbsp;-&nbsp;9.&nbsp;VOIR LA LISTE DES ANNONCES</option>
-<option value="I">&nbsp;-&nbsp;10.&nbsp;INFORMATION SUR l'APPLICATION</option>
-<option value="J">&nbsp;-&nbsp;11.&nbsp;SIMULE/GENERE UN "SEUL"</option>
-<option value="K">&nbsp;-&nbsp;12.&nbsp;SIMULE/GENERE UN "EMBALLAGE"</option>
-<option value="L">&nbsp;-&nbsp;13.&nbsp;RESET DES ANNONCES</option>
-<option value='M'>&nbsp;-&nbsp;14.&nbsp;AFFICHAGE+AJUSTEMENT DE LA MEMOIRE DU NAVIGATEUR</option>
-<option value='N'>&nbsp;-&nbsp;15.&nbsp;LISTE TOUS PDF DEMANDES</option>
+<option value="C">&nbsp;-&nbsp;4.&nbsp;CHARGE UNE PARTIE DEPUIS UN FICHIER</option>
+<option value="D">&nbsp;-&nbsp;5.&nbsp;SAUVE UNE PARTIE EN COURS DANS UN FICHIER</option>
+<option value="F" style="color: GREEN; font-weight: bold;">&nbsp;-&nbsp;6.&nbsp;RESULTATS SUR TOUTE UNE SAISON</option>
+<option value="L">&nbsp;-&nbsp;7.&nbsp;RESET DU MENU DES ANNONCES</option>
+<option value="J" style="color: GREEN; font-weight: bold;">&nbsp;-&nbsp;8.&nbsp;SIMULE/GENERE UNE ANNONCE "SEUL"</option>
+<option value="K" style="color: GREEN; font-weight: bold;">&nbsp;-&nbsp;9.&nbsp;SIMULE/GENERE UNE ANNONCE "EMBALLAGE"</option>
+
+<option value='M'>&nbsp;-&nbsp;10.&nbsp;AFFICHAGE+AJUSTEMENT DE LA MEMOIRE DU NAVIGATEUR</option>
+<option value='N'>&nbsp;-&nbsp;11.&nbsp;LISTE TOUS PDF DEMANDES (à l'étude)</option>
+<option value="B" style="color: RED; font-weight: bold;">&nbsp;-&nbsp;12.&nbsp;REMISE A ZERO DE TOUTES LES PARTIES</option>
+<option value="">&nbsp;&nbsp;</option>
+<option value="I">&nbsp;-&nbsp;13.&nbsp;INFORMATION&nbsp;&nbsp;&nbsp;SUR L'APPLICATION</option>
+<option value='O'>&nbsp;-&nbsp;14.&nbsp;AVERTISSEMENT&nbsp;SUR L'APPLICATION</option>
+<option value="G">&nbsp;-&nbsp;15.&nbsp;VOIR LA LISTE DES JOUEURS</option>
+<option value="H">&nbsp;-&nbsp;16.&nbsp;VOIR LA LISTE DES ANNONCES</option>
 </SELECT>
 </fieldset>
 
 <script>
 const select = document.getElementById('ACTION');
 select.addEventListener('focus', () => {
-  	select.size = 15;
+  	select.size = 16;
 });
 select.addEventListener('blur', () => {
 	select.selectedIndex = 0;
@@ -80,7 +83,7 @@ select.addEventListener('change', () => {
 
 function prepareActivity(strOption) 
 	{
-	console.clear();
+	//console.clear();
 	switch (strOption)
 		{
 		case "A":
@@ -129,12 +132,23 @@ function prepareActivity(strOption)
 			var aHref  = inf+'A HREF="'+pdfURL+'"'+sup+'LISTE DE TOUS LES PDF'+inf+'/A'+sup;
         	console.log("URL: "+aHref);
 			var htmlText = "";
-			htmlText += inf+'TABLE BORDER="1" WIDTH="100%"" HEIGHT="100vh"'+sup;
+			htmlText += inf+'TABLE BORDER="0" WIDTH="100%"" HEIGHT="100vh"'+sup;
 			htmlText += inf+'TR ALIGN=CENTER VALIGN=MIDDLE'+sup+inf+'TD'+sup;
 			htmlText += inf+'H2'+sup+aHref+inf+'/H2'+sup;
 			htmlText += inf+"/TD"+sup+inf+'/TR'+sup+inf+'/TABLE'+sup;
-        	parent.frames[2].document.getElementById("RESULTATS").innerHTML = htmlText;
-			document.write
+			htmlText += inf+"CENTER"+sup;
+			htmlText += inf+"INPUT TYPE='BUTTON' VALUE='FERMER' onclick='window.close()'"+sup;
+			htmlText += inf+"/INPUT"+sup;
+			htmlText += inf+"/CENTER"+sup;
+			var opts = "height=250,width=950,top=350,left=450,resizable=yes";
+			var myWindow = window.open("importFile.html", "WHIST-IMPORT", opts);
+			myWindow.document.write(htmlText);
+        	//parent.frames[2].document.getElementById("RESULTATS").innerHTML = htmlText;
+			//document.write
+			break;
+		case "O":
+			displayParameters('X');
+			//var myWindow = window.open("Avertissement.htm", "WHIST-CONSEILS", opts);
 			break;
 		case "CNN":
 			choosePartie("CNN");
@@ -163,19 +177,21 @@ function prepareActivity(strOption)
 <LI>- VEUILLEZ UTILISER LE MEME NAVIGATEUR POUR LA MEMORISATION/RECHARGE DE VOS PARTIES.</LI><BR>
 <LI>- LES FICHIERS DE SAUVEGARDE SE TROUVENT DANS LE FOLDER "TELECHARGEMENT" DE VOTRE NAVIGATEUR</LI><BR>
 <LI>- <U>PREVU POUR 6 JOUEURS</U>:<UL>
-	<LI>- 1 HOTE... : LA PERSONNE CHEZ QUI ON JOUE AU WHIST. NE JOUE PAS DU TOUT</LI><BR>
-	<LI>- 1 DONNEUR.: UNE DES 5 AUTRES PERSONNES. NE JOUE PAS PENDANT LA DONNE</LI><BR>
+	<LI>- 1 HOTE... : LA PERSONNE CHEZ QUI ON JOUE AU WHIST. IL/ELLE NE JOUE PAS DU TOUT!</LI><BR>
+	<LI>- 1 DONNEUR.: UNE DES 5 AUTRES PERSONNES. IL/ELLE NE JOUE PAS PENDANT LA DONNE</LI><BR>
 	<LI>- 4 AUTRES..: LES 4 AUTRES JOUEURS QUI SE DISPUTENT UN JEU / UNE MANCHE</LI><BR>
 	</UL>
 <LI>- <U>IMPERATIF</U>: AU WHIST MINUMUM 4 PERSONNES. COCHEZ LES ABSENTS COMME HOTE/DONNEUR</LI><BR>
 <LI>- <U>POUR DEBUTER</U>:
-<BR>&nbsp;&nbsp;&nbsp;- CHOISIR <B><U>ACTIVITE #1-CREER UNE PARTIE</U></B> ET LUI DONNER UN NOM. DEFAUT: LA DATE DU JOUR.
+<BR>&nbsp;&nbsp;&nbsp;- CHOISIR <B><U>ACTIVITE #1-CREER UNE PARTIE</U></B> ET LUI DONNER UN NOM. PAR DEFAUT: LA DATE DU JOUR.
 <BR>&nbsp;&nbsp;&nbsp;- ENSUITE CHOISIR LE JEU (COCHEZ QUI "INVITE/DONNE/JOUE/ANNONCE")
-<BR>&nbsp;&nbsp;&nbsp;- PUIS CLIQUEZ SUR LE BOUTON [CALCUL] POUR AFFICHER LES POINTS.
-<BR>&nbsp;&nbsp;&nbsp;PS: LES ACTIVITES #11/12 PERMETTENT DE "SIMULER" DES "EMBALLAGES/SEULS"
-<BR>&nbsp;&nbsp;&nbsp;PS: L'ACTIVITE #3 REACTIVE L'AFFICHAGE DES POINTS EN COURS...
+<BR>&nbsp;&nbsp;&nbsp;- PUIS CLIQUEZ SUR LE BOUTON <B>[CALCUL]</B> POUR AFFICHER LES POINTS.
+<BR>&nbsp;&nbsp;&nbsp;PS: LES ACTIVITES <B>#8 ET #9</B> PERMETTENT DE "SIMULER" UN <B>"SEUL OU EMBALLAGE"</B>
+<BR>&nbsp;&nbsp;&nbsp;PS: L'ACTIVITE <B>#3</B> REACTIVE L'AFFICHAGE DES POINTS EN COURS...
 </LI><BR>&copy;-2026&nbsp;&nbsp;
 </OL>
+<BR>
+<CENTER><INPUT TYPE="BUTTON" VALUE="FERMER" ONCLICK="window.close()"></INPUT></CENTER>
 </SPAN>
 </TD></TR></TABLE>
 </TEXTAREA>
@@ -391,9 +407,11 @@ function displayParameters(strINFO)
 	
 	var HtmlParams = "";	
 	HtmlParams += "<"+"!DOCTYPE html"+">\n";
-	HtmlParams += "<"+"BODY"+">\n"
+	HtmlParams += "<HTML><HEAD>";
+	HtmlParams += "<link rel='stylesheet' href='Whist.css'>\n";
+	HtmlParams += "</HEAD><"+"BODY"+">\n"
 	HtmlParams += "<CENTER>\n";
-	HtmlParams += "<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=33% HEIGHT=50%>\n";
+	HtmlParams += "<BR><TABLE BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=50% HEIGHT=50%>\n";
 
 	switch(strINFO) 
 		{
@@ -403,8 +421,8 @@ function displayParameters(strINFO)
 			var lblTEXT2 = "";
 			var lblTEXT3 = "";
 			var lblDISPO = " ALIGN=RIGHT";
-			var swMETHOD = "HTML";
-			var swMETHOD = "WIN";
+			var swMETHOD = "HTML1";
+			var swMETHOD = "WIN1";
 			break;		
 		case "A":
 			var nbrPARAM = document.WHIST.ANNONCES.value;
@@ -422,17 +440,30 @@ function displayParameters(strINFO)
 			var lblDISPO = " ALIGN=CENTER";
 			var swMETHOD = "FRAME";
 			break;
-		default:
+		case "H":
 			var nbrPARAM = document.WHIST.AIDEAPP.value;
 			var lblTEXT1 = "Aide définie dans l'application";
 			var lblTEXT2 = "Contact";
 			var lblTEXT3 = "-";
 			var lblDISPO = " ALIGN=LEFT";
 			var swMETHOD = "FRAME";
+			break;
+		default:
+			var nbrPARAM = "A\nB\n";
+			var lblTEXT1 = "";
+			var lblTEXT2 = "";
+			var lblTEXT3 = "";
+			var lblDISPO = " ALIGN=RIGHT";
+			var swMETHOD = "HTML2";
+			var swMETHOD = "WIN2";
 		}
 	
-	HtmlParams += '<TR ALIGN=CENTER><TD CLASS="tr1" >Nbr</TD>\n';
-	HtmlParams += '<TD CLASS="tr1" >'+lblTEXT1+'</TD><TD CLASS="tr1" >'+lblTEXT2+'</TD><TD CLASS="tr1" >'+lblTEXT3+'</TD></TR>\n';
+	HtmlParams += "<TR ALIGN='CENTER'>";
+	HtmlParams += '<TD BGCOLOR="YELLOW">Nbr</TD>\n';
+	HtmlParams += '<TD BGCOLOR="YELLOW">'+lblTEXT1+'</TD>';
+	HtmlParams += '<TD BGCOLOR="YELLOW">'+lblTEXT2+'</TD>';
+	HtmlParams += '<TD BGCOLOR="YELLOW">'+lblTEXT3+'</TD>';
+	HtmlParams += '</TR>\n';
 
 	const arrayP = nbrPARAM.split('\n');
 
@@ -493,20 +524,27 @@ function displayParameters(strINFO)
 	HtmlParams += "</CENTER>";
 	HtmlParams += "<"+"/BODY"+">";
 	HtmlParams += "<"+"/HTML"+">";
+
+	console.log(HtmlParams);
 	
-	if ( strINFO ==="A" || strINFO === "J" || strINFO === "IMPORTE" )
+	if ( strINFO ==="X" || strINFO ==="A" || strINFO === "J" || strINFO === "IMPORTE" )
 		{
 		switch (swMETHOD) 
 			{
-			case "HTML": 
+			case "HTML1": 
 				parent.frames['RESU'].location.href = "importFile.html";
 				break;
-			case "WIN": 
+			case "HTML2": 
+				parent.frames['RESU'].location.href = "Avertissement.htm";
+				break;
+			case "WIN1": 
 				var opts = "height=250,width=950,top=350,left=450,resizable=yes";
 				var myWindow = window.open("importFile.html", "WHIST-IMPORT", opts);
-				//myWindow.document.write(tabPts);
-				//myWindow.close();
-				break;									
+				break;			
+			case "WIN2": 
+				var opts = "height=250,width=950,top=350,left=450,resizable=yes";
+				var myWindow = window.open("Avertissement.htm", "WHIST-AVERTISSEMENT", opts);
+				break;							
 			default:
 				parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = HtmlParams;
 			}
@@ -519,7 +557,10 @@ function displayParameters(strINFO)
 		strAIDE += document.WHIST.AIDEAPP.value;
 		//strAIDE += '<STRONG></PRE>';
 		strAIDE += '</SPAN CLASS="WHISTEURS3"></TD></TR></TABLE>';
-		parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = strAIDE;
+		//parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = strAIDE;
+		var opts = "height=250,width=950,top=350,left=450,resizable=yes";
+		var myWindow = window.open("", "WHIST-AIDE", opts);
+		myWindow.document.write(strAIDE);
 		}
 
 	}
@@ -583,8 +624,8 @@ for (i = 0; i < arrayJ.length-1; i++)
 <TABLE BORDER=0 WIDTH="100%">
 <TR>
 <TD>
-	<SELECT CLASS="select2" name="RESULTATSJEU" id="RESULTATSJEU" SIZE="1">
-    	<option value='' class="GENERAL2">CHOISISSEZ UNE ANNONCE REALISEE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+	<SELECT CLASS="select3" name="RESULTATSJEU" id="RESULTATSJEU" SIZE="1">
+    	<option value='' class="GENERAL2">SELECTIONNEZ L'ANNONCE REALISEE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
 <script>
 const select2 = document.getElementById('RESULTATSJEU');
 select2.addEventListener('select', () => {

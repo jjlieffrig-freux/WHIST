@@ -71,10 +71,15 @@ function viewLocalStorage(swOPTION)
 		);
 	//console.log(storageArray);
 	var sINFOOK    = true;
-	var saveString = "";
+	var htmlString = "";
+	var csvString  = "<H3>\n";
 	var cptParties = 0;
+	var xcpt = -1;
 
-	saveString += "PARTIE DE WHIST EN ACTIVITE DANS LE NAVIGATEUR: "+strCookie+"\n\n";
+	htmlString += "<H3>";
+	htmlString += "PARTIE DE WHIST EN ACTIVITE DANS LE NAVIGATEUR: "+strCookie+"</H3>";
+	htmlString += "<OL>";
+	
 	for (let i = 0; i < storageArray.length; i++) 
 		{
 		var sINFO = storageArray[i].toString().split(",")[0] + "]\t[";
@@ -95,18 +100,34 @@ function viewLocalStorage(swOPTION)
 		if ( curKey.endsWith(".00") ) 
 			{ 
 			cptParties ++;
+			if ( cptParties > 1 ) {
+				htmlString  += "</UL></LI><BR>";
+				csvString	+= "\n"; 
+				}
+			xcpt = -1;
 			sINFOOK = true;
-			var sCOOK  = storageArray[i].toString().split(",")[0].split(".")[0];
-			saveString += "\nPARTIE #"+cptParties+" ["+sCOOK + "] EN MEMOIRE. LES JEUX SONT LES SUIVANTS:\n\n"; 
-			sPartie    = sCOOK;
+			var sCOOK   = storageArray[i].toString().split(",")[0].split(".")[0];
+			htmlString += '<LI CLASS="persLI1">'+'PARTIE #'+cptParties+' ['+sCOOK + '] EN MEMOIRE. LES JEUX SONT LES SUIVANTS:';
+			htmlString += "<HR><UL>"; 
+			sPartie     = sCOOK;
 			arrayParties.push(sPartie);
 			} 
-		msgTXT = "["+sINFOOK+"]\tROW("+String(i).padStart(3, "0")+") "+storageArray[i];
-		saveString += msgTXT + "\n";
+		xcpt++;
+		xcptStr = String(i + 1).padStart(3, "0")+"-"+String(xcpt).padStart(3, "0");
+		msgTXT = "<LI CLASS='persLI2'>["+sINFOOK+"]\tROW("+xcptStr+") "+storageArray[i]+"</LI>";
+		htmlString  += msgTXT + "<BR>";
+		keyLine 	 = storageArray[i].toString().split(",")[0];
+		dataLine 	 = storageArray[i].slice(1);
+		csvString	+= sINFOOK+"\t"+xcptStr+"\t\t"+keyLine+"\t"+dataLine+"\n";
 		}
+	htmlString += "</UL></LI></OL><BR>"; 
 	var yBrowser   = parent.frames["HDR"].document.getElementById('BRWBOUT').outerHTML;
 	var maxParties = arrayParties.length;
-	saveString += "\nVOUS AVEZ "+maxParties+" PARTIES DANS LA MEMOIRE DE VOTRE NAVIGATEUR ["+yBrowser+"]:\n" + arrayParties+"\n\n\n\n"; 
+	htmlString += "<P CLASS='persLI1'>";
+	htmlString += "VOUS AVEZ "+maxParties+" PARTIES DANS LA MEMOIRE DE VOTRE NAVIGATEUR ";
+	htmlString += yBrowser;
+	htmlString += "<BR>" + arrayParties; 
+
 	switch (swOPTION)
 		{
 		case 0:
@@ -115,9 +136,9 @@ function viewLocalStorage(swOPTION)
 			break;
 		case 1:
 			// Display all localStorage content in frame RESU.htm
-			saveString = "<PRE>"+saveString+"</PRE>";
+			csvString = '<PRE><CLASS="persLI2">'+csvString+'</PRE>';
 			//parent.frames['RESU'].history.go(-2);
-			parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = saveString;	
+			parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = csvString;	
 			break;
 		case 2:
 			// Display all localStorage content in pop
@@ -344,7 +365,7 @@ function manageWhistRes(sTYPE)
 			const blob = new Blob([saveString], { type: "text/plain;charset=utf-8" });
 			const link = document.createElement("a");
   			link.href = URL.createObjectURL(blob);
-  			link.download = ("./"+ficName).replaceAll("_","");
+  			link.download = (ficName).replaceAll("_","");
 			document.body.appendChild(link);
   			link.click();
 			document.body.removeChild(link);
@@ -353,8 +374,8 @@ function manageWhistRes(sTYPE)
 		case "IJ1":
 			async function loadCSV() 
 				{
-				console.log("Chargement du fichier [./"+ficName+"]");
-				const response = await fetch("./"+ficName);
+				console.log("Chargement du fichier ["+ficName+"]");
+				const response = await fetch(ficName);
 				const text = await response.text();
 				//const rows = text.trim().split('\n').map(row => row.split(','));
 				const rows = text.trim().split('\n')
@@ -439,7 +460,7 @@ function manageWhistRes(sTYPE)
 
 function displayCompile()
 	{
-	console.clear();
+	//console.clear();
 	console.log("Debut calculs...");
 		
 	Object.entries(localStorage).forEach(([k,v]) => console.log(k.padEnd(50), v, v.length, (v.length / 1024).toFixed(1) + 'KB'))	
@@ -473,8 +494,10 @@ function displayCompile()
 		var maxRELOAD	= localStorageArray.length;
 		console.log("LE SYSTEME A TROUVE "+maxRELOAD+" LIGNE(S) AVEC CETTE CLE '"+keyName+"'");
 
-		var xParties    = document.WHIST.PARTIES.value;
-		var nbrJoueurs  = document.WHIST.JOUEURS.value;
+		// var xParties    = document.WHIST.PARTIES.value;
+		// var nbrJoueurs  = document.WHIST.JOUEURS.value;
+		var nbrJoueurs  = parent.frames['TITRE'].document.WHIST.JOUEURS.value
+		var xParties    = parent.frames['TITRE'].document.WHIST.PARTIES.value
 		const arrayJ    = nbrJoueurs.split('\n');
 		var xJOUEURS	= arrayJ.length + 3;
 		console.log("APPEL ROUTINE DE CREATION TABLE DE WHIST ["+xParties+"x"+xJOUEURS+"]");
@@ -556,6 +579,7 @@ function displayCompile()
 		parent.frames['HDR'].document.HEADER.ENJEUX.value = aRES[k+1][3];
 		parent.frames['HDR'].document.HEADER.COOKIE.value = "LA SAISON "+ year;
 		}
+	return aRES;
 	}
 
 function recupererCookie(nom) 
@@ -572,17 +596,27 @@ function recupererCookie(nom)
     return null;
 	}
 
-function imprimerZone(idElement) 
+function imprimerZone(idElement,sType) 
 	{
-	parent.frames['RESU'].document.getElementById('RESULTS').value=idElement;
+	var msgTXT = "Fichier 'CSV' sauvé dans le folder de téléchargement du navigateur";
+	parent.frames['RESU'].document.getElementById('RESULTS').value=msgTXT;
+	console.log("TYPE:"+sType);
 	console.log(idElement);
-
+	var pfx = parent.frames['HDR'].document.getElementById('ckNamePfx').value;
+	const timestamp = new Date().toISOString().replaceAll(":",".");
+	if ( pfx === "" ) { pfx = "WHIST-"; }
+	var fichier = pfx+timestamp+'.csv';
+	if ( sType === "MEM" ) {
+		fichier = pfx+'MEMOIRE-'+timestamp+'.csv';
+		console.log("FICHIER:"+fichier);
+		}
+	
 	const text = idElement;
 	const blob = new Blob([text], { type: 'text/csv' });
 	const url  = URL.createObjectURL(blob);
 	const link = document.createElement('a');
 	link.href = url;
-	link.download = 'Whist.csv';
+	link.download = fichier;
 	link.click();
 
 	}
@@ -604,37 +638,76 @@ function impressionRes(strFORMAT)
 
     if ( strFORMAT === 'CSV' )
         {
-        //const strD = new Date().toISOString().slice(0, 10).replace(/-/g, '');
-		var keyName = getCookie2(ckNamePfx); 
-		console.log("CSV (key): "+keyName);
-        //Object.entries(localStorage).filter(([key]) => key.startsWith(keyName)).forEach(([k,v]) => console.log(k.padEnd(50), v, v.length, (v.length / 1024).toFixed(1) + 'KB'))
-        
-        if ( localStorage.length > 0 )
-            {
-            var localStorageArray = new Array();
-			var j=0;
-            for (i=0;i<localStorage.length;i++)
-                {
-                if ( localStorage.key(i).includes(keyName) )
-                    {
-					console.log("=> ("+i+")("+j+")\t("+localStorage.key(i)+")\t("+keyName+")");
-                    localStorageArray[j] = localStorage.key(i)+"|"+localStorage.getItem(localStorage.key(i));
-					j++;
-                    }
-                }
-            }
-        var sortedArray = localStorageArray.sort();
-		console.log("Nombre de parties (CSV): "+localStorageArray.length);
-		var allARRAY = ""
-        for ( let i=0; i < sortedArray.length; i++ )
-            {
-			console.log("Ligne("+i+")\t"+sortedArray[i]);
-            //infoARRAY = (sortedArray[i].split("|")[1]).split(",");
-			infoARRAY = sortedArray[i].replace("|",",").split(",");
-			allARRAY += infoARRAY+"\n";
-            }
-		imprimerZone(allARRAY);	
-    	}
+		var htmlData = parent.frames["RESU"].document.getElementById("RESULTATS").outerHTML;
+		var posKey1  = htmlData.indexOf("<h3>");
+		var posKey2  = htmlData.indexOf("</h3>");
+		console.log("SPECIAL CSV - MEMOIRE:("+posKey1+","+posKey2+")");
+		if ( posKey1 > 0 && posKey2 > posKey1 + 4 )
+			{
+			imprimerZone(htmlData.slice(posKey1 + 4, posKey2),"MEM");	
+			}
+		else {
+			var stPrefix = parent.frames["HDR"].document.getElementById("ckNamePfx").value;
+			var laPartie = parent.frames["HDR"].document.getElementById("COOKIE").value;
+			console.log("PARTIE:"+laPartie+"\t"+"PREFIX:"+stPrefix);
+
+			if ( laPartie.startsWith(stPrefix) )
+				{
+				//const strD = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+				var keyName = getCookie2(ckNamePfx); 
+				console.log("CSV (key): "+keyName);
+				//Object.entries(localStorage).filter(([key]) => key.startsWith(keyName)).forEach(([k,v]) => console.log(k.padEnd(50), v, v.length, (v.length / 1024).toFixed(1) + 'KB'))
+				if ( localStorage.length > 0 )
+					{
+					var localStorageArray = new Array();
+					var j=0;
+					for (i=0;i<localStorage.length;i++)
+						{
+						if ( localStorage.key(i).includes(keyName) )
+							{
+							console.log("=> ("+i+")("+j+")\t("+localStorage.key(i)+")\t("+keyName+")");
+							localStorageArray[j] = localStorage.key(i)+"|"+localStorage.getItem(localStorage.key(i));
+							j++;
+							}
+						}
+					}
+				var sortedArray = localStorageArray.sort();
+				console.log("Nombre de parties (CSV): "+localStorageArray.length);
+				var allARRAY = ""
+				for ( let i=0; i < sortedArray.length; i++ )
+					{
+					console.log("Ligne("+i+")\t"+sortedArray[i]);
+					//infoARRAY = (sortedArray[i].split("|")[1]).split(",");
+					infoARRAY = sortedArray[i].replace("|",",").split(",");
+					allARRAY += infoARRAY+"\n";
+					}
+				imprimerZone(allARRAY,"");	
+				}
+			else {
+				var htmlTable = parent.frames['RESU'].document.getElementById("RESULTATS").outerHTML;
+				var xpos1 = htmlTable.indexOf("<table id");
+				var xpos2 = htmlTable.indexOf('<tr><td class="SPECIAL">-</td>'); 
+				console.log("From:"+xpos1+"\tTill:"+xpos2);
+				htmlTable  = htmlTable.slice(xpos1, xpos2);
+				htmlTable += "</table>";
+				htmlTable  = htmlTable.replace("<tr></tr>", "");
+				console.log(htmlTable);
+				const parser = new DOMParser();
+				const doc = parser.parseFromString(htmlTable, 'text/html');
+				const table = doc.body.firstElementChild;
+				console.log(table);
+				var csvLines = "";
+				for (const row of table.rows) {
+					for (const cell of row.cells) {
+						csvLines += cell.textContent.trim() + ","
+						}
+					csvLines  = csvLines.slice(0, -1) + "\n"
+					}
+				console.log(csvLines);
+				imprimerZone(csvLines,"");
+				}
+			}
+		}
 	}
 
 function generatePDF(title, content) 
@@ -1078,7 +1151,12 @@ function rebuildHTML(nTR, keyName,sKEY)
 	var limHTML  = aRES.length;
 	var htmlTAB  = "";
 
-	//htmlTAB += "<button onclick='savePdf()'>Export PDF</button>";
+	var strURL = location.hostname;
+	console.log("APPLICATION HOSTEE SUR SERVER '"+strURL+"'");
+	if ( strURL.toLowerCase() === "localhost" ) {
+		console.log("Bouton EXPORT PDF ajouté");
+		htmlTAB += "<button onclick='savePdf()'>Export PDF</button>";
+		}
 	console.log("REBUILD\n"+htmlTAB);	
 	htmlTAB += "<TABLE ID='POINTS' BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=100%>";
 	for (let i = 0; i< limHTML; i++) 
@@ -1742,8 +1820,8 @@ function checkHote()
 		default:
 			msgTXT = "Un seul hôte par soirée. Faites votre choix!";
 		}
-		parent.frames["RESU"].document.getElementById("RESULTS").value = msgTXT;
-		console.log(msgTXT);	
+		console.log(msgTXT);
+		parent.frames["RESU"].document.getElementById("RESULTS").value = msgTXT;	
 	}
 
 function import2localStorage(sType1,sType2)

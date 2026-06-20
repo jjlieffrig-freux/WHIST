@@ -14,51 +14,18 @@ app.use(express.static(__dirname + "/"))
 app.use('/', serveIndex(__dirname + '/'));
 app.use(express.json());
 
-app.use('/WHIST', (req, res) => {
-    var appLoc = path.join(__dirname, '');
-    var htmlWarning = `
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Bienvenue sur le site de comptage des points au Whist</title>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          margin-top: 100px;
-        }
-        .btn {
-          padding: 10px 15px;
-          background: #007bff;
-          color: white;
-          text-decoration: none;
-          border-radius: 5px;
-        }
-      </style>
-    </head>
-    <body>
-    <TABLE border=0 cellspacing=0 cellpadding=0 width=100% HEIGHT=100%>
-    <TR ALIGN=CENTER VALIGN=MIDDLE><TD>
-        <table border=0>
-        <tr><td><h1>Bonjour!</h1></td></tr>
-        <tr><td>Petite recommendation avant de continuer...
-            <BR>
-            Afin d'utiliser cette application de façon "efficace", il est conseillé:
-            <OL> 
-            <LI>D'utiliser le browser "GOOGLE CHROME"</LI>
-            <LI>De configurer <B><U>SON</U></B> dossier de téléchargement avec le dossier suivant:
-            <BR><b><u>${appLoc}</u></b></LI>
-            </OL>
-            </td></tr>
-        <tr><td align=center>
-            <a href="/Users/chef/WHIST/WHIST-NJS/public/dev/index.html" class="btn">WHIST</a>
-            </td></tr>
-        </table>
-    </TD></TR></TABLE>
-    </body>
-    </html>
-  `
-res.send(htmlWarning);
-});
+app.use('/WHIST00', (req, res) => {
+    var appLoc = path.join(__dirname, "Avertissement.htm" );
+    console.log("Display file "+appLoc);
+    //var htmlWarning = "";
+    //fetch(appLoc)
+    //    .then(response => response.text())
+    //    .then(html => {
+    //        var htmlWarning = html;
+    //        });
+    //res.send(htmlWarning);
+    res.sendFile(appLoc);
+    });
 
 app.get('/pdfs', (req, res) => {
     const dir = path.join(__dirname, '');
