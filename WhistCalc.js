@@ -3074,22 +3074,107 @@ function imprimePoints()
 
 function lectureSyncJSON(sType)
 	{
+	console.clear();
 	console.log('\u25A0'.repeat(25)+"FUNCTION lectureSyncJSON"+'\u25A0'.repeat(25));
 	console.log("Parametre: ("+sType+")");
 
-	var fic = "?"; var text = ""; var res = ""; var x = "";
+	var fic = "?"; var text = ""; var res = ""; var x = ""; var msgTXT = "";
 	if ( sType === "J" ) { var fic = "/JOUEURS"; }
 	if ( sType === "A" ) { var fic = "/ANNONCES" }
 	if ( fic   === "?" ) { return false; }
 
+	//fic += "-UNKNOWN.CSV";
 	msgTXT = "["+sType+"] JSON FILE URL: "+fic;
 	console.log(msgTXT);
 
-	fetch(fic)
-		.then(response => response.json())
-  		.then(data => traiterDonnees(data, sType))
-  		.catch(console.error);
+	try	{
+		fetch(fic)
+			.then (response => {
+				if (!response.ok) 
+					{
+					msgTXT = "HTTP error! Status: ${response.status}";
+					console.log(msgTXT);
+					loadDatafromLS(sType);
+					throw new Error(msgTXT);
+					}
+				return response.json();
+				})
+			.then (data => traiterDonnees(data, sType))
+		}	
+	catch (error) {
+    	console.error("Fetch failed:", error);
+  		}
 	}
+
+function loadDatafromLS(sType)
+	{
+	console.clear();
+	switch (sType)
+		{
+		case "A":
+			var param = reuseParameter("annoncesPfx");
+			console.log("Boucle lecture des 'ANNONCES' depuis le 'localStorage'");
+			break;
+		case "J":
+			var param = reuseParameter("joueursPfx");
+			console.log("Boucle lecture des 'JOUEURS' depuis le 'localStorage'");
+			break;
+		default:
+			//RAF
+			return;
+		}
+
+	const arrParam = Object.keys(localStorage).filter(k => k.startsWith(param)).sort().map(k => ({ key: k, value: localStorage.getItem(k) }));
+	console.log(arrParam);
+
+	const arrayData = []; var records = ""; var cpt = -1;
+	for (ii=0; ii<arrParam.length; ii++) {
+		var key = arrParam[ii].key;
+		var val = arrParam[ii].value;
+		records += val + "\n";
+		switch (sType.toUpperCase())
+			{
+			case "J":
+				cpt++;
+				arrayData[cpt] = [];
+				arrayData[cpt][0] = val.split("!")[0];
+				arrayData[cpt][1] = val.split("!")[1];
+				arrayData[cpt][2] = val.split("!")[2];
+				break;
+			case "A":
+				cpt++;
+				arrayData[cpt] = [];
+				arrayData[cpt][0] = val.split("!")[0];
+				arrayData[cpt][1] = val.split("!")[1];
+				arrayData[cpt][2] = val.split("!")[2];
+				arrayData[cpt][3] = val.split("!")[3];
+				arrayData[cpt][4] = val.split("!")[4];
+				break;
+			default:
+				//RAF
+			}
+		}
+	console.log(arrayData);
+	const frame = parent.frames["TITRE"].document;
+	console.log("FRAME:"+frame);
+
+	switch (sType.toUpperCase())
+		{
+		case "J":	
+			frame.getElementById("NBRJOUEURS").value = cpt + 1;
+			frame.getElementById("JOUEURS").value  = records;
+			console.log(records);
+			break;
+		case "A":
+			frame.getElementById("NBRANNONCES").value = cpt + 1;
+			frame.getElementById("ANNONCES").value = records;
+			console.log(records);
+			break;
+		default:
+			//RAF
+		}
+	}
+
 
 function traiterDonnees(data, sType) 
 	{
@@ -3118,8 +3203,8 @@ function traiterDonnees(data, sType)
 			}
 		}	
 	console.log("LOOP creation array ("+sType+") contient "+cpt+" rows");
-	let joueursPfx  = "WHISTER.";
-	let annoncesPfx = "ANNONCES.";
+	let joueursPfx  = reuseParameter("joueursPfx");
+	let annoncesPfx = reuseParameter("annoncesPfx");
 	if ( cpt > -1 ) {
 		for (let i=0; i<= cpt; i++) {
 			var ligneData = "";
