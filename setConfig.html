@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="Whist.css">
+<style>
+#infodata {
+    font-size: 20px;
+    border: 0px solid black;
+    }
+
+#content {
+    width: 900px;
+    height: 300px;
+    border: 0px solid red;
+    }
+
+#content iframe {
+    width: 100%;
+    height: 100%;
+    font-size: 15px;
+    }
+
+</style>
+<script>
+function requestButton(xOPT) {
+
+    const keyLS = "0-WHISTAPP.";
+
+    const data = [
+        ["switch",      "?"],
+        ["ckNameDef",   "PARTIES-WHIST"],
+        ["ckNamePfx",   "WHIST-"],
+        ["joueursPfx",  "WHISTER."],
+        ["annoncesPfx", "ANNONCES."],
+        ["application", keyLS],
+        ["defOpts",     "height=500,width=1100,top=100,left=100,resizable=yes"],
+        ["sepCSV",      "!"],
+        ["bSquare",     "\u25A0"],
+        ["nbrJeux",     "100"]
+        ];
+
+    const obj = {};
+
+    switch (xOPT)
+        {
+        case 1: 
+            var htmlLine = "<TABLE BORDER=0 BORDERCOLOR=BLACK>"
+            data.forEach(([key, value]) => {
+                htmlLine += "<TR CLASS='celldetail'><TD>"+String(key) + "</TD><TD>" + value + "</TD></TR>\n";
+                });
+            htmlLine += "</TABLE>";
+            document.getElementById("infodata").innerHTML = htmlLine;
+            document.getElementById("content").innerHTML = "";
+            break;
+        case 2: 
+            const obj = {};
+            data.forEach(([key, value]) => {
+                 obj[key] = value;
+                });
+            downloadJSON(obj)
+            var msgHTML = "";
+            msgHTML += "<OL><LI>Le fichier JSON de configuration pour l'application&nbsp;";
+            msgHTML += "<A HREF='http://localhost/Users/chef/WHIST/WHIST-NJS/public/dev/index.html'>WHIST</A>";
+            msgHTML += "<BR>vient d'être générer dans le folder de téléchargement.</LI>"
+            msgHTML += "<BR><LI>Veuillez le copier dans le folder racine de l'application web</LI>"
+            msgHTML += "<BR><LI><U>CONFIG</U>:<BR><PRE>"+JSON.stringify(obj, null, 4)+"</PRE></LI></OL>"; 
+            document.getElementById("infodata").innerHTML = msgHTML;
+            document.getElementById("content").innerHTML = "";
+            break;
+        case 3:
+            var url = window.location.origin + "/CONFIG"
+            var lnk = "<A HREF='"+url+"'>"+url+"</A>";
+            document.getElementById("infodata").innerHTML = lnk;
+            document.getElementById("content").innerHTML = "<iframe src='./WHIST.config.json'></iframe>";
+            break;
+        case 4:
+            var sParam = document.getElementById("PARAMETER").value;
+            var url = window.location.origin + "/CONFIG?key="+sParam;
+            var lnk = "<A HREF='"+url+"'>"+url+"</A>";
+            document.getElementById("infodata").innerHTML = lnk;
+            document.getElementById("content").innerHTML = "";
+            break;
+        case 5: 
+            const obj2 = {};
+            var cpt = 0;
+            data.forEach(([key, value]) => {
+                lsKEY = keyLS+cpt.toString().padStart(2, "0");
+                lsVAL = key+"="+value;
+                localStorage.setItem(lsKEY, lsVAL);
+                cpt++;
+                });
+            var resTEXT = ""
+            for (let i = 0; i < localStorage.length; i++) {
+                var key = localStorage.key(i);
+                if ( key.startsWith(keyLS) ) {
+                    resTEXT += key + "\t" + localStorage.getItem(key) + "\n";                   }
+                    }
+            document.getElementById("infodata").innerHTML = "<PRE>"+resTEXT+"</PRE>";
+            document.getElementById("content").innerHTML = "";
+            break;
+        case 6:
+            const textJ = window.opener.document.getElementById("NBRJOUEURS").value;
+            const listJ = window.opener.document.getElementById("JOUEURS").value;
+            const textA = window.opener.document.getElementById("NBRANNONCES").value;
+            const listA = window.opener.document.getElementById("ANNONCES").value;
+            const texte = "<pre style='font-size: 15px;'><hr>"+textJ+"<HR>"+listJ+"<HR>"+textA+"<HR>"+listA+"</pre>";
+            document.getElementById("content").innerHTML = texte;
+            document.getElementById("infodata").innerHTML = "";
+            break;
+        default: 
+            //RAF
+        }
+    }
+
+function downloadJSON(data, filename = "WHIST.config.json") {
+    const jsonStr = JSON.stringify(data, null, 2);
+    const blob = new Blob([jsonStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+    }
+</script>
+</head>
+<body>
+
+<FORM>
+    <P align="center">
+    <TABLE BORDER="0" BORDERCOLOR=RED WIDTH="75%" CELLSPACING="0" CELLPADDING="10">
+        <TR>
+            <TD COLSPAN="5" ALIGN="CENTER">
+                <H2>Page pour regénérer le ficher de config JSON pour l'application WHIST</H2>
+            </TD>
+        </TR>
+        <TR ALIGN="CENTER">
+                <TD><INPUT TYPE="BUTTON" VALUE="PARAMETRES"     onclick="JavaScript:requestButton(1)"></TD>
+                <TD><INPUT TYPE="BUTTON" VALUE="GENERER JSON"   onclick="JavaScript:requestButton(2)"></TD>
+                <TD><INPUT TYPE="BUTTON" VALUE="CHECK PROD"     onclick="JavaScript:requestButton(3)"></TD>    
+                <TD><INPUT TYPE="BUTTON" VALUE="LOCALSTORAGE"   onclick="JavaScript:requestButton(5)"></TD>           
+                <TD><INPUT TYPE="BUTTON" VALUE="DATA"           onclick="JavaScript:requestButton(6)"></TD>           
+               </TR>
+    </TABLE>
+    </P>
+    <BR>
+    <TABLE BORDER="0" BORDERCOLOR="BLACK">
+        <TR>
+            <TD WIDTH="25%" CLASS='celldetail'>
+                &nbsp;
+            </TD>
+            <TD ALIGN=LEFT WIDTH="75%">
+                <div id="infodata" class="infodata"></div>
+                <div id="content"></div>
+            </TD>
+        </TR>
+    </TABLE>
+    
+</FORM>
+</body>
+</html>

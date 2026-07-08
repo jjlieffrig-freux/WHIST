@@ -1,25 +1,35 @@
 <!DOCTYPE html>
 <HEAD>
 <TITLE>WHIST - NAVIGATOR</TITLE>
+<link id="mainCss" rel="stylesheet" href="Whist.css">
 </HEAD>
 
 <script src="WhistCalc.js"></script>
 
 <BODY> 
-<FORM NAME=LISTE>
-<TABLE BORDER=0 WIDTH=100% CELLSPACING=0 CELLPADDING=5>   
-<TR>
-
-<TD ALIGN=CENTER>
-    <INPUT TYPE="BUTTON" VALUE="IMPRIME"  ONCLICK="JavaScript:impressionRes('PRINT')">
-    </TD>
-
-<TD ALIGN=CENTER>
-    <input type="button" VALUE="CSV" ID="CSV" onclick="JavaScript:impressionRes('CSV')">
-    </TD>
-
+<FORM ID="LISTE" NAME="LISTE">
+<TABLE ID="WHISTB" CLASS="tableTOP"  BORDER=0 BORDERCOLOR="GREEN" WIDTH=80% CELLSPACING=0 CELLPADDING=5>   
+<TR VALIGN=TOP CLASS="CARAC">
+    <TD ALIGN=CENTER WIDTH="25%">
+        <INPUT CLASS="CARAC" TYPE="BUTTON" VALUE="AGRANDIR"  ONCLICK="JavaScript:impressionRes('LARGE')">
+        </TD>
+    <TD ALIGN=CENTER WIDTH="25%">
+        <INPUT CLASS="CARAC" TYPE="BUTTON" VALUE="IMPRIME"  ONCLICK="JavaScript:impressionRes('PRINT')">
+        </TD>
+    <TD ALIGN=CENTER WIDTH="25%">
+        <input CLASS="CARAC" type="button" VALUE="CSV" ID="CSV" onclick="JavaScript:impressionRes('CSV')">
+        </TD>
+    <TD ALIGN=CENTER WIDTH="25%">
+        <input class="infoMEM" type="text" id="version" name="version" SIZE="13" readonly value="" >
+        </TD>
 </TR>
-</TABLE><BR>
+</TABLE>
+<BR>
+
+<SCRIPT>
+getLastModified("WhistCalc.js");
+</SCRIPT>
+
 </FORM>
 
 </BODY>

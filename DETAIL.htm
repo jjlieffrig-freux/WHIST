@@ -11,21 +11,16 @@
 
 </head>
 
-<body BGCOLOR=WHITE>
+<body>
 
 <script>
+
 async function savePdf()
     {
     console.log("========================== Start process to generate PDF file ==========================");
     const d = new Date();
     const pad = (n) => String(n).padStart(2, "0");
-    const timeStamp =
-        d.getFullYear().toString() + "-" +
-        pad(d.getMonth() + 1).toString() + "-" +
-        pad(d.getDate()).toString() + "-" +
-        pad(d.getHours()).toString() + "-" +
-        pad(d.getMinutes()).toString() + "-" +
-        pad(d.getSeconds());
+    const timeStamp = generateFileName("html");
 
     const strD = parent.frames['HDR'].document.getElementById('COOKIE').value;
     const nbrJ = parent.frames['HDR'].document.getElementById('NPARTIE').value;
@@ -98,7 +93,7 @@ async function saveHtmlToFile_1(htmlName, htmlTEXT)
             accept: { "text/html": [".html"] }
             }]
         });
-    const writable = await handle.createWritable();
+    const writable = await ficHandle.createWritable();
     await writable.write(htmlTEXT);
     await writable.close();
 
@@ -184,25 +179,60 @@ async function sendHtmlFileToPdf(textINFO, swCONNECT)
 
 </script>
 
-<FORM NAME="RES">
-<TABLE CLASS="table1" BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
+<FORM ID="RES"  NAME="RES">
 
-<TR CLASS="GENERAL1" ALIGN="CENTER" VALIGN="MIDDLE">    
+<TABLE CLASS="tableTOP" BORDER="0" BORDERCOLOR="BLUE" CELLSPACING="0" CELLPADDING="0" WIDTH="100%" HEIGHT="100%">
+<TR VALIGN="TOP" ALIGN=CENTER>
     <TD>
-    <TEXTAREA CLASS="blink" name="RESULTS" id="RESULTS" ROWS=1 COLS=100 style="display:line; border:0px"> </TEXTAREA>
-    <INPUT TYPE="TEXT" name="COOKIE" id="COOKIE" SIZE="15" style=" display:none; border:0px">
-    </TD>
-    </TR>
 
-<TR CLASS="GENERAL2">
-    <TD>
-        <div CLASS="table-container" name="RESULTATS" id="RESULTATS"></div>
-    </TD>
+    <TABLE class="mytr" BORDER="0" BORDERCOLOR="RED" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
+    <TR ALIGN="CENTER" VALIGN="TOP">    
+        <TD CLASS="celldetail">
+            <TEXTAREA CLASS="blink" name="RESULTS"   id="RESULTS"  ROWS=1 COLS=90 style="display:line; border:0px"> </TEXTAREA>
+            </TD>
+    </TR><TR>
+        <TD CLASS="celldetail">
+            <TABLE BORDER=0 WIDTH=100% HEIGHT=100%>
+            <TR ALIGN=CENTER VALIGN=MIDDLE><TD>
+                    <TABLE BORDER=0 WIDTH="100%">
+                    <TR VALIGN=MIDDLE ALIGN=CENTER><TD>
+                        <div CLASS="table-container" name="RESULTATS" id="RESULTATS" style="height:700px; overflow-y:auto; border:0px;"> </div>
+                    </TD></TR>
+                    </TABLE>
+            </TD></TR>
+            </TABLE>
+        </TD>
     </TR>
+    </TABLE>
 
+    </TD>
+</TR>
+<TR><TD>
+    <TABLE BORDER="0" WIDTH="100%"><TR>
+    <TD><textarea id="headerIN"  name="headerIN"  ROWS=8 COLS=30 class="headers"></textarea></TD>
+    <TD><textarea id="headerOUT" name="headerOUT" ROWS=8 COLS=30 class="headers"></textarea></TD>
+    </TR></TABLE>             
+</TD></TR>
 </TABLE>
 
-</FORM>
-</body>
+<script>
+async function readFile(xFile, xDiv) 
+    {
+    try {
+        const response = await fetch(xFile);
+        if (!response.ok) { throw new Error(`HTTP ${response.status}`);}
+        const text = await response.text();
+        document.getElementById(xDiv).textContent = text;
+        } 
+    catch (err) {
+        console.error(err);
+        }
+    };
+readFile("headerIN.html.txt","headerIN");
+readFile("headerOUT.html.txt","headerOUT");
+</script>
 
+</FORM>
+
+</body>
 </html>

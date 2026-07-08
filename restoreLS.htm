@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<HTML>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="Cache-Control" content="no-cache">
+
+<HEAD>
+    <TITLE>WHIST - Menu</TITLE>
+    <link id="mainCss" rel="stylesheet" href="Whist.css">
+    <script src="WhistCalc.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+
+//window.addEventListener("load", function () {
+document.addEventListener("DOMContentLoaded", () => {
+    var osOpt = generationSelectAnnoncesOptions("?");
+    });
+
+</script>
+</HEAD>
+
+<BODY>
+
+<TABLE class="tableTOP" BORDER=0 BORDERCOLOR=BLUE CELLSPACING=0 CELLPADDING=0 WIDTH=100% HEIGHT=100%>
+    <TR><TD VALIGN=MIDDLE ALIGN=CENTER> 
+        <TABLE BORDER=0 BORDERCOLOR=RED CELLSPACING=0 CELLPADDING=0>
+            <TR><TD ALIGN="CENTER">
+<H3>Restauration de la memoire<BR>de votre Navigateur ('localStorage')</H3>
+<BR>
+<HR><P ALIGN=CENTER>
+<input class="celldetail" type="file" id="fileInput" accept=".csv">
+<HR>
+<BR>
+<textarea class="petit" id="data" name="data" rows=10 cols=150 readonly></textarea> 
+
+            </TD></TR>
+        </TABLE>
+    </TD></TR>
+</TABLE>
+
+
+<script>
+document.getElementById("fileInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    var xLines = ""; var cpt = 0;
+
+    localStorage.clear();
+    console.log("localStorage effacée");
+
+    reader.onload = () => {
+        const lines = reader.result.split(/\r?\n/).slice(1);
+        var msgTXT = "La 'localStorage' vient d'être effacée et est en reconstruction\n";
+        msgTXT += "Veuillez patienter quelques secondes..."
+        document.getElementById("data").value = msgTXT;
+        console.log(msgTXT);
+ 
+        lines.forEach(line => {
+            cpt++;
+            console.log(cpt+"\t"+line);
+
+            if (!line.trim()) return;
+
+            const match = line.match(/^"?(.*?)"?,\"?(.*)\"?$/);
+            if (!match) return;
+
+            const key   = match[1].replace(/""/g, '"');
+            const value = match[2].replace(/""/g, '"');
+            var curLine = key+","+value;
+            xLines = xLines + cpt + "\t" + curLine + "\n";
+
+            localStorage.setItem(key, value);
+            });
+    
+        msgTXT += "\n\n" + cpt + " enregistrements importés\n\n" + xLines;
+        document.getElementById("data").value = msgTXT;
+        console.log(msgTXT);
+        };
+    reader.readAsText(file);
+    });
+
+</script>
+</BODY>
+</HTML>

@@ -1,26 +1,338 @@
+:root {
+  --primary: lightgreen;
+  --secondary: #044d22;
+  --danger: #ef9e90;
+  --info: lightgoldenrodyellow;
+  --text-color-1: green;
+  --text-color-2: BLACK;
+  --background-color-1: #efe6f5;
+  --background-color-2: WHITE;
+}
 
-#html {
-	overscroll-behavior: none;
+body {
+  color: var(--text-color-1);
+  background: var(--background-color-1);
+}
+
+.headers {
+	color: var(--text-color-1);
+  	background: var(--background-color-1);	
+	display: none;
+	border: none;
+	font-size: 20px;
+	padding: 0px 5px;
+	border-radius: 5px;
+	height: 90px;
+}
+
+.btn-primary {
+	color: var(--primary);
+  	background: var(--secondary);
+	border: none;
+	padding: 0px 5px;
+	border-radius: 5px;
+	font-size: 25px;
+	cursor: pointer;
+}
+
+.btn-danger {
+	color: var(--text-color-1);
+  	background: var(--danger);
+}
+
+#haut {
+	display: none;
+}
+
+#bas {
+	display: none;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    border: 1px solid #007bff;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn:active {
+    background-color: #004494;
 }
 
 html, body {
     height: 100%;
-    overflow: none;
+    overflow: auto;
+	overscroll-behavior: auto;
+}
+
+#JOUEURS,
+#ANNONCES {
+  display: none;
+}
+
+#TBCOL {
+    table-layout: fixed;
+    width: 80%;
+}
+
+#TBCOL td,
+#TBCOL th {
+    overflow: hidden;
+}
+
+td.mywidthL {
+    width:150px;
+    min-width: 150px;
+    max-width: 150px;
+}
+
+td.mywidthS {
+    width: 20px;
+    min-width: 20px;
+    max-width: 20px;
+}
+.hidden {
+    visibility: hidden;
+}
+.NOTEXT {
+	color: var(--text-color-1);
+  	background: var(--background-color-1);	
+	display: none;
+	border: none;
+	font-size: 20px;
+	padding: 0px 5px;
+	border-radius: 5px;
+}
+
+.CARAC {
+	width: 200px;
+	font-size: 45px;
+}
+
+.PERDU1{
+	color: var(--secondary);
+  	background: var(--danger);
+}
+.PERDU2 {
+	background-color: red;
+	color: white;
+}
+.JEUX {
+  display: none;
+}
+
+#toggle:checked ~ .JEUX {
+  display: block;
+}
+
+.tableTOP {
+    position: fixed;
+    top: 0;
+    left: 0;
+	width:100%;
+	height: 400px;
 }
 
 .table-container {
-    height: 450px;
-    overflow-y: scroll;
-	background-color: lightblue;
+  	/* height: 450px; */
+	height: 110vh; 			/* 50% de la hauteur de l'écran */
+  	overflow-y: auto;
+	overflow-x: auto;  		/* affiche la barre seulement si nécessaire */
+    white-space: nowrap; 	/* empêche le retour à la ligne */
+	background: var(--background-color-1);
+	border-color: lightblue;
+	width: 100%;
 }
 
 .table-container:empty {
+	height: 450px;
     background-color: white;
 }
+
+select {
+		background-color: white;
+		color: black;
+   	font-family: 'Courier New', Courier, monospace;
+   	font-weight: Normal;
+   	font-size: 80%;
+		padding: 1px;
+		border-radius: 5px;
+		width: 100%;
+  	white-space: nowrap;    
+  	text-overflow: ellipsis; 
+  	}
+
 #mySelect, #mySelect option {
     font-family: "Courier New", Courier, monospace;
     font-size: 100%;
 }
+
+.select1 {
+	background-color: white;
+   	font-family: 'Courier New', Courier, monospace;
+   	font-weight: Normal;
+   	font-size: 130%;
+	color: black;
+	padding: 1px;
+	border-radius: 5px;
+	width: 100%;
+  	}
+
+.select2 {
+	background-color: white;
+   	font-family: 'Courier New', Courier, monospace;
+   	font-weight: Normal;
+   	font-size: 90%;
+	color: black;
+	padding: 1px;
+	border-radius: 5px;
+	width: 100%;
+  	}
+
+.select3 {
+	background-color: white;
+   	font-family: 'Courier New', Courier, monospace;
+   	font-weight: Normal;
+   	font-size: 90%;
+	color: black;
+	padding: 1px;
+	border-radius: 5px;
+	width: 100%;
+  	}
+
+/* ==================== SPECIAL CONFIG FOR TABLE =================== */
+table {
+    border-collapse: separate;
+}
+
+table,
+th,
+td {
+    border: bloc !important;
+}
+
+tr {
+	color: var(--text-color-1);
+	background: var(--background-color-1);
+	font-weight: bold;
+	font-size: 25px
+	}
+	
+/* table tr:first-child td { */
+table mytr:first-of-type {
+	color: green;
+    background-color: white;
+	}
+
+/* ==================== SPECIAL CONFIG FOR TABLE TO LOCK FISRT ROW WHEN SCROLLING ==== */
+
+.petit {
+	color: var(--secondary);
+  	background: var(--info);
+	font-size: 15px;
+	font-weight: bold;	
+}
+
+/*
+table tr:first-child td {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1; 
+*/
+
+.ROW {
+    background: var(--background-color-1);
+	}
+
+.celldetail {
+	color: var(--text-color-2);
+    background-color: var(--background-color-2);
+	font-family: "Courier New", Courier, monospace;
+	font-size: 25px;
+}
+
+.celldetail2 {
+	color: var(--text-color-2);
+    background-color: var(--background-color-2);
+	font-family: "Courier New", Courier, monospace;
+	font-size: 15px;
+}
+
+.cellinfo {
+	color: var(--text-color-2);
+    background-color: var(--background-color-2);
+	font-style: italic; 
+	font-size: 20px;
+}
+
+.tdHote {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 90%;
+	background-color: lightblue;
+	}
+
+.tdDonne {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 90%;
+	background-color: orange;
+	}
+.tdEnjeu {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 90%;
+	background-color: pink;
+	}
+
+.tdContre {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 90%;
+	background-color: lightgrey;
+	}
+
+.tdJoueurs {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 90%;
+	background-color: lightgreen;
+	}
+
+td {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 90%;
+	background: var(--background-color-1);
+	}
+
+/* =========== LOCK SCROLL ON HEAD TABLE HTML ================== */
+
+thead,
+thead th {
+  position: sticky;
+  top: 0;
+  color: blue;
+  background: var(--background-color-1);
+  z-index: 1;
+}
+
+.ENTETE {
+	background-color: yellow;	
+	font-size: 24px;
+    color: black;
+    font-weight: bold;	
+	}
+
+.SPECIAL {
+	background-color: yellow;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 120%;
+	}
 
 body {
 	overscroll-behavior: none;
@@ -39,11 +351,24 @@ iframe {
     }
 
 fieldset {
-  	background-color: lightblue;
+  	background: var(--background-color-1);
   	font-family: "Courier New", Courier, monospace;
 	font-size: 110%;
     color: black;
     font-weight: bold;
+}
+
+fieldset legend {
+	background: var(--background-color-1);
+  	padding: 0 8px;
+}
+
+.viewinfo {
+	background-color: white;
+	border-style: none;
+	overflow: auto;
+	font-size: 10%;
+	color: blue;
 }
 
 div {
@@ -51,7 +376,7 @@ div {
 }
 
 div1 {
-  	background-color: lightblue;;
+  	background-color: lightblue
 }
 
 .WHISTEURS {
@@ -69,6 +394,17 @@ div1 {
     font-weight: bold;
 }
 
+.WHISTEURS3 {
+	display: flex;
+    flex-direction: column;
+    gap: 10px;
+ 	font-family: "Courier New", Courier, monospace;
+	font-size: 120%;
+    color: black;
+	background-color: WHITE;
+    font-style: italic;
+}
+
 ol {
     list-style-type: decimal;
     padding-left: 40px;
@@ -84,17 +420,6 @@ li {
 }
 */
 
-.WHISTEURS3 {
-	display: flex;
-    flex-direction: column;
-    gap: 10px;
- 	font-family: "Courier New", Courier, monospace;
-	font-size: 120%;
-    color: black;
-	background-color: WHITE;
-    font-style: italic;
-}
-
 .text-style {
     font-size: 24px;
     color: black;
@@ -103,64 +428,17 @@ li {
     text-align: center;
 	}
 
-.table1 {
-    position: fixed;
-    top: 0;
-    left: 0;
-}
-
-th[scope="td1"] {
-	width: 8%;
-	background-color: lightblue;
-	}
-
-th[scope="td2"]{
-	width: 20%;
-	background-color: lightblue;
-	}
-
-th[scope="td3"]{
-	width: 40%;
-	background-color: lightblue;
-	}
-
-th[scope="td4"]{
-	width: 40%;
-	background-color: lightblue;
-	}
-
-tr {
-	background-color: lightblue;		
-	}
-
-.ENTETE {
-	background-color: yellow;	
-	font-size: 24px;
-    color: black;
-    font-weight: bold;	
-	}
-
-td {
-	font-family: "Courier New", Courier, monospace;
-	font-size: 80%;
-	}
-
-.SPECIAL {
-	background-color: yellow;
-	font-family: "Courier New", Courier, monospace;
-	font-size: 80%;
-	}
-
 .GENERAL1 {
 	font-family: "Arial";
-	font-size: 110%;
+	font-size: 100%;
 	font-weight: bold;
 	color: black;
-	background-color: white;
+	background: var(--background-color-1);
 }
+
 .GENERAL2 {
-	font-family: "Arial";
-	font-size: 140%;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 150%;
 	font-weight: bold;
 	color: black;
 	background-color: lightgrey;
@@ -188,24 +466,33 @@ td {
    	font-size: 120%;
 }
 
-.select1 {
-	background-color: white;
-   	font-family: 'Courier New', Courier, monospace;
-   	font-weight: Normal;
-   	font-size: 200%;
-	color: black;
-	padding: 1px;
-	border-radius: 5px;
-	width: 100%;
-  	}
 
+button {
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+input[type="button"] {
+    background-color: #0078d4;
+    color: white;
+    border: 1px solid #005fa3;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+}
 .pButtons {
   background-color: #0078d7;
   color: white;
   border: none;
-  padding: 0px 2px;
-  border-radius: 2px;
-  font-size: 14px;
+  padding: 0px 5px;
+  border-radius: 5px;
+  font-size: 35px;
   cursor: pointer;
 }
 
@@ -213,36 +500,16 @@ td {
   background-color: #005fa3;
 }
 
-.select2 {
-	background-color: white;
-   	font-family: 'Courier New', Courier, monospace;
-   	font-weight: Normal;
-   	font-size: 100%;
-	color: black;
-	padding: 1px;
-	border-radius: 5px;
-	width: 100%;
-  	}
-
-.select3 {
-	background-color: white;
-   	font-family: 'Courier New', Courier, monospace;
-   	font-weight: Normal;
-   	font-size: 140%;
-	color: black;
-	padding: 1px;
-	border-radius: 5px;
-	width: 100%;
-  	}
-
 .infoMEM {
    	font-family: 'Courier New', Courier, monospace;
-   	font-weight: Normal;
-   	font-size: 100%;
+   	font-weight: bold;
+   	font-size: 60%;
+	border: none;
 	color: black;
 	padding: 1px;
 	border-radius: 5px;
 	width: 100%;
+	background: var(--background-color-1);
   	}
 
 .persLI1 {
@@ -252,33 +519,71 @@ td {
 	color: RED; 
 	font-weight: bold;
 }
+
 .persLI2 {
 	font-family: 'Courier New', Courier, monospace;
-	font-size: 75%;
+	font-size: 55%;
 	list-style-type: decimal;
 	color: black;
 	font-weight: none;
+	font-weight: normal;
 }
 
-option:checked, option:hover {
-  background-color: black;
-  color: greenyellow;
-  font-size: 100%;
+.details {
+  display: none;
 }
 
-select{
-	background-color: white;
-   	font-family: 'Courier New', Courier, monospace;
-   	font-weight: Normal;
-   	font-size: 100%;
-	color: black;
-	padding: 1px;
-	border-radius: 5px;
-	width: 100%;
-  	white-space: nowrap;    /* Prevents the text from wrapping to multiple lines */
-  	text-overflow: ellipsis; 
-  	}
-	
+#toggleDIV:checked ~ .details {
+  display: block;
+}
+
+option:blur {
+  background-color: #4a90e2;
+  color: red;
+  font-weight: bold;
+}
+
+option:change {
+  background-color: #4a90e2;
+  color: orange;
+  font-weight: bold;
+}
+
+option:hover {
+  color: red;
+  font-weight: bold;
+}
+
+option:checked {
+  	color: blue;
+  	font-size: 120%;
+	font-weight: bold;
+}
+
+option:nth-child(odd) {
+	color: var(--text-color-2);
+  	background: lightgoldenrodyellow;
+}
+
+option:nth-child(even) {
+	color: var(--text-color-2);
+  	background: #ffffff;
+}
+
+option.empty {
+	color: lightgrey;
+	background-color: black;
+	font-size: 100%;
+}
+
+optgroup {
+  	color: #d32f2f;
+	background-color: rgb(236, 187, 187);
+  	font-weight: bold;
+  	font-style: italic;
+	font-size: 80%;
+}
+
 .MSGTXT{
 	background-color: #ebebf7;
    	font-family: TAHOMA;
@@ -295,7 +600,10 @@ select{
   animation: blink 1s linear infinite;
   background-color: white;
   color:red;
+  font-size: 25px;
+  font-weight: bold;
 }
+
 
 @keyframes blink {
   0%, 100% {

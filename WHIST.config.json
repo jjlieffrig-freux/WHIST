@@ -1,0 +1,11 @@
+{
+  "switch": "?",
+  "ckNameDef": "PARTIES-WHIST",
+  "ckNamePfx": "WHIST-",
+  "joueursPfx": "WHISTER.",
+  "annoncesPfx": "ANNONCES.",
+  "defOpts": "height=500,width=1100,top=100,left=100,resizable=yes",
+  "sepCSV": "!",
+  "bSquare": "■",
+  "nbrJeux": 100
+}

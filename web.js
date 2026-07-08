@@ -14,6 +14,40 @@ app.use(express.static(__dirname + "/"))
 app.use('/', serveIndex(__dirname + '/'));
 app.use(express.json());
 
+app.get('/JOUEURS', (req, res) => {
+    const contenuJ = fs.readFileSync(__dirname + '/JOUEURS.csv.json', 'utf8');
+    res.send(contenuJ);
+    });
+app.get('/ANNONCES', (req, res) => {
+    const contenuA = fs.readFileSync(__dirname + '/POINTS.csv.json', 'utf8');
+    res.send(contenuA);
+    });
+app.get('/CONFIG', (req, res) => {
+    //const contenuA = fs.readFileSync(__dirname + '/WHIST.config.json', 'utf8');
+    //res.send(contenuA);
+    //res.send(JSON.stringify(contenuA, null, 2));
+    fs.readFile(__dirname + '/WHIST.config.json', 'utf8', (err, data) => {
+        res.type("application/json");
+        res.send(data);
+        });
+    });
+app.get('/myIP', (req, res) => {
+    const os = require("os");
+    const interfaces = os.networkInterfaces();
+    for (const name of Object.keys(interfaces)) {
+        for (const net of interfaces[name]) {
+            if (net.family === "IPv4" && !net.internal) {
+                console.log(net.address);
+                res.send(net.address);
+                }
+            }
+        } 
+    });
+
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end();
+});
+
 app.use('/WHIST00', (req, res) => {
     var appLoc = path.join(__dirname, "Avertissement.htm" );
     console.log("Display file "+appLoc);
@@ -38,6 +72,20 @@ app.get('/pdfs', (req, res) => {
     });
 
 app.use('/pdf', express.static(path.join(__dirname, '')));
+
+app.get('/Users/chef/WHIST/WHIST-NJS/public/dev/restoreLS.htm', (req, res) => {
+    res.sendFile(path.join(__dirname, 'restoreLS.htm'));
+    //res.status(200);
+    });
+
+app.get('/Users/chef/WHIST/WHIST-NJS/public/dev/headerIN.html.txt', (req, res) => {
+    res.sendFile(path.join(__dirname, './headerIN.html.txt'));
+    //res.status(200);
+    });
+app.get('/Users/chef/WHIST/WHIST-NJS/public/dev/headerOUT.html.txt', (req, res) => {
+    res.sendFile(path.join(__dirname, './headerOUT.html.txt'));
+    //res.status(200);
+    });
 
 app.get('/WHIST/WHIST-NJS/public/dev/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));

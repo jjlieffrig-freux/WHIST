@@ -4,762 +4,292 @@
 <meta http-equiv="Cache-Control" content="no-cache">
 
 <HEAD>
-<TITLE>WHIST - Menu</TITLE>
-<link rel="stylesheet" href="Whist.css">
+	<TITLE>WHIST - Menu</TITLE>
+	<link id="mainCss" rel="stylesheet" href="Whist.css">
+	<script src="WhistCalc.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+
+//window.addEventListener("load", function () {
+document.addEventListener("DOMContentLoaded", () => {
+	var osOpt = generationSelectAnnoncesOptions("?");
+	});
+
+</script>
 </HEAD>
 
-<script src="WhistCalc.js"></script>
+<BODY onLoad="prepareData()">
+<FORM ID="WHIST" NAME="WHIST">
 
-<script>
+<div id="toggleDIV2"> 
 
-function checkURL()
-	{
-	var xPOS = top.location.href.indexOf("?")
-	console.log("Controle URL sur '?'. Pos="+xPOS);
-	if ( xPOS > 1 )
-		{
-		document.WHIST.getElementById('switch').value = "?" ?? " ";				
-		}
-	listFramesIndex();
-	}
+<TABLE ID="WHISTB" CLASS="tableTOP" BORDER="0" BORDERCOLOR="RED" CELLSPACING="0" CELLPADDING="0">
 
-</script>
+<!-- ============================ MENU PRINCIPAL ================================================== -->
+<TR ALIGN="CENTER">	
+	<TD CLASS="GENERAL1" >
+		<BR><fieldset id="fs1">
+		<legend>ACTIONS</legend>
+		<SELECT NAME="ACTION" ID="ACTION" SIZE=1 ONCHANGE="JavaScript:prepareActivity(this.options[this.selectedIndex].value)">
+			<option value="?" style="color: lightgrey; ">CHOISISSEZ UNE ACTIVITE</option>
+		<optgroup label="PARTIES" id="PARTIES">
+			<option value="CNN">&nbsp;-&nbsp;1.&nbsp;CREER UNE NOUVELLE PARTIE DE WHIST</option>	
+			<option value="A">&nbsp;-&nbsp;2.&nbsp;EFFACER UNE PARTIE DE WHIST</option>
+			<option value="E">&nbsp;-&nbsp;3.&nbsp;EFFACE UN JEU D'UNE PARTIE EN COURS</option>
+			<option value="C">&nbsp;-&nbsp;4.&nbsp;CHARGE UNE PARTIE DEPUIS UN FICHIER</option>
+			<option value="D">&nbsp;-&nbsp;5.&nbsp;SAUVE  UNE PARTIE DANS UN FICHIER</option>
+		</optgroup>
+				
+		<optgroup label="SAISON" id="SAISON">	
+			<option value="F">&nbsp;-&nbsp;6.&nbsp;RESULTATS SUR TOUTE UNE SAISON</option>
+			<option value="Q">&nbsp;-&nbsp;7.&nbsp;STATISTIQUES SUR TOUTE UNE SAISON</option>	
+		</optgroup>
+				
+		<optgroup label="JEUX" id="JEUX">
+			<option value="J">&nbsp;-&nbsp;10.&nbsp;GENERE AU HAZARD UN "SEUL"</option>
+			<option value="K">&nbsp;-&nbsp;11.&nbsp;GENERE AU HAZARD UN "EMBALLAGE"</option>
+			<option value="P">&nbsp;-&nbsp;12.&nbsp;GENERE AU HAZARD UNE SERIE D'ANNONCES</option>
+		</optgroup>	
+				
+		<optgroup label="NAVIGATEUR" id="NAVIGATEUR">
+			<option value="B" style="color: RED;  font-weight: bold;">&nbsp;-&nbsp;13.&nbsp;REMISE A ZERO DE TOUTES LES PARTIES</option>
+			<option value='M' style="color: BLUE; font-weight: bold;">&nbsp;-&nbsp;14.&nbsp;AFFICHAGE MEMOIRE DU NAVIGATEUR</option>
+			<option value='S' style="color: BLUE; font-weight: bold;">&nbsp;-&nbsp;15.&nbsp;RESTAURE MEMOIRE DU NAVIGATEUR</option>
+		</optgroup>
+				
+		<optgroup label="INFO" id="INFO">
+			<option value="I">&nbsp;-&nbsp;16.&nbsp;INFORMATION&nbsp;&nbsp;&nbsp;SUR L'APPLICATION</option>
+			<option value='O'>&nbsp;-&nbsp;17.&nbsp;AVERTISSEMENT&nbsp;SUR L'APPLICATION</option>
+			<option value="G">&nbsp;-&nbsp;18.&nbsp;VOIR LA LISTE DES JOUEURS</option>
+			<option value="H">&nbsp;-&nbsp;19.&nbsp;VOIR LA LISTE DES ANNONCES</option>
+			<option value="R">&nbsp;-&nbsp;20.&nbsp;QRcode APPLICATION</option>
+			<option value="L">&nbsp;-&nbsp;21.&nbsp;RAFRAICHIR LES MENUS</option>
+		</optgroup>
+		</SELECT>
+		</fieldset>
 
-<BODY onLoad="checkURL()">
+		<script>
+			const select = document.getElementById('ACTION');
+			select.addEventListener('focus', () => {
+				select.size = 20;
+				});
+			select.addEventListener('blur', () => {
+				select.selectedIndex = 0;
+				select.size = 1;
+				});
+			select.addEventListener('change', () => {
+				select.selectedIndex = 0;
+				select.size = 1;
+				});
+		</script>
+		</TD>
+	</TR>
 
-<FORM NAME=WHIST>
-
-<TABLE CLASS="table1" BORDER="0" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
-<TR CLASS="GENERAL1" ALIGN="CENTER">	
-	
-<TD>
-<!input type="button" value="Rafraichir" onclick="JavaScript:resetAllFrames()">
-<input type="text" id="switch" 	name="switch" 		value="?" 		        SIZE="1"  DISABLED HIDDEN style='border-style: none; overflow: auto' >
-<input type="text" id="CKNAME" 	name="CKNAME" 		value="PARTIE-WHIST"   	SIZE="12" DISABLED HIDDEN style='border-style: none; overflow: auto' >
-<input type="text" id="PARPFX" 	name="PARPFX" 		value="WHIST-" 	    	SIZE="6"  DISABLED HIDDEN style='border-style: none; overflow: auto'>
-<INPUT TYPE="TEXT" 				NAME="NBRJOUEURS"  	VALUE="?" 				SIZE="05" DISABLED HIDDEN style='border-style: none; overflow: auto'>
-<INPUT TYPE="TEXT" 				NAME="NBRANNONCES" 	VALUE="?" 				SIZE="05" DISABLED HIDDEN style='border-style: none; overflow: auto'>
-<INPUT TYPE="TEXT"				NAME="NBRPARTIES"  	VALUE="?" 				SIZE="06" DISABLED HIDDEN style='border-style: none; overflow: auto'>
-<INPUT TYPE="TEXT" 				NAME="PARTIES" 		value=100				SIZE="03" DISABLED HIDDEN style='border-style: none; overflow: auto'>
-
-<BR><fieldset>
-<legend>ACTIONS</legend>
-<SELECT CLASS="select2" NAME="ACTION" ID="ACTION" SIZE=1 ONCHANGE="JavaScript:prepareActivity(this.options[this.selectedIndex].value)">
-<option value="?" class="GENERAL2">CHOISISSEZ UNE ACTIVITE</option>
-<option value="CNN">&nbsp;-&nbsp;1.&nbsp;CREER UNE NOUVELLE PARTIE DE WHIST</option>
-<option value="E">&nbsp;-&nbsp;2.&nbsp;EFFACE UN JEU D'UNE PARTIE EN COURS</option>
-<option value="A">&nbsp;-&nbsp;3.&nbsp;RECHARGE UNE PARTIE EN COURS MEMORISEE</option>
-<option value="C">&nbsp;-&nbsp;4.&nbsp;CHARGE UNE PARTIE DEPUIS UN FICHIER</option>
-<option value="D">&nbsp;-&nbsp;5.&nbsp;SAUVE UNE PARTIE EN COURS DANS UN FICHIER</option>
-<option value="F" style="color: GREEN; font-weight: bold;">&nbsp;-&nbsp;6.&nbsp;RESULTATS SUR TOUTE UNE SAISON</option>
-<option value="L">&nbsp;-&nbsp;7.&nbsp;RESET DU MENU DES ANNONCES</option>
-<option value="J" style="color: GREEN; font-weight: bold;">&nbsp;-&nbsp;8.&nbsp;SIMULE/GENERE UNE ANNONCE "SEUL"</option>
-<option value="K" style="color: GREEN; font-weight: bold;">&nbsp;-&nbsp;9.&nbsp;SIMULE/GENERE UNE ANNONCE "EMBALLAGE"</option>
-
-<option value='M'>&nbsp;-&nbsp;10.&nbsp;AFFICHAGE+AJUSTEMENT DE LA MEMOIRE DU NAVIGATEUR</option>
-<option value='N'>&nbsp;-&nbsp;11.&nbsp;LISTE TOUS PDF DEMANDES (à l'étude)</option>
-<option value="B" style="color: RED; font-weight: bold;">&nbsp;-&nbsp;12.&nbsp;REMISE A ZERO DE TOUTES LES PARTIES</option>
-<option value="">&nbsp;&nbsp;</option>
-<option value="I">&nbsp;-&nbsp;13.&nbsp;INFORMATION&nbsp;&nbsp;&nbsp;SUR L'APPLICATION</option>
-<option value='O'>&nbsp;-&nbsp;14.&nbsp;AVERTISSEMENT&nbsp;SUR L'APPLICATION</option>
-<option value="G">&nbsp;-&nbsp;15.&nbsp;VOIR LA LISTE DES JOUEURS</option>
-<option value="H">&nbsp;-&nbsp;16.&nbsp;VOIR LA LISTE DES ANNONCES</option>
-</SELECT>
-</fieldset>
-
-<script>
-const select = document.getElementById('ACTION');
-select.addEventListener('focus', () => {
-  	select.size = 16;
-});
-select.addEventListener('blur', () => {
-	select.selectedIndex = 0;
-  	select.size = 1;
-});
-select.addEventListener('change', () => {
-	select.selectedIndex = 0;
-  	select.size = 1;
-});
-
-function prepareActivity(strOption) 
-	{
-	//console.clear();
-	switch (strOption)
-		{
-		case "A":
-			reloadPointsArray();
-			break;
-		case "B":
-			initialiseData();
-			break;
-		case "C":
-			displayParameters('IMPORTE');
-			break;
-		case "D":
-			manageWhistRes('EJ');
-			break;
-		case "E":
-			effaceUnJeu();
-			break;
-		case "F":
-			displayCompile();
-			break;
-		case "G":
-			displayParameters('J');
-			break;
-		case "H":
-			displayParameters('A');
-			break;
-		case "I":
-			displayParameters('H');
-			break;
-		case "J":
-			specialSet(1);
-			break;
-		case "K":
-			specialSet(2);
-			break;
-		case "L":
-			resetJeu();
-			break;
-		case "M":
-			viewLocalStorage(1);
-			break;
-		case "N":
-			const inf = "<";
-			const sup = ">";
-			var pdfURL = window.location.protocol + "//" + window.location.host + "/pdfs";
-			var aHref  = inf+'A HREF="'+pdfURL+'"'+sup+'LISTE DE TOUS LES PDF'+inf+'/A'+sup;
-        	console.log("URL: "+aHref);
-			var htmlText = "";
-			htmlText += inf+'TABLE BORDER="0" WIDTH="100%"" HEIGHT="100vh"'+sup;
-			htmlText += inf+'TR ALIGN=CENTER VALIGN=MIDDLE'+sup+inf+'TD'+sup;
-			htmlText += inf+'H2'+sup+aHref+inf+'/H2'+sup;
-			htmlText += inf+"/TD"+sup+inf+'/TR'+sup+inf+'/TABLE'+sup;
-			htmlText += inf+"CENTER"+sup;
-			htmlText += inf+"INPUT TYPE='BUTTON' VALUE='FERMER' onclick='window.close()'"+sup;
-			htmlText += inf+"/INPUT"+sup;
-			htmlText += inf+"/CENTER"+sup;
-			var opts = "height=250,width=950,top=350,left=450,resizable=yes";
-			var myWindow = window.open("importFile.html", "WHIST-IMPORT", opts);
-			myWindow.document.write(htmlText);
-        	//parent.frames[2].document.getElementById("RESULTATS").innerHTML = htmlText;
-			//document.write
-			break;
-		case "O":
-			displayParameters('X');
-			//var myWindow = window.open("Avertissement.htm", "WHIST-CONSEILS", opts);
-			break;
-		case "CNN":
-			choosePartie("CNN");
-			break;
-		default:
-			// RAF
-		}
-	}
-</script>
-
-<TEXTAREA NAME="AIDEAPP" ROWS=3 COLS=30 style="display:none;">
-<TABLE BORDER=0><TR><TD VALIGN="MIDDLE" ALIGN="CENTER">
-<SPAN CLASS="WHISTEURS3">
-<a href="mailto:jj.lieffrig@gmail.com?subject=WHIST%20Information&body=Bonjour,">E-mail: jj.lieffrig@gmail.com</a><br>
-</SPAN>
-<hr style="border: none; height: 2px; background-color: blue;">
-</TD></TR>
-<TR VALIGN="TOP" ALIGN="LEFT"><TD>
-<SPAN CLASS="WHISTEURS3">
-<OL>
-<LI>- OBECTIF APPLICATION: ASSISTANCE DANS COMPTAGE DES POINTS DURANT UNE PARTIE DE WHIST.</LI><BR>
-<LI>- UNE PARTIE DE WHIST PEUT MEMORISER UN MAXIMUM DE 99 JEUX (ANNONCES).</LI><BR>
-<LI>- LES DONNEES SONT SAUVEGARDEES EN LOCAL DANS VOTRE NAVIGATEUR (CHROME/FIREFOX/EDGE...)
-	<BR>&nbsp;&nbsp;&nbsp;FAITES ATTENTION LORS DU NETTOYAGE DE VOTRE 'HISTORY'. GARDEZ COOKIES,LOCALSTORAGE!
-</LI><BR>
-<LI>- VEUILLEZ UTILISER LE MEME NAVIGATEUR POUR LA MEMORISATION/RECHARGE DE VOS PARTIES.</LI><BR>
-<LI>- LES FICHIERS DE SAUVEGARDE SE TROUVENT DANS LE FOLDER "TELECHARGEMENT" DE VOTRE NAVIGATEUR</LI><BR>
-<LI>- <U>PREVU POUR 6 JOUEURS</U>:<UL>
-	<LI>- 1 HOTE... : LA PERSONNE CHEZ QUI ON JOUE AU WHIST. IL/ELLE NE JOUE PAS DU TOUT!</LI><BR>
-	<LI>- 1 DONNEUR.: UNE DES 5 AUTRES PERSONNES. IL/ELLE NE JOUE PAS PENDANT LA DONNE</LI><BR>
-	<LI>- 4 AUTRES..: LES 4 AUTRES JOUEURS QUI SE DISPUTENT UN JEU / UNE MANCHE</LI><BR>
-	</UL>
-<LI>- <U>IMPERATIF</U>: AU WHIST MINUMUM 4 PERSONNES. COCHEZ LES ABSENTS COMME HOTE/DONNEUR</LI><BR>
-<LI>- <U>POUR DEBUTER</U>:
-<BR>&nbsp;&nbsp;&nbsp;- CHOISIR <B><U>ACTIVITE #1-CREER UNE PARTIE</U></B> ET LUI DONNER UN NOM. PAR DEFAUT: LA DATE DU JOUR.
-<BR>&nbsp;&nbsp;&nbsp;- ENSUITE CHOISIR LE JEU (COCHEZ QUI "INVITE/DONNE/JOUE/ANNONCE")
-<BR>&nbsp;&nbsp;&nbsp;- PUIS CLIQUEZ SUR LE BOUTON <B>[CALCUL]</B> POUR AFFICHER LES POINTS.
-<BR>&nbsp;&nbsp;&nbsp;PS: LES ACTIVITES <B>#8 ET #9</B> PERMETTENT DE "SIMULER" UN <B>"SEUL OU EMBALLAGE"</B>
-<BR>&nbsp;&nbsp;&nbsp;PS: L'ACTIVITE <B>#3</B> REACTIVE L'AFFICHAGE DES POINTS EN COURS...
-</LI><BR>&copy;-2026&nbsp;&nbsp;
-</OL>
-<BR>
-<CENTER><INPUT TYPE="BUTTON" VALUE="FERMER" ONCLICK="window.close()"></INPUT></CENTER>
-</SPAN>
-</TD></TR></TABLE>
-</TEXTAREA>
-
-<SCRIPT>
-	document.write("<BR><INPUT TYPE TEXT NAME='COOKIENAME' ID='COOKIENAME' VALUE='PARTIES-WHIST' SIZE=12 DISABLED HIDDEN style='border-style: none; overflow: auto'");
-	console.log("1) Check switch sur URL " + top.location.href);
-	var xPOS = top.location.href.indexOf("?")
-	console.log("1) Controle URL sur '?'. Pos="+xPOS);
-	document.WHIST.switch.value === "";
-	if ( xPOS > -1) 
-		{
-		document.WHIST.switch.value = "?";
-		}
-	console.log("1) switch='"+document.WHIST.switch.value+"'");
-	if ( document.WHIST.switch.value === "?" )
-		{
-		document.write("<TEXTAREA NAME='PARAM' id='PARAM' ROWS=6 COLS=40 style='none'></TEXTAREA>");
-		}
-	else {
-		document.write("<TEXTAREA NAME='PARAM' id='PARAM' ROWS=6 COLS=40 style='none'></TEXTAREA>");
-		}
-</SCRIPT>
-
-
-<TEXTAREA NAME="JOUEURS" ROWS=3 COLS=30 style="display:none;">
-1!JiPé!Jean-Pierre BOURVIL
-2!JiJi!Jean-Jacques ROUSSEAU
-3!Robi!Robert DELON
-4!José!José DEPARDIEU
-5!Francis!Francis GABIN
-6!JMarc!Jean-Marc BELMONDO
-</TEXTAREA>
-
-<TEXTAREA NAME="ANNONCES" ROWS=3 COLS=30 style="display:none;">
-1!EMBALLAGE!8!4!2
-2!EMBALLAGE!8+1!5!2
-3!EMBALLAGE!8+2!6!2
-4!EMBALLAGE!8+3!7!2
-5!EMBALLAGE!8+4!8!2
-6!EMBALLAGE!9!5!2
-7!EMBALLAGE!9+1!6!2
-8!EMBALLAGE!9+2!7!2
-9!EMBALLAGE!9+3!8!2
-10!EMBALLAGE!10!6!2
-11!EMBALLAGE!10+1!7!2
-12!EMBALLAGE!10+2!8!2
-13!EMBALLAGE!11!7!2
-14!EMBALLAGE!11+1!8!2
-15!EMBALLAGE!12!8!2
-16!EMBALLAGE!Double!12!2
-17!EMBALLAGE!8-1!-4!2
-18!EMBALLAGE!8-2!-8!2
-19!EMBALLAGE!8-3!-12!2
-20!EMBALLAGE!8-4!-16!2
-21!EMBALLAGE!9-1!-8!2
-22!EMBALLAGE!9-2!-12!2
-23!EMBALLAGE!9-3!-16!2
-24!EMBALLAGE!10-1!-12!2
-25!EMBALLAGE!10-2!-16!2
-26!EMBALLAGE!10-3!-18!2
-27!EMBALLAGE!11-1!-16!2
-28!EMBALLAGE!11-2!-18!2
-29!EMBALLAGE!12-1!-18!2
-30!2-P.Miseres!Gagnees!12!2
-31!2-P.Miseres!Perdues!-24!2
-32!2-P.Miseres !½ OK!-24!3
-33!2-G.Miseres!Gagnees!24!2
-34!2-G.Miseres!Perdues!-48!2
-35!2-G.Miseres !½ OK!-48!3
-36!Trou-8!8!8!2
-37!Trou-8!Double!12!2
-38!Trou-9!9!8!2
-39!Trou-9!Double!12!2
-40!Trou-8!Perdu!-24!2
-41!Trou-9!Perdu!-24!2
-42!2-GM/Trou!Gagnees!48!2
-43!2-GM/Trou!Perdues!-96!2
-44!2-GM/Trou!½ OK!-96!3
-45!Seul!6!6!1
-46!Seul!6+1!9!1
-47!Seul!6+2!12!1
-48!Seul!6-1!-9!1
-49!Seul!6-2!-12!1
-50!Seul!7!9!1
-51!Seul!7+1!12!1
-52!Seul!7-1!-9!1
-53!Seul!7-2!-12!1
-54!Seul!8!12!1
-55!Seul!8-1!-15!1
-56!Seul!8-2!-18!1
-57!8 sur P.Misere!Gagne!15!1
-58!8 sur P.Misere!Perdu!-30!1
-59!1-P.Misere!Gagnee!12!1
-60!1-P.Misere!Perdue!-24!1
-61!1-G.Misere!Gagnee!24!1
-62!1-G.Misere!Perdue!-48!1
-63!Abondance-9!Gagnee!18!1
-64!Abondance-10!Gagnee!24!1
-65!Abondance-11!Gagnee!30!1
-66!Abondance!Double!36!1
-67!Abondance-9!Perdue!-36!1
-68!Abondance-10!Perdue!-48!1
-69!Abondance-11!Perdue!-60!1
-70!1-GM/Trou!Gagnee!36!1
-71!1-GM/Trou!Perdu!-72!1
-72!Petit Schlem!Gagne!120!1
-73!Petit Schlem!Perdu!-120!1
-74!Grand Schlem!Gagne!240!1
-75!Grand Schlem!Perdu!-240!1
-</TEXTAREA>
-
-<SCRIPT>
-
-function noRepeatRandom(){
-    nextList = sourceList.filter(function(x){return x!=lastNumber});
-    randomIndex = Math.floor(Math.random() * nextList.length);
-    lastNumber = nextList[randomIndex] 
-    return lastNumber
-}
-
-function specialSet(xSTR)
-	{
-	const min = 1;
-	const max = 5;
-	const listNumbers = new Array(6).fill(0);
-	var randomNumber = 0;
-
-	for(var k = 1; k < listNumbers.length; k++) 
-		{ 
-		do 	{
-			var randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-			//console.log(k+"\t"+randomNumber+"\t"+listNumbers.includes(randomNumber))
-			}
-		while ( listNumbers.includes(randomNumber) );
-		listNumbers[k] = randomNumber;
-		}		
-	console.log(listNumbers);
-	let min1 = 0;
-	let max1 = 0;
-	let min2 = 0;
-	let max2 = 0;
-	var nbrAnnonces = document.WHIST.ANNONCES.value;
-	let arrayM = nbrAnnonces.split('\n');
-	for(var k = 0; k < arrayM.length; k++) 
-		{ 
-		let lineAnn = arrayM[k].split("!");
-		switch ( parseInt(lineAnn[4]) )
-			{
-			case 1:
-				if ( min1 === 0 ) { min1 = parseInt(lineAnn[0]); } 
-				if ( min1 !== 0 ) { max1 = parseInt(lineAnn[0]); } 
-				break;
-			case 2:
-				if ( min2 === 0 ) { min2 = parseInt(lineAnn[0]); } 
-				if ( min2 !== 0 ) { max2 = parseInt(lineAnn[0]); } 
-				break;
-			default:
-				console.log("K="+k+"\t("+lineAnn[4]+")>("+lineAnn[0]+")\t["+min1+"]"+"["+max1+"]"+"\t\t["+min2+"]"+"["+max2+"]");
-			}
-		}
-	var annSeul = Math.floor(Math.random() * (max1 - min1 + 1)) + min1;
-	var annEmb  = Math.floor(Math.random() * (max2 - min2 + 1)) + min2;
-	console.log("RANDOM JEU - SEUL:"+annSeul+"\tEMBALLAGE:"+annEmb);
-
-	resetJeu("NO");
-	var strD = getCookie2(document.WHIST.CKNAME.value);
-	console.log("VALEUR COOKIE:'"+strD+"'");
-
-	if ( strD === undefined ) 
-		{
-		msgTXT = "VEUILLEZ D'ABORD CREER UNE PARTIE. REQUETE IMPOSSIBLE";
-		console.log(msgTXT);
-		//alert(msgTXT);
-		parent.frames['RESU'].document.getElementById('RESULTS').value = msgTXT;
-		return;
-		}
-
-	if ( xSTR === 1 )
-		{
-		k=listNumbers[0]; var elms = document.querySelectorAll("[name='HOTEPAR']");  elms[k].checked = true;
-		k=listNumbers[1]; var elms = document.querySelectorAll("[name='DONNEPAR']"); elms[k].checked = true;
-		k=listNumbers[2]; var elms = document.querySelectorAll("[name='ENJEUPAR']"); elms[k].checked = true;
-		k=listNumbers[3]; var elms = document.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
-		k=listNumbers[4]; var elms = document.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
-		k=listNumbers[5]; var elms = document.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
-		document.forms['WHIST'].elements['RESULTATSJEU'].options.selectedIndex = annSeul;
-		}
-	if ( xSTR === 2 )
-		{
-		k=listNumbers[0]; var elms = document.querySelectorAll("[name='HOTEPAR']");  elms[k].checked = true;
-		k=listNumbers[1]; var elms = document.querySelectorAll("[name='DONNEPAR']"); elms[k].checked = true;
-		k=listNumbers[2]; var elms = document.querySelectorAll("[name='ENJEUPAR']"); elms[k].checked = true;
-		k=listNumbers[3]; var elms = document.querySelectorAll("[name='ENJEUPAR']"); elms[k].checked = true;
-		k=listNumbers[4]; var elms = document.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
-		k=listNumbers[5]; var elms = document.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
-		document.forms['WHIST'].elements['RESULTATSJEU'].options.selectedIndex = annEmb;
-		}
-	}
-
-function resetJeu(xCODE)
-    {
-	var elms = document.querySelectorAll("[name='DONNEPAR']");
- 	for(var i = 0; i < elms.length; i++) { elms[i].checked = false; }
-	var elms = document.querySelectorAll("[name='ENJEUPAR']");
- 	for(var i = 0; i < elms.length; i++) { elms[i].checked = false; }
-	var elms = document.querySelectorAll("[name='JOUERPAR']");
-	for(var i = 0; i < elms.length; i++) { elms[i].checked = false; }
-    }
- 
-function displayParameters(strINFO)
-	{
-	
-	var HtmlParams = "";	
-	HtmlParams += "<"+"!DOCTYPE html"+">\n";
-	HtmlParams += "<HTML><HEAD>";
-	HtmlParams += "<link rel='stylesheet' href='Whist.css'>\n";
-	HtmlParams += "</HEAD><"+"BODY"+">\n"
-	HtmlParams += "<CENTER>\n";
-	HtmlParams += "<BR><TABLE BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=50% HEIGHT=50%>\n";
-
-	switch(strINFO) 
-		{
-		case "IMPORTE": 
-			var nbrPARAM = document.WHIST.AIDEAPP.value;
-			var lblTEXT1 = "CLIQUEZ SUR LE BOUTON ET CHOISISSEZ LE FICHIER";
-			var lblTEXT2 = "";
-			var lblTEXT3 = "";
-			var lblDISPO = " ALIGN=RIGHT";
-			var swMETHOD = "HTML1";
-			var swMETHOD = "WIN1";
-			break;		
-		case "A":
-			var nbrPARAM = document.WHIST.ANNONCES.value;
-			var lblTEXT1 = "ANNONCé";
-			var lblTEXT2 = "REALISé";
-			var lblTEXT3 = "POINTS";
-			var lblDISPO = " ALIGN=RIGHT";
-			var swMETHOD = "FRAME";
-			break;
-		case "J":
-			var nbrPARAM = document.WHIST.JOUEURS.value;
-			var lblTEXT1 = "INDEX";
-			var lblTEXT2 = "CODE";
-			var lblTEXT3 = "JOUEUR"
-			var lblDISPO = " ALIGN=CENTER";
-			var swMETHOD = "FRAME";
-			break;
-		case "H":
-			var nbrPARAM = document.WHIST.AIDEAPP.value;
-			var lblTEXT1 = "Aide définie dans l'application";
-			var lblTEXT2 = "Contact";
-			var lblTEXT3 = "-";
-			var lblDISPO = " ALIGN=LEFT";
-			var swMETHOD = "FRAME";
-			break;
-		default:
-			var nbrPARAM = "A\nB\n";
-			var lblTEXT1 = "";
-			var lblTEXT2 = "";
-			var lblTEXT3 = "";
-			var lblDISPO = " ALIGN=RIGHT";
-			var swMETHOD = "HTML2";
-			var swMETHOD = "WIN2";
-		}
-	
-	HtmlParams += "<TR ALIGN='CENTER'>";
-	HtmlParams += '<TD BGCOLOR="YELLOW">Nbr</TD>\n';
-	HtmlParams += '<TD BGCOLOR="YELLOW">'+lblTEXT1+'</TD>';
-	HtmlParams += '<TD BGCOLOR="YELLOW">'+lblTEXT2+'</TD>';
-	HtmlParams += '<TD BGCOLOR="YELLOW">'+lblTEXT3+'</TD>';
-	HtmlParams += '</TR>\n';
-
-	const arrayP = nbrPARAM.split('\n');
-
-	for (i = 0; i < arrayP.length-1; i++) 
-		{
-		count = i + 1;
-		if ( strINFO === "A" )
-			{
-			var key   = arrayP[i].split('!')[1].trim();
-			var data1 = arrayP[i].split('!')[2].trim();
-			var data2 = arrayP[i].split('!')[3].trim();
-			var opt	  = arrayP[i].split('!')[4].trim();
-			}	
-		if ( strINFO === "J" )
-			{
-			var key   = arrayP[i].split('!')[0].trim();
-			var data1 = arrayP[i].split('!')[1].trim();
-			var data2 = arrayP[i].split('!')[2].trim();
-			var opt	  = "3";
-			}
-		if ( strINFO === "IMPORTE" )
-			{
-			var key   = "<input id='fileInput' type='file' accept='.csv'>"; 
-			console.log(key);
-			var data1 = "&nbsp;";
-			var data2 = "&nbsp;";
-			var opt	  = "4";
-			count = "&nbsp;";
-			i = arrayP.length;
-			}
-
-		switch (opt)
-			{
-			case "1":
-				var bgcol1 = "BGCOLOR=LIGHTGREY";
-				break;
-			case "2":
-				var bgcol1 = "BGCOLOR=LIGHTGREEN";
-				break;
-			case "3":
-				var bgcol1 = "BGCOLOR=LIGHTBLUE";
-				break;
-			case "4":
-				var bgcol1 = "";
-				break;
-			default:
-				var bgcol1 = "";
-			}
-
-		HtmlParams += "<TR><TD BGCOLOR=YELLOW ALIGN=CENTER>"+count+"</TD>\n"
-		HtmlParams += "<TD "+lblDISPO+" "+bgcol1+">\n"+key+"\n";
-		HtmlParams += "</TD>";
-		HtmlParams += "<TD ALIGN=CENTER "+bgcol1+">"+data1+"</TD>";
-		HtmlParams += "<TD ALIGN=CENTER "+bgcol1+">"+data2+"</TD>";
-		HtmlParams += "</TR>";
-		}
-	HtmlParams += "</TABLE>\n";
-	HtmlParams += "</CENTER>";
-	HtmlParams += "<"+"/BODY"+">";
-	HtmlParams += "<"+"/HTML"+">";
-
-	console.log(HtmlParams);
-	
-	if ( strINFO ==="X" || strINFO ==="A" || strINFO === "J" || strINFO === "IMPORTE" )
-		{
-		switch (swMETHOD) 
-			{
-			case "HTML1": 
-				parent.frames['RESU'].location.href = "importFile.html";
-				break;
-			case "HTML2": 
-				parent.frames['RESU'].location.href = "Avertissement.htm";
-				break;
-			case "WIN1": 
-				var opts = "height=250,width=950,top=350,left=450,resizable=yes";
-				var myWindow = window.open("importFile.html", "WHIST-IMPORT", opts);
-				break;			
-			case "WIN2": 
-				var opts = "height=250,width=950,top=350,left=450,resizable=yes";
-				var myWindow = window.open("Avertissement.htm", "WHIST-AVERTISSEMENT", opts);
-				break;							
-			default:
-				parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = HtmlParams;
-			}
-		}
-	else {
-		var strAIDE = "";
-		strAIDE += '<TABLE BORDER=0 WIDTH=100% HEIGHT=70%>'
-		strAIDE += '<TR ALIGN=LEFT VALIGN=MIDDLE><TD><SPAN CLASS="WHISTEURS3">';
-		//strAIDE += '<PRE><STRONG>';
-		strAIDE += document.WHIST.AIDEAPP.value;
-		//strAIDE += '<STRONG></PRE>';
-		strAIDE += '</SPAN CLASS="WHISTEURS3"></TD></TR></TABLE>';
-		//parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = strAIDE;
-		var opts = "height=250,width=950,top=350,left=450,resizable=yes";
-		var myWindow = window.open("", "WHIST-AIDE", opts);
-		myWindow.document.write(strAIDE);
-		}
-
-	}
-</SCRIPT>
-
-<fieldset>
-<legend>JEUX</legend>
-<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 WIDTH="100%">
-<TR ALIGN=CENTER VALIGN="TOP">
-<TD BGCOLOR=LIGHTBLUE>H<BR>O<BR>T<BR>E</TD>
-<TD BGCOLOR=ORANGE>D<BR>O<BR>N<BR>N<BR>E</TD>
-<TD BGCOLOR=PINK>E<BR>N<BR>J<BR>E<BR>U</TD>
-<TD BGCOLOR=LIGHTGREY>C<BR>O<BR>N<BR>T<BR>R<BR>E</TD>
-<TD BGCOLOR=LIGHTGREEN><BR><B><U><SPAN CLASS='WHISTEURS'>Joueurs</SPAN></U></B><BR><BR>
-<SCRIPT>
-	console.log("2) Check switch sur URL: " + top.location.href);
-	var xPOS = top.location.href.indexOf("?")
-	console.log("2) Controle URL sur '?'. Pos="+xPOS);
-	document.WHIST.switch.value === "";
-	if ( xPOS > -1 ) { document.WHIST.switch.value = "?"; }
-	console.log("2) switch='"+document.WHIST.switch.value+"'");
-</SCRIPT>
-</TD></TR>
-<SCRIPT>
-var nbrJoueurs  = document.WHIST.JOUEURS.value;
-var nbrAnnonces = document.WHIST.ANNONCES.value;
-const arrayJ = nbrJoueurs.split('\n');
-const arrayM = nbrAnnonces.split('\n');
-var dictJ = {};
-for (i = 0; i < arrayJ.length-1; i++) 
-	{
-	var key   = arrayJ[i].split('!')[0].trim();
-	var data1 = arrayJ[i].split('!')[1].trim();
-	var data2 = arrayJ[i].split('!')[2].trim();
-	dictJ[key] = data2;
-	}
-document.WHIST.NBRJOUEURS.value  = "#W: "+(arrayJ.length-1).toString();
-document.WHIST.NBRANNONCES.value = "#M: "+(arrayM.length-1).toString();
-document.WHIST.NBRPARTIES.value  = "#J: "+document.WHIST.PARTIES.value.toString();
-
-for (i = 0; i < arrayJ.length-1; i++) 
-	{
-	var key  = arrayJ[i].split('!')[0].trim()+"-"+arrayJ[i].split('!')[1].trim();
-	var data = arrayJ[i].split('!')[2].trim();
-	document.write("<TR>");
-
-	document.write("<TD BGCOLOR=LIGHTBLUE>	<input type='checkbox' value='"+key+"' NAME='HOTEPAR'  id='HOTEPAR'  unchecked onchange='JavaScript:checkHote()'></TD>");
-	document.write("<TD BGCOLOR=ORANGE>		<input type='checkbox' value='"+key+"' NAME='DONNEPAR' id='DONNEPAR' unchecked ></TD>");
-	document.write("<TD BGCOLOR=PINK> 		<input type='checkbox' value='"+key+"' NAME='ENJEUPAR' id='ENJEUPAR' unchecked ></TD>");
-	document.write("<TD BGCOLOR=LIGHTGREY>  <input type='checkbox' value='"+key+"' NAME='JOUERPAR' id='JOUERPAR' unchecked ></TD>");
-	
-	document.write("<TD BGCOLOR=LIGHTGREY> 	<SPAN CLASS='WHISTEURS'><b>&nbsp;["+key+"] "+data+"&nbsp;</b></SPAN></TD>");
-	document.write("<TR>");
-	}
-</SCRIPT>
-</TABLE>
-</fieldset>
-
-<BR><fieldset>
-<legend>ANNONCES</legend>
-<TABLE BORDER=0 WIDTH="100%">
+<!-- ============================ LISTE DES ANNONCES ===================================== -->
 <TR>
-<TD>
-	<SELECT CLASS="select3" name="RESULTATSJEU" id="RESULTATSJEU" SIZE="1">
-    	<option value='' class="GENERAL2">SELECTIONNEZ L'ANNONCE REALISEE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
-<script>
-const select2 = document.getElementById('RESULTATSJEU');
-select2.addEventListener('select', () => {
-  	select2.style.color = "yellow";
-  	select2.style.backgroundColor = "black";
-	select2.style.fontSize = "120%";
-	select2.style.fontFamily = "'Courier New', Courier, monospace";
-	select2.size = 1;
-	//alert("selected");
-});
-select2.addEventListener('change', () => {
-  	select2.style.color = "yellow";
-  	select2.style.backgroundColor = "black";
-	select2.style.fontSize = "120%";
-	select2.size = 1;
-	//alert("change");
-});
-select2.addEventListener('focus',() =>{
-//  select2.size = 20;
-    const optionHeight = this.options[0].offsetHeight;
-    this.scrollTop = this.selectedIndex * optionHeight;
-	select2.style.fontSize = "120%";
-	select2.size = 1;
-	select2.style.color = "yellow";
-  	select2.style.backgroundColor = "black";
-	//alert("focus");
-});
-select2.addEventListener('blur', () => {
-	//select2.selectedIndex = 0;
-  	select2.size = 1;
-	select2.style.fontSize = "120%";
-	select2.style.color = "yellow";
-  	select2.style.backgroundColor = "black";
-	//alert("blur");
-});
-</script>               	 
-<SCRIPT>
-	var tabPts = "" 
-	tabPts += "<"+"HTML"+">";
-	tabPts += "<"+"HEAD"+">";
-	tabPts += "<"+"link rel='stylesheet' href='Whist.css'"+">";
-	tabPts += "<"+"/HEAD"+">";
-	tabPts += "<"+"BODY"+">";
-	tabPts += "<TABLE BORDER=1 CELLSPACING = 0 CELLPADDING=0 >";
-	tabPts += "<TR><TD>ANNONCES</TD><TD>JEUX</TD><TD>POINTS</TD></TR>";
-	
-	var nbrAnnonces = document.WHIST.ANNONCES.value;
-	const arrayA = nbrAnnonces.split('\n');
-	var dictA = {};
-	var esp = '\xa0'.repeat(25);
-	//var esp  = "_".repeat(25);
-	var spa1 = "&nbsp;".repeat(2);
-	var spa2 = "&nbsp;".repeat(3);
-	var sep1 = "!";
-	var sep2 = String.fromCharCode(173)
-	var CTL1 = "?";
+	<TD CLASS="GENERAL1" >
+		<fieldset id="fs3">
+		<legend>ANNONCES</legend>
+		<SELECT name="RESULTATSJEU" id="RESULTATSJEU" SIZE="8" onclick="JavaScript:startOptionsSelect(this.options[this.selectedIndex].value)">
+			<option CLASS="empty" value='?'>SELECTIONNEZ L'ANNONCE REALISEE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+			</SELECT>
 
-	for (i = 0; i < arrayA.length - 1; i++) {
-		var key  = arrayA[i].split('!')[0].trim();
-		var key2 = arrayA[i].split('!')[0].trim().concat(esp).substring(0, 2);
-		var jeu  = arrayA[i].split('!')[1].trim().concat(esp).substring(0, 15);
-		var res  = arrayA[i].split('!')[2].trim().concat(esp).substring(0, 7);
-		var pts  = arrayA[i].split('!')[3].trim().concat(esp).substring(0, 4);
-		var CTL2 = arrayA[i].split('!')[4].trim().concat(esp).substring(0, 1);
-		var msg1 = sep1+jeu+sep1+res+sep1+pts+sep1+CTL2;
-		var msg2 = jeu+spa2+sep2+res+spa2+sep2+"Pts:"+pts;
+		<script>
+			//document.write(generationSelectAnnoncesOptions());
+			const selectJEU = document.getElementById('RESULTATSJEU');
 
-		dictA[key] = jeu;
+			selectJEU.addEventListener('change', () => {
+				selectJEU.size = 1;
+				selectJEU.style.fontSize = "70%";
+				selectJEU.style.fontWeight = bold;
+				selectJEU.style.color = "green";
+				selectJEU.style.backgroundColor = "yellow";
+				});
+			selectJEU.addEventListener('focus',() =>{
+				selectJEU.size = 8;
+				selectJEU.style.fontSize = "90%";
+				//selectJEU.style.fontWeight = bold;
+				});
+			selectJEU.addEventListener('blur', () => {
+				selectJEU.size = 8;
+				selectJEU.style.fontSize = "80%";
+				//selectJEU.style.fontWeight = bold;
+				});
+		</script>
 
-		tabPts += "<TR><TD>"+jeu+"<TD>"+res+"</TD><TD>"+pts+"</TD></TR>"
+		<BR><TABLE BORDER=0 WIDTH="100%">
+			<TR>
+				<TD VALIGN="MIDDLE" ALIGN="CENTER">
+				&nbsp;
+				<input type="button" value="IMPRIME" ONCLICK="JavaScript:imprimePoints()">
+				&nbsp;
+				<input type="button" value="CALCUL" ONCLICK="JavaScript:calculator('')">
+				</TD>
+			</TR>
+			</TABLE>
+		</fieldset>
+		</TD>
+	</TR>
 
-		switch (CTL2) 
-			{
-			case "1":
-				var colr = " CLASS='couleur1'";
-				var disa = "";
-				break;
-			case "2":	  
-				var colr = " CLASS='couleur2'";
-				var disa = "";
-				break;
-			default:
-				var colr = " CLASS='couleur2'";
-				//var disa = " disabled";
-				var disa = "";
-			}
-		tabPts += "<TR "+colr+"><TD>"+jeu+"<TD>"+res+"</TD><TD>"+pts+"</TD></TR>"
-		var opt2 = "<option "+disa+" value='" + msg1 + "' "+colr+">&nbsp;" + msg2 + spa1 +"</option>";
-		document.write(opt2);
-		}
-	tabPts += "</TABLE>";
-	tabPts += "<"+"/BODY"+">";
-	tabPts += "<"+"/HTML"+">";
-
-function imprimePoints()
-	{
-	//window.open("", "POINTS-WHIST", "resizable=yes", true);
-	//console.log(tabPts);
-	var opts = "height=250,width=950,top=350,left=450,resizable=yes";
-	var myWindow = window.open("", "WHIST", opts);
-	myWindow.document.write(tabPts);
-	//myWindow.close();
-	}
-</SCRIPT>
-
-</SELECT>
-</TD></TR>
-
+<!-- ============================ MATRICE DES JEUX (ON/OFF) ===================================== -->
 <TR>
-	<TD VALIGN="MIDDLE" ALIGN="CENTER">
-	&nbsp;
-	<input type="button" class="BOUTON" value="IMPRIME" ONCLICK="JavaScript:imprimePoints()">
-	&nbsp;
-	<input type="button" value="CALCUL" ONCLICK="JavaScript:calculator()">
-	</TD>
+	<TD CLASS="GENERAL1" >
+		<BR>
+		<input type="checkbox" checked data-target="fs2" value="Matrice" onchange="JavaScript:remplissageEncodageJeux()">
+		<label for="toggle"><B>Matrice des jeux</B></label> 
+		<fieldset id="fs2">
+		<legend>JEUX</legend>
 
-</TR>
-</TABLE>
+		<DIV id="JOUEURSHTM"><BR><B></B></DIV>
+
+		</fieldset>
+
+		<SCRIPT>
+		document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+			const fs = document.getElementById(cb.dataset.target);
+			function update() {
+				fs.hidden = !cb.checked;
+				}
+			cb.addEventListener('change', update);
+			update();
+			});
+		</SCRIPT>
+
+		</TD>
+	</TR>
+
+<!-- ============================ PARAMETRES APPLICATION (ON/OFF) ===================================== -->
+<TR><TD CLASS="GENERAL1" >
+	
+	<br><input type="checkbox" id="toggleDIV">
+	<label for="toggleDIV"><B>Parametres application</B></label> <br>&nbsp;
+
+	<div class="details">
+	
+	<TABLE BORDER="1" BORDERCOLOR="BLUE" WIDTH="100%" HEIGHT="100%">
+	<TR VALIGN="TOP" ALIGN="LEFT">
+	<TD class='celldetail2' WIDTH="40%">
+		<TEXTAREA name="PARAM" id="PARAM" ROWS=14 COLS=20 style="display:line; border:1px"> </TEXTAREA>
+		</TD>
+	<TD class='celldetail2'>
+		    switch:		<input type="text" id="switch"    	name="switch" 			SIZE="8"   readonly value="?" >
+		<br>ckNameDef:	<input type="text" id="ckNameDef" 	name="ckNameDef" 		SIZE="15"  readonly value="PARTIES-WHIST">
+		<br>ckNamePfx:	<input type="text" id="ckNamePfx" 	name="ckNamePfx" 		SIZE="15"  readonly value="WHIST-" >
+		<br>joueursPfx:	<input type="text" id="joueursPfx" 	name="joueursPfx" 		SIZE="15"  readonly value="WHISTER.">
+		<br>annoncesPfx:<input type="text" id="annoncesPfx" name="annoncesPfx" 		SIZE="15"  readonly value="ANNONCES.">
+		<br>application:<input type="text" id="application" name="application" 		SIZE="15"  readonly value="0-WHISTAPP.">
+		<br>defOpts:	<input type="text" id="defOpts" 	name="defOpts" 			SIZE="50"  readonly value="height=500,width=1100,top=100,left=100,resizable=yes">
+		<br>sepCSV:		<input type="text" id="sepCSV" 		name="sepCSV" 			SIZE="8"   readonly value="!" >
+		<br>bSquare:	<input type="text" id="bSquare" 	name="bSquare" 			SIZE="8"   readonly value="'\u25A0'">
+		<br>nbrJeux:	<input type="text" id="nbrJeux" 	name="nbrJeux" 			SIZE="8"   readonly value="100">
+	</TD>	
+	</TR>
+	</TABLE>
+	<CENTER>
+	<TABLE BORDER="0" BORDERCOLOR="BLACK" CELLPADDING="0" CELLSPACING="0" width=100%>
+	<TR VALIGN="TOP"  class='celldetail2'>
+		<TD class='celldetail2'>	<TEXTAREA 			id="AIDEAPP"	 NAME="AIDEAPP"  	ROWS=1 COLS=1 			readonly style="display:none;"></TEXTAREA></TD>
+		<TD class='celldetail2'>	<INPUT TYPE="TEXT" 	id="NBRJOUEURS"  NAME="NBRJOUEURS" 	SIZE="3"	VALUE="?"  	readonly style="display:block;"></TD>
+		<TD class='celldetail2'>	<TEXTAREA 			id="JOUEURS"	 NAME="JOUEURS"  	ROWS=2 COLS=30 			readonly style="display:block;"></TEXTAREA></TD>
+		<TD class='celldetail2'>	<INPUT TYPE="TEXT" 	id="NBRANNONCES" NAME="NBRANNONCES" SIZE="3"	VALUE="?"  	readonly style="display:block;"></TD>
+		<TD class='celldetail2'>	<TEXTAREA 			id="ANNONCES"	 NAME="ANNONCES" 	ROWS=2 COLS=30 			readonly style="display:block;"></TEXTAREA></TD>
+		</TR>
+	<TR>
+		<TD colspan="5" align="center"  class='celldetail'>
+			<button onclick="JavaScript:window.open('setConfig.html', 'popup', 'height=500,width=1100,top=100,left=100,resizable=yes')">CONFIG&nbsp;PARAMETRES</button>
+		</TD>
+	</TR>
+	</TABLE>
+
+	</div>
 
 </TD>
-</TR></TABLE>
-</fieldset>
+</TR>
 
-<CENTER>
-<P>
-</CENTER>
-</FONT>
-</TD></TR></TABLE> 
+<!-- ============================ GESTION DES COULEURS (ON/OFF) ===================================== -->
+<TR><TD>
+    <TABLE BORDER="0" BORDERCOLOR="RED" WIDTH="85%" CELLSPACING=0 CELLPADDING=0>
+        <TR VALIGN=TOP>
+            <TD width=300px CLASS="GENERAL1" >
+                <input type="checkbox" id="toggleSelect"><label for="toggleSelect">&nbsp;<B>Choisir couleur</B></label> 
+                <BR>
+
+                <TABLE BORDER=0 BORDERCOLOR=GREEN>
+                <TR><TD>&nbsp;&nbsp;</TD><TD>
+                <!--select size=6 id="colors" name="colors" style="display: none;" onchange="JavaScript:changeItemColors(this.options[this.selectedIndex].value)" -->
+                <select size=6 id="colors" name="colors" style="display: none;">
+                <option value="lightblue">lightblue</option>
+                <option value="lightcoral">lightcoral</option>
+                <option value="lightcyan">lightcyan</option>
+                <option value="lightgoldenrodyellow">lightgoldenrodyellow</option>
+                <option value="lightgray">lightgray</option>
+                <option value="lightgrey">lightgrey</option>
+                <option value="lightgreen">lightgreen</option>
+                <option value="lightpink">lightpink</option>
+                <option value="lightsalmon">lightsalmon</option>
+                <option value="lightseagreen">lightseagreen</option>
+                <option value="lightskyblue">lightskyblue</option>
+                <option value="lightslategray">lightslategray</option>                     
+                <option value="lightslategrey">lightslategrey</option>
+                <option value="lightsteelblue">lightsteelblue</option>
+                <option value="lightyellow">lightyellow</option>
+                <option value="white">white</option>                                  
+                <option value="red">red</option>                                  
+                <option value="blue">blue</option>                                  
+                <option value="green">green</option>                                  
+                <option value="black">black</option>                                  
+                </select>
+            	</TD></TR></TABLE>
+
+                </TD>
+            
+            <td ALIGN="LEFT" WIDTH="200px">
+                <TABLE border=0 BORDERCOLOR=GREEN>
+                <TR ALIGN=RIGHT VALIGN=BOTTOM><TD><p id="TXFOND"   class="NOTEXT" style="display: none;">BACKGROUNDS: <input type='checkbox' value='BG'   id='BGCOL'  NAME='BGCOL'  style="display: none;" unchecked></p></TD></TR>
+                <TR ALIGN=RIGHT VALIGN=MIDDLE><TD><p id="TXBOUTON" class="NOTEXT" style="display: none;">BOUTONS:     <input type='checkbox' value='BU'   id='BGBUT'  NAME='BGBUT'  style="display: none;" unchecked></p></TD></TR>
+                <TR ALIGN=RIGHT VALIGN=TOP><TD><p id="TXTEXTE"  class="NOTEXT" style="display: none;">TEXTES:      <input type='checkbox' value='RE'   id='BGTXT'  NAME='BGTXT'  style="display: none;" unchecked></p></TD></TR>
+                </TABLE>
+                </td>
+        </TR>
+    </TABLE>
+</TD></TR>	
+</TABLE> 
+</div>
+
+<script>
+//* ======= SCRIPT REQUIS POUR OPTION "CHANGER COULEURS" =========
+
+const checkbox = document.getElementById("toggleSelect");
+const selectCO = document.getElementById("colors");
+const cbFOND   = document.getElementById("BGCOL");
+const cbBOUTON = document.getElementById("BGBUT");
+const cbTEXTE  = document.getElementById("BGTXT");
+const txFond   = document.getElementById("TXFOND");
+const txBOUTON = document.getElementById("TXBOUTON");
+const txTEXTE  = document.getElementById("TXTEXTE");
+
+checkbox.addEventListener("change", function () {
+    selectCO.style.display 	= this.checked ? "inline-block" : "none";
+    cbFOND.style.display 	= this.checked ? "inline-block" : "none";
+    cbBOUTON.style.display 	= this.checked ? "inline-block" : "none";
+    cbTEXTE.style.display 	= this.checked ? "inline-block" : "none";
+    txFond.style.display 	= this.checked ? "inline-block" : "none";
+    txBOUTON.style.display 	= this.checked ? "inline-block" : "none";
+    txTEXTE.style.display 	= this.checked ? "inline-block" : "none"; 
+    });
+
+document.getElementById("colors").addEventListener("change", (e) => {
+    for (let i = 0; i < window.frames.length; i++) {
+        console.log(i, window.frames[i]);
+        }
+    changeItemColors(e.target.value);
+    }); 
+
+
+</script>
+
 </FORM>
-<CENTER>
 
-</TD></TR></TABLE>
-
-</CENTER>
 </BODY>
 </HTML>
-

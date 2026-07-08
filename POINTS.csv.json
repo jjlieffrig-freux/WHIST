@@ -1,0 +1,527 @@
+[
+  {
+    "index": "1",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "8",
+    "POINTS": "4",
+    "TYPE": "2"
+  },
+  {
+    "index": "2",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "8+1",
+    "POINTS": "5",
+    "TYPE": "2"
+  },
+  {
+    "index": "3",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "8+2",
+    "POINTS": "6",
+    "TYPE": "2"
+  },
+  {
+    "index": "4",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "8+3",
+    "POINTS": "7",
+    "TYPE": "2"
+  },
+  {
+    "index": "5",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "8+4",
+    "POINTS": "8",
+    "TYPE": "2"
+  },
+  {
+    "index": "6",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "9",
+    "POINTS": "5",
+    "TYPE": "2"
+  },
+  {
+    "index": "7",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "9+1",
+    "POINTS": "6",
+    "TYPE": "2"
+  },
+  {
+    "index": "8",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "9+2",
+    "POINTS": "7",
+    "TYPE": "2"
+  },
+  {
+    "index": "9",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "9+3",
+    "POINTS": "8",
+    "TYPE": "2"
+  },
+  {
+    "index": "10",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "10",
+    "POINTS": "6",
+    "TYPE": "2"
+  },
+  {
+    "index": "11",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "10+1",
+    "POINTS": "7",
+    "TYPE": "2"
+  },
+  {
+    "index": "12",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "10+2",
+    "POINTS": "8",
+    "TYPE": "2"
+  },
+  {
+    "index": "13",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "11",
+    "POINTS": "7",
+    "TYPE": "2"
+  },
+  {
+    "index": "14",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "11+1",
+    "POINTS": "8",
+    "TYPE": "2"
+  },
+  {
+    "index": "15",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "12",
+    "POINTS": "8",
+    "TYPE": "2"
+  },
+  {
+    "index": "16",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "Double",
+    "POINTS": "12",
+    "TYPE": "2"
+  },
+  {
+    "index": "17",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "8-1",
+    "POINTS": "-4",
+    "TYPE": "2"
+  },
+  {
+    "index": "18",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "8-2",
+    "POINTS": "-8",
+    "TYPE": "2"
+  },
+  {
+    "index": "19",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "8-3",
+    "POINTS": "-12",
+    "TYPE": "2"
+  },
+  {
+    "index": "20",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "8-4",
+    "POINTS": "-16",
+    "TYPE": "2"
+  },
+  {
+    "index": "21",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "9-1",
+    "POINTS": "-8",
+    "TYPE": "2"
+  },
+  {
+    "index": "22",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "9-2",
+    "POINTS": "-12",
+    "TYPE": "2"
+  },
+  {
+    "index": "23",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "9-3",
+    "POINTS": "-16",
+    "TYPE": "2"
+  },
+  {
+    "index": "24",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "10-1",
+    "POINTS": "-12",
+    "TYPE": "2"
+  },
+  {
+    "index": "25",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "10-2",
+    "POINTS": "-16",
+    "TYPE": "2"
+  },
+  {
+    "index": "26",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "10-3",
+    "POINTS": "-18",
+    "TYPE": "2"
+  },
+  {
+    "index": "27",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "11-1",
+    "POINTS": "-16",
+    "TYPE": "2"
+  },
+  {
+    "index": "28",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "11-2",
+    "POINTS": "-18",
+    "TYPE": "2"
+  },
+  {
+    "index": "29",
+    "ANNONCE": "EMBALLAGE",
+    "REALISE": "12-1",
+    "POINTS": "-18",
+    "TYPE": "2"
+  },
+  {
+    "index": "30",
+    "ANNONCE": "2-P.Miseres",
+    "REALISE": "Gagnees",
+    "POINTS": "12",
+    "TYPE": "2"
+  },
+  {
+    "index": "31",
+    "ANNONCE": "2-P.Miseres",
+    "REALISE": "Perdues",
+    "POINTS": "-24",
+    "TYPE": "2"
+  },
+  {
+    "index": "32",
+    "ANNONCE": "2-P.Miseres",
+    "REALISE": "½ OK",
+    "POINTS": "-24",
+    "TYPE": "3"
+  },
+  {
+    "index": "33",
+    "ANNONCE": "2-G.Miseres",
+    "REALISE": "Gagnees",
+    "POINTS": "24",
+    "TYPE": "2"
+  },
+  {
+    "index": "34",
+    "ANNONCE": "2-G.Miseres",
+    "REALISE": "Perdues",
+    "POINTS": "-48",
+    "TYPE": "2"
+  },
+  {
+    "index": "35",
+    "ANNONCE": "2-G.Miseres",
+    "REALISE": "½ OK",
+    "POINTS": "-48",
+    "TYPE": "3"
+  },
+  {
+    "index": "36",
+    "ANNONCE": "Trou-8",
+    "REALISE": "8",
+    "POINTS": "8",
+    "TYPE": "2"
+  },
+  {
+    "index": "37",
+    "ANNONCE": "Trou-8",
+    "REALISE": "Double",
+    "POINTS": "12",
+    "TYPE": "2"
+  },
+  {
+    "index": "38",
+    "ANNONCE": "Trou-9",
+    "REALISE": "9",
+    "POINTS": "8",
+    "TYPE": "2"
+  },
+  {
+    "index": "39",
+    "ANNONCE": "Trou-9",
+    "REALISE": "Double",
+    "POINTS": "12",
+    "TYPE": "2"
+  },
+  {
+    "index": "40",
+    "ANNONCE": "Trou-8",
+    "REALISE": "Perdu",
+    "POINTS": "-24",
+    "TYPE": "2"
+  },
+  {
+    "index": "41",
+    "ANNONCE": "Trou-9",
+    "REALISE": "Perdu",
+    "POINTS": "-24",
+    "TYPE": "2"
+  },
+  {
+    "index": "42",
+    "ANNONCE": "2-GM/Trou",
+    "REALISE": "Gagnees",
+    "POINTS": "48",
+    "TYPE": "2"
+  },
+  {
+    "index": "43",
+    "ANNONCE": "2-GM/Trou",
+    "REALISE": "Perdues",
+    "POINTS": "-96",
+    "TYPE": "2"
+  },
+  {
+    "index": "44",
+    "ANNONCE": "2-GM/Trou",
+    "REALISE": "½ OK",
+    "POINTS": "-96",
+    "TYPE": "3"
+  },
+  {
+    "index": "45",
+    "ANNONCE": "Seul",
+    "REALISE": "6",
+    "POINTS": "6",
+    "TYPE": "1"
+  },
+  {
+    "index": "46",
+    "ANNONCE": "Seul",
+    "REALISE": "6+1",
+    "POINTS": "9",
+    "TYPE": "1"
+  },
+  {
+    "index": "47",
+    "ANNONCE": "Seul",
+    "REALISE": "6+2",
+    "POINTS": "12",
+    "TYPE": "1"
+  },
+  {
+    "index": "48",
+    "ANNONCE": "Seul",
+    "REALISE": "6-1",
+    "POINTS": "-9",
+    "TYPE": "1"
+  },
+  {
+    "index": "49",
+    "ANNONCE": "Seul",
+    "REALISE": "6-2",
+    "POINTS": "-12",
+    "TYPE": "1"
+  },
+  {
+    "index": "50",
+    "ANNONCE": "Seul",
+    "REALISE": "7",
+    "POINTS": "9",
+    "TYPE": "1"
+  },
+  {
+    "index": "51",
+    "ANNONCE": "Seul",
+    "REALISE": "7+1",
+    "POINTS": "12",
+    "TYPE": "1"
+  },
+  {
+    "index": "52",
+    "ANNONCE": "Seul",
+    "REALISE": "7-1",
+    "POINTS": "-9",
+    "TYPE": "1"
+  },
+  {
+    "index": "53",
+    "ANNONCE": "Seul",
+    "REALISE": "7-2",
+    "POINTS": "-12",
+    "TYPE": "1"
+  },
+  {
+    "index": "54",
+    "ANNONCE": "Seul",
+    "REALISE": "8",
+    "POINTS": "12",
+    "TYPE": "1"
+  },
+  {
+    "index": "55",
+    "ANNONCE": "Seul",
+    "REALISE": "8-1",
+    "POINTS": "-15",
+    "TYPE": "1"
+  },
+  {
+    "index": "56",
+    "ANNONCE": "Seul",
+    "REALISE": "8-2",
+    "POINTS": "-18",
+    "TYPE": "1"
+  },
+  {
+    "index": "57",
+    "ANNONCE": "8 sur P.Misere",
+    "REALISE": "Gagne",
+    "POINTS": "15",
+    "TYPE": "1"
+  },
+  {
+    "index": "58",
+    "ANNONCE": "8 sur P.Misere",
+    "REALISE": "Perdu",
+    "POINTS": "-30",
+    "TYPE": "1"
+  },
+  {
+    "index": "59",
+    "ANNONCE": "1-P.Misere",
+    "REALISE": "Gagnee",
+    "POINTS": "12",
+    "TYPE": "1"
+  },
+  {
+    "index": "60",
+    "ANNONCE": "1-P.Misere",
+    "REALISE": "Perdue",
+    "POINTS": "-24",
+    "TYPE": "1"
+  },
+  {
+    "index": "61",
+    "ANNONCE": "1-G.Misere",
+    "REALISE": "Gagnee",
+    "POINTS": "24",
+    "TYPE": "1"
+  },
+  {
+    "index": "62",
+    "ANNONCE": "1-G.Misere",
+    "REALISE": "Perdue",
+    "POINTS": "-48",
+    "TYPE": "1"
+  },
+  {
+    "index": "63",
+    "ANNONCE": "Abondance-9",
+    "REALISE": "Gagnee",
+    "POINTS": "18",
+    "TYPE": "1"
+  },
+  {
+    "index": "64",
+    "ANNONCE": "Abondance-10",
+    "REALISE": "Gagnee",
+    "POINTS": "24",
+    "TYPE": "1"
+  },
+  {
+    "index": "65",
+    "ANNONCE": "Abondance-11",
+    "REALISE": "Gagnee",
+    "POINTS": "30",
+    "TYPE": "1"
+  },
+  {
+    "index": "66",
+    "ANNONCE": "Abondance",
+    "REALISE": "Double",
+    "POINTS": "36",
+    "TYPE": "1"
+  },
+  {
+    "index": "67",
+    "ANNONCE": "Abondance-9",
+    "REALISE": "Perdue",
+    "POINTS": "-36",
+    "TYPE": "1"
+  },
+  {
+    "index": "68",
+    "ANNONCE": "Abondance-10",
+    "REALISE": "Perdue",
+    "POINTS": "-48",
+    "TYPE": "1"
+  },
+  {
+    "index": "69",
+    "ANNONCE": "Abondance-11",
+    "REALISE": "Perdue",
+    "POINTS": "-60",
+    "TYPE": "1"
+  },
+  {
+    "index": "70",
+    "ANNONCE": "1-GM/Trou",
+    "REALISE": "Gagnee",
+    "POINTS": "36",
+    "TYPE": "1"
+  },
+  {
+    "index": "71",
+    "ANNONCE": "1-GM/Trou",
+    "REALISE": "Perdu",
+    "POINTS": "-72",
+    "TYPE": "1"
+  },
+  {
+    "index": "72",
+    "ANNONCE": "P-Schlem",
+    "REALISE": "Gagne",
+    "POINTS": "120",
+    "TYPE": "1"
+  },
+  {
+    "index": "73",
+    "ANNONCE": "P-Schlem",
+    "REALISE": "Perdu",
+    "POINTS": "-120",
+    "TYPE": "1"
+  },
+  {
+    "index": "74",
+    "ANNONCE": "G-Schlem",
+    "REALISE": "Gagne",
+    "POINTS": "240",
+    "TYPE": "1"
+  },
+  {
+    "index": "75",
+    "ANNONCE": "G-Schlem",
+    "REALISE": "Perdu",
+    "POINTS": "-240",
+    "TYPE": "1"
+  }
+]
