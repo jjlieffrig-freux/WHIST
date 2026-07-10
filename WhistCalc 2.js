@@ -40,6 +40,10 @@ function prepareData()
 	{
 	//console.clear();
 	console.log('\u25A0'.repeat(25)+"FUNCTION PREPAREDATA"+'\u25A0'.repeat(25));
+	var typeWeb = process.versions.node
+	console.log(typeWeb);
+	alert(typeWeb);
+	
 	var xPOS = top.location.href.indexOf("?")
 	console.log("Controle URL sur '?'. Pos="+xPOS);
 	if ( xPOS > 1 )
@@ -47,68 +51,12 @@ function prepareData()
 		//document.WHIST.getElementById('switch').value = "?" ?? " ";	
 		parent.frames["TITRE"].document.WHIST.switch.value	= "?" ?? " ";			
 		}
-
-	for (const s of document.scripts) {
-    	console.log(">>> "+s.src);
-		if ( String(s.src).includes("WhistCalc.js")) { getLastModified(s.src) }
-		}
 	listFramesIndex();
 	//console.clear();
 	var arrayM = lectureSyncJSON("A");
 	var arrayJ = lectureSyncJSON("J");
 
 	remplissageEncodageJeux();
-
-	const ckNamePfx = reuseParameter("ckNamePfx");
-	const arrJ= Object.keys(localStorage).filter(k => k.startsWith(ckNamePfx)).sort().map(k => ({ key: k, value: localStorage.getItem(k) }));
-	if ( arrJ.length === 0 )
-		{
-		choosePartie("CNN");
-		console.clear();
-		console.log("@".repeat(100));
-		const joueursPfx = reuseParameter("joueursPfx");
-		const lesJOUEURS = [];
-		for (let i = 0; i < localStorage.length; i++) {
-    		const key = localStorage.key(i);
-			const val = localStorage.getItem(key)
-			if (key.startsWith(joueursPfx)) { lesJOUEURS.push(val); }
-			}
-		lesJOUEURS.sort();
-		var sCook = parent.frames['HDR'].document.HEADER.COOKIE.value;
-		//var lesJOUEURS = parent.frames["TITRE"].document.getElementById("JOUEURS").value;
-		console.log(lesJOUEURS);
-		var xParties    = reuseParameter("nbrJeux");
-		var xCols 	    = (4 + lesJOUEURS.length) + 1;
-		//== A PARTIR DU 22/06/26 rajout d'une colonne supplementaire dans la table de JEUX
-		//== Cette colonne contient le numero de l'annonce réalisée et a pour but de faciliter
-		//== la routine de calculs de statistiques.
-		var msgTXT = "Creation tableau 2D VIDE de "+xParties+"x"+xCols+" cells.";
-		console.log(msgTXT);
-		aRES = twoDimensionArray(xParties , xCols, "EMPTY", 0);
-		aRES[0][0] = 'Jeux';			
-		aRES[0][1] = 'Donneur';
-		aRES[0][2] = 'Annonces de la partie ['+sCook+']';			
-		aRES[0][3] = 'Points';		
-		for (i = 0; i < lesJOUEURS.length; i++) 
-			{
-			var joueurID = lesJOUEURS[i].split("!");
-			var dataJ = "["+(i+1)+"-"+joueurID[1]+"]";
-			j = i + 4;
-			aRES[0][j] = dataJ;
-			console.log("("+i+","+j+")\t"+dataJ);
-			}
-		aRES[0][xCols - 1] = 'C-Jeu';
-		var lnLine = "";
-		for(i = 0; i < xCols; i++)
-			{
-			lnLine +=aRES[0][i] + ","
-			}
-		var lsVal = lnLine.slice(0, -1);
-		var lsKey = sCook+".00";
-		localStorage.setItem(lsKey, lsVal);	
-		console.log(aRES);
-		rebuildHTML(0,sCook,"0");
-		}
 	}
 
 function remplissageEncodageJeux()
@@ -825,36 +773,7 @@ function impressionRes(strFORMAT)
     {
 	console.log("Demande impression au format '"+strFORMAT+"'");
 
-    if ( strFORMAT === 'LARGE' )
-        {
-		var dataIN  	= parent.frames["RESU"].document.RES.headerIN.value;
-		var dataOUT 	= parent.frames["RESU"].document.RES.headerOUT.value;
-		var htmlString 	= parent.frames['RESU'].document.getElementById("RESULTATS").outerHTML;	
-		var webPage		= dataIN + "\n" + htmlString + "\n" + dataOUT
-		var webHead		= getCookie2(reuseParameter("ckNameDef"));
-		var optsWin		= reuseParameter("defOpts");
-
-		var swKEEP = parent.frames["HDR"].document.getElementById("copie").checked;
-		if ( swKEEP ) {
-			const ficName = generateFileName("html");
-			const blob = new Blob([webPage], { type: "text/html;charset=utf-8" });
-			const link = document.createElement("a");
-			link.href = URL.createObjectURL(blob);
-			link.download = (ficName).replaceAll("_","");
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-			URL.revokeObjectURL(link.href);
-			}
-		
-		const blob = new Blob([webPage], { type: "text/html" });
-		const url  = URL.createObjectURL(blob);
-		window.open(url, "_blank");
-		setTimeout(() => URL.revokeObjectURL(url), 60000);
-
-        }
-
-	if ( strFORMAT === 'PRINT' )
+    if ( strFORMAT === 'PRINT' )
         {
 		var htmlString = parent.frames['RESU'].document.getElementById("RESULTATS").outerHTML;	
 		console.log(htmlString);
@@ -1010,9 +929,9 @@ function handle(evnt)
 		}
 	return true;
 	}
-function calculator(strOption)
+function calculator()
 	{ 
-	console.log('\u25A0'.repeat(25)+"FUNCTION CALCULATOR ('"+strOption+"')"+'\u25A0'.repeat(25));
+	console.log('\u25A0'.repeat(25)+"FUNCTION CALCULATOR"+'\u25A0'.repeat(25));
 
 	var cptDON = 0;
 	var cptJEU = 0;
@@ -1049,15 +968,15 @@ function calculator(strOption)
 		top.RESU.document.getElementById("RESULTS").value = msgTXT;
 		}
 	else {
-		calculator2(strOption);	
+		calculator2();	
 		}
 	return swOK;
 
 	}
 
-function calculator2(xOption)
+function calculator2()
 	{
-	console.log('\u25A0'.repeat(25)+"FUNCTION CALCULATOR2 ('"+xOption+"')"+'\u25A0'.repeat(25));
+	console.log('\u25A0'.repeat(25)+"FUNCTION CALCULATOR2"+'\u25A0'.repeat(25));
 
   	var data    = [];
 	var enjeu   = document.getElementById("RESULTATSJEU");
@@ -1132,13 +1051,13 @@ function calculator2(xOption)
 	console.log(data);
 	var sCook = parent.frames['HDR'].document.HEADER.COOKIE.value;
 	reloadPointsArray(sCook);
-	memorise(data,cleJEU,xOption);
+	memorise(data,cleJEU);
 	return false;  
  	}
 
-function memorise(strDATA1, cleJEU, StrOptionM)
+function memorise(strDATA1, cleJEU)
 	{
-	console.log('\u25A0'.repeat(25)+"FUNCTION MEMORISE ('"+StrOptionM+"')"+'\u25A0'.repeat(25));
+	console.log('\u25A0'.repeat(25)+"FUNCTION MEMORISE"+'\u25A0'.repeat(25));
 	console.log("*".repeat(50)+"\n"+strDATA1+"\n"+"*".repeat(50));
 	var strDATA2 = strDATA1.toString()+"$";
 	strDATA3 = strDATA2.split(",").join("\n");
@@ -1253,15 +1172,7 @@ function memorise(strDATA1, cleJEU, StrOptionM)
 		msgTXT += "entre "+vainq1+" et "+vainq2+"\n";
 		msgTXT += "Entrez la valeur ["+ v1 + "] ou [" + v2 + "] pour valider le vainqueur";
 		do {
-			console.clear();
-			console.log("Multi option? '"+StrOptionM+"' ");
-			if ( StrOptionM.toUpperCase() === "X" )
-				{
-				var vainqueur = v1;
-				}
-			else {
-				var vainqueur = prompt(msgTXT, 0);
-				}
+			var vainqueur = prompt(msgTXT, 0);
 			}
 		while (vainqueur != v1 && vainqueur != v2);
 		winOnTwo = vainq1;
@@ -1472,12 +1383,16 @@ function rebuildHTML(nTR, keyName,sKEY)
 
 	var strURL  = location.hostname;
 	var htmlTAB = "";
+	
+	var dataIN  = parent.frames["RESU"].document.RES.headerIN.value;
+	var dataOUT = parent.frames["RESU"].document.RES.headerOUT.value;
+
+	htmlTAB += dataIN;
 		
 	console.log("APPLICATION HOSTEE SUR SERVER '"+strURL+"'");
 	console.log("REBUILD\n"+htmlTAB);
 
-	htmlTAB += '<A NAME="TOP"></A>';
-	htmlTAB += "\n<TABLE id='innerHtmlTable' CLASS='mytr' ID='POINTS' BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=100%>";
+	htmlTAB += "<TABLE id='innerHtmlTable' CLASS='mytr' ID='POINTS' BORDER=0 CELLSPACING=0 CELLPADDING=5 WIDTH=100%>";
 	for (let i = 0; i< limHTML; i++) 
 		{	
 		if ( i === 0 ) { 
@@ -1526,11 +1441,6 @@ function rebuildHTML(nTR, keyName,sKEY)
 					break;
 				case 2:
 					var tdHTML = hOrD + " align=LEFT>";
-					if ( i === 0){
-						aRES[i][j] = '<A HREF="#TOP" class="button">⬆</A>&nbsp;' + 
-									aRES[i][j] +
-									'&nbsp;<A HREF="#BOTTOM" class="button">⬇</A>';
-						}
 					if ( parseInt(aRES[i][3]) < 0 ) { var tdHTML = hOrD + " CLASS='PERDU1'>"; }
 					break;
 				case (rowSIZE - 1):
@@ -1563,13 +1473,27 @@ function rebuildHTML(nTR, keyName,sKEY)
 			}
     	}
 	htmlTAB += "\n</tbody>\n</TABLE>\n";
-	htmlTAB += '<A NAME="BOTTOM"></A>';
+	htmlTAB += dataOUT;
 
-	var sizeLS = String(getLocalStorageSize()) + "KB < 5MB";;
+	var swKEEP = true;
+	if ( swKEEP ) {
+		const ficName = generateFileName("html");
+		const blob = new Blob([htmlTAB], { type: "text/html;charset=utf-8" });
+		const link = document.createElement("a");
+		link.href = URL.createObjectURL(blob);
+		link.download = (ficName).replaceAll("_","");
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		URL.revokeObjectURL(link.href);
+		}
+ 	
+	sizeLS = getLocalStorageSize();
+	const mib = (sizeLS / (1024 * 1024)).toFixed(4);
 	
 	//var totauxPts = totalPTS;
 
-	parent.frames['HDR'].document.HEADER.sizeLS.value  = sizeLS;
+	parent.frames['HDR'].document.HEADER.sizeLS.value  = String(mib)+ " MB < 5 MB";
 	parent.frames['HDR'].document.HEADER.NPARTIE.value = nTR - 1;
 	parent.frames['HDR'].document.HEADER.ENJEUX.value  = totauxPts;
 	parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = htmlTAB;
@@ -1578,18 +1502,15 @@ function rebuildHTML(nTR, keyName,sKEY)
 
 function getLocalStorageSize() 
 	{
-	const encoder = new TextEncoder();
-	let totalBytes = 0;
+	let size = 0;
 	for (let i = 0; i < localStorage.length; i++) 
 		{
-		const key   = localStorage.key(i);
+		const key = localStorage.key(i);
 		const value = localStorage.getItem(key);
-		totalBytes += encoder.encode(key).length;
-		totalBytes += encoder.encode(value).length;
+		size += key.length + value.length;
 		}
-	totalBytes = (totalBytes / 1024).toFixed(2)
-	console.log("LS size in Kb:"+totalBytes);
-	return totalBytes;
+	// If "UTF-16" : multiplication par 2 car 2 octets par caractère (size * 2)
+	return size;
 	}
 
 function getCookie2(name) 
@@ -1670,9 +1591,8 @@ function reloadPointsArray(strCookParam)
 		{
 		msgTXT = "Choisissez tout d'abord un nom de partie de WHIST dans le panneau de droite"
 		//alert(msgTXT);
-		//parent.frames['RES'].document.getElementById("RESULTS").value = msgTXT;
-		const docFrameR = parent.frames["RESU"].document;
-		docFrameR.getElementByID("RESULTS").value = msgTXT;
+		//Òparent.frames['RES'].document.getElementById("RESULTS").value = msgTXT;
+		parent.frames['RESU'].document.RES.RESULTS.value = msgTXT;
 		return;
 		}
     console.log("Recharge en mémoire des parties depuis le 'LOCALSTORAGE' du browser'");
@@ -2448,7 +2368,7 @@ function refreshPageDetail(sFrame,xMesg)
 
 function computeStats()
 	{
-	msgTXT = "Quelques statistiques...";
+	msgTXT = "En cours de developement ..."
 	parent.frames['RESU'].document.getElementById('RESULTS').value = msgTXT;
 
 	var listJeux = reuseParameter("ckNamePfx");
@@ -2578,7 +2498,6 @@ function noRepeatRandom()
 
 function specialSet(xSTR)
 	{
-	console.clear();
 	const min = 1;
 	const max = 5;
 	const listNumbers = new Array(6).fill(0);
@@ -2598,15 +2517,7 @@ function specialSet(xSTR)
 	let max1 = 0;
 	let min2 = 0;
 	let max2 = 0;
-	
-	let joueursPfx  = reuseParameter("joueursPfx");
-	const arrJ= Object.keys(localStorage).filter(k => k.startsWith(joueursPfx)).sort().map(k => ({ key: k, value: localStorage.getItem(k) }));
-	console.log(arrJ);
-	for (i = 0; i < arrJ.length; i++) {	
-		var clef  = arrJ[i].key
-		var data  = arrJ[i].value.toString().split("!");
-		}
-	
+	//var nbrAnnonces = document.WHIST.ANNONCES.value;
 	//var nbrAnnonces = parent.frames['TITRE'].document.getElementById('ANNONCES').value;
 	var nbrAnnonces = parent.frames['TITRE'].document.WHIST.ANNONCES.value;
 	let arrayM = nbrAnnonces.split('\n');
@@ -2644,20 +2555,12 @@ function specialSet(xSTR)
 		return;
 		}
 
-	const frameDoc = top.frames["TITRE"].document;
+	const frameDoc = parent.frames["TITRE"].document;
 	console.log(frameDoc);
 	console.log(frameDoc.querySelectorAll("[name='ENJEUPAR']"));
 	console.log(listNumbers);
 	console.log(document.forms['WHIST'].elements['RESULTATSJEU'].options);
 
-	const options = document.forms['WHIST'].elements['RESULTATSJEU'].options;
-	var listOpt = "";
-	for (const option of options) {
-		listOpt += "\n"+option.text+"\t"+option.value;
-		}
-  	//alert(options.length+"\n"+listOpt);
-
-	var listCB = "";
 	if ( xSTR === 1 )
 		{
 		k=listNumbers[0]; var elms = frameDoc.querySelectorAll("[name='HOTEPAR']");  elms[k].checked = true;
@@ -2668,15 +2571,6 @@ function specialSet(xSTR)
 		k=listNumbers[5]; var elms = frameDoc.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
 		document.forms['WHIST'].elements['RESULTATSJEU'].options.selectedIndex = annSeul;
 		console.log(elms[k].checked);
-
-		listCB += "\n<HTML><BODY><BR>" + arrayM[annSeul];
-		listCB += "\n<TABLE BORDER=1>"
-		for(var t=0; t < listNumbers.length; t++)
-			{
-			listCB += "\n<TR><TD>"+xSTR+"</TD><TD>"+t+"</TD><TD>"+elms[t].checked+"</TD><TD>"+arrJ[t].value+"</TD></TR>";
-			}
-		listCB += "\n</TABLE></BODY></HTML>"
-
 		}
 
 	if ( xSTR === 2 )
@@ -2689,26 +2583,13 @@ function specialSet(xSTR)
 		k=listNumbers[5]; var elms = frameDoc.querySelectorAll("[name='JOUERPAR']"); elms[k].checked = true;
 		document.forms['WHIST'].elements['RESULTATSJEU'].options.selectedIndex = annEmb;
 		console.log(elms[k].checked);
-
-		listCB += "\n<HTML><BODY><BR>" + arrayM[annEmb];
-		listCB += "\n<TABLE BORDER=1>"
-		for(var t=0; t < listNumbers.length; t++)
-			{
-			listCB += "\n<TR><TD>"+xSTR+"</TD><TD>"+t+"</TD><TD>"+elms[t].checked+"</TD><TD>"+arrJ[t].value+"</TD></TR>";
-			}
-		listCB += "\n</TABLE></BODY></HTML>"
-
 		}
-	//parent.frames["HDR"].document.getElementById("hasard").innerHTML = listCB;
-	//var opts = reuseParameter("defOpts");
-	//var newWin = window.open("","",opts);
-	//newWin.document.write(listCB);
-	//newWin.close();
+
 	}
 
 function resetJeu(xCODE)
-    {           
-    const frameDoc = parent.frames["TITRE"].document;
+    {
+	const frameDoc = parent.frames["TITRE"].document;
 	var elms = frameDoc.querySelectorAll("[name='DONNEPAR']");
  	for(var i = 0; i < elms.length; i++) { elms[i].checked = false; }
 	var elms = frameDoc.querySelectorAll("[name='ENJEUPAR']");
@@ -2918,8 +2799,7 @@ function multiGeneration()
 	msgTXT  = "";
 	msgTXT += "Il se peut que l'application vous demande d'autres informations\n";
 	msgTXT += "par exemple: Lors de 2 misères dont une perdue. Le systeme veut\n";
-	msgTXT += "qui des 2 joueurs impliqués a perdu/gagné";
-
+	msgTXT += "qui des 2 joueurs impliqués a perdu/gagneé"
 	parent.frames["TITRE"].document.WHIST.PARAM.value = msgTXT;
 
 	do 	{
@@ -2941,7 +2821,7 @@ function multiGeneration()
 				console.log(nombre+" est IMPAIR. Generation d'un 'SEUL'...");
 				specialSet(1);
 				}
-			calculator("X");
+			calculator();
 			}
 		}
 	}
@@ -2952,8 +2832,7 @@ function prepareActivity(strOption)
 	switch (strOption)
 		{
 		case "A":
-			//reloadPointsArray();
-			effaceUnePartie();
+			reloadPointsArray();
 			break;
 		case "B":
 			initialiseData();
@@ -3010,10 +2889,7 @@ function prepareActivity(strOption)
 			break;
 		case "S":
 			restoreLS();
-			break;
-		case "T":
-			lectureDonneesCachees()	
-			break;	
+			break;			
 		case "CNN":
 			choosePartie("CNN");
 			break;
@@ -3058,7 +2934,7 @@ function generationSelectAnnoncesOptions(sOPT)
 	var dictA = {};
 	var sep1 = "!";
 	var sep2 = String.fromCharCode(95)
-	var sep2 = '\u00A0';
+	var sep2 = " ";
 	var esp  = "_".repeat(25);
 	var esp  = sep2.repeat(25);
 	var spa1 = sep2.repeat(2);
@@ -3123,6 +2999,7 @@ function generationSelectAnnoncesOptions(sOPT)
 
 	}
 
+
 function imprimePoints()
 	{
 	var opts = reuseParameter("defOpts");
@@ -3134,116 +3011,22 @@ function imprimePoints()
 
 function lectureSyncJSON(sType)
 	{
-	//console.clear();
 	console.log('\u25A0'.repeat(25)+"FUNCTION lectureSyncJSON"+'\u25A0'.repeat(25));
 	console.log("Parametre: ("+sType+")");
-	var frameDoc = parent.frames["HDR"].document;
-	var typeWeb  = frameDoc.getElementById("DUREE").value 
 
-	var fic = "?"; var text = ""; var res = ""; var x = ""; var msgTXT = "";
-	if ( sType === "J" ) { 
-		var fic = "JOUEURS.csv.json";
-		if ( typeWeb.toUpperCase === "EXPRESS" ) { var fic = "/JOUEURS" }; 
-		}
-	if ( sType === "A" ) { 
-		var fic = "POINTS.csv.json";
-		if ( typeWeb.toUpperCase === "EXPRESS" ) { var fic = "/ANNONCES" }; 
-		}
-
+	var fic = "?"; var text = ""; var res = ""; var x = "";
+	if ( sType === "J" ) { var fic = "/JOUEURS";  fic = "JOUEURS.csv.json"; }
+	if ( sType === "A" ) { var fic = "/ANNONCES"; fic = "POINTS.csv.json"; }
 	if ( fic   === "?" ) { return false; }
 
-
-	msgTXT = "============== LECTURE FICHIER ["+sType+"] JSON FILE URL: "+fic;
+	msgTXT = "["+sType+"] JSON FILE URL: "+fic;
 	console.log(msgTXT);
 
-	try	{
-		fetch(fic)
-			.then (response => {
-				if (!response.ok) 
-					{
-					msgTXT = "HTTP error! Status: ${response.status}";
-					console.log(msgTXT);
-					loadDatafromLS(sType);
-					throw new Error(msgTXT);
-					}
-				return response.json();
-				})
-			.then (data => traiterDonnees(data, sType))
-		}	
-	catch (error) {
-    	console.error("Fetch failed:", error);
-  		}
+	fetch(fic)
+		.then(response => response.json())
+  		.then(data => traiterDonnees(data, sType))
+  		.catch(console.error);
 	}
-
-function loadDatafromLS(sType)
-	{
-
-	switch (sType)
-		{
-		case "A":
-			var param = reuseParameter("annoncesPfx");
-			console.log("Boucle lecture des 'ANNONCES' depuis le 'localStorage'");
-			break;
-		case "J":
-			var param = reuseParameter("joueursPfx");
-			console.log("Boucle lecture des 'JOUEURS' depuis le 'localStorage'");
-			break;
-		default:
-			//RAF
-			return;
-		}
-
-	const arrParam = Object.keys(localStorage).filter(k => k.startsWith(param)).sort().map(k => ({ key: k, value: localStorage.getItem(k) }));
-	console.log(arrParam);
-
-	const arrayData = []; var records = ""; var cpt = -1;
-	for (ii=0; ii<arrParam.length; ii++) {
-		var key = arrParam[ii].key;
-		var val = arrParam[ii].value;
-		records += val + "\n";
-		switch (sType.toUpperCase())
-			{
-			case "J":
-				cpt++;
-				arrayData[cpt] = [];
-				arrayData[cpt][0] = val.split("!")[0];
-				arrayData[cpt][1] = val.split("!")[1];
-				arrayData[cpt][2] = val.split("!")[2];
-				break;
-			case "A":
-				cpt++;
-				arrayData[cpt] = [];
-				arrayData[cpt][0] = val.split("!")[0];
-				arrayData[cpt][1] = val.split("!")[1];
-				arrayData[cpt][2] = val.split("!")[2];
-				arrayData[cpt][3] = val.split("!")[3];
-				arrayData[cpt][4] = val.split("!")[4];
-				break;
-			default:
-				//RAF
-			}
-		}
-	console.log(arrayData);
-	const frame = parent.frames["TITRE"].document;
-	console.log("FRAME:"+frame);
-
-	switch (sType.toUpperCase())
-		{
-		case "J":	
-			frame.getElementById("NBRJOUEURS").value = cpt + 1;
-			frame.getElementById("JOUEURS").value  = records;
-			console.log(records);
-			break;
-		case "A":
-			frame.getElementById("NBRANNONCES").value = cpt + 1;
-			frame.getElementById("ANNONCES").value = records;
-			console.log(records);
-			break;
-		default:
-			//RAF
-		}
-	}
-
 
 function traiterDonnees(data, sType) 
 	{
@@ -3272,8 +3055,8 @@ function traiterDonnees(data, sType)
 			}
 		}	
 	console.log("LOOP creation array ("+sType+") contient "+cpt+" rows");
-	let joueursPfx  = reuseParameter("joueursPfx");
-	let annoncesPfx = reuseParameter("annoncesPfx");
+	let joueursPfx  = "WHISTER.";
+	let annoncesPfx = "ANNONCES.";
 	if ( cpt > -1 ) {
 		for (let i=0; i<= cpt; i++) {
 			var ligneData = "";
@@ -3510,260 +3293,14 @@ function generateFileName(sExt)
 		`${pad(now.getSeconds())}.${sExt}`;
 		
 	return fName;
+
 	}
 	
-function effaceUnePartie(xPartie)
-	{
-	console.log('\u25A0'.repeat(25)+"FUNCTION EFFACEUNEPARTIE("+xPartie+")"+'\u25A0'.repeat(25));
-
-	if (typeof xPartie === "string" && xPartie.trim() !== "")
-		{
-		console.log("Effacement de la partie ["+xPartie+"]...");
-		const arrP = Object.keys(localStorage).filter(k => k.startsWith(xPartie)).sort().map(k => ({ key: k, value: localStorage.getItem(k) }));
-		console.log(arrP);
-		const arrK = []; 
-		var listJeux = "<PRE>";
-		for (i = 0; i < arrP.length; i++) {	
-			var clef  = arrP[i].key
-			listJeux += i.toString().padStart(2, "0") + "\t" + clef + "\t EFFACéS!\n";
-			localStorage.removeItem(clef);
-			}
-		listJeux += "</PRE>"
-		i--;
-		var msgTXT = "Les "+i.toString()+" jeux de la partie '"+xPartie+"' ont été effacés!";
-		parent.frames["RESU"].document.getElementById("RESULTS").value = msgTXT;
-		parent.frames["RESU"].document.getElementById("RESULTATS").innerHTML = listJeux;
-		}
-	else {
-		var html = "";
-		html += "<HTML>\n<HEAD>";
-		html += "<link id='mainCss' rel='stylesheet' href='Whist.css'>";
-		html += "\n</HEAD>\n<BODY><BR><BR>";
-		html += "\n<TABLE CLASS='mytr' BORDER=1 WIDTH=50%>\n";
-		html += "\n<TR><THEAD>";
-		html += "\n<TH>Nbr</TH>";
-		html += "\n<TH>Partie</TH>";
-		html += "\n<TH>#jeux</TH>";
-		html += "\n<TH>Kb</TH>";
-		html += "\n<TH>Action</TH>";
-		html += "\n</THEAD></TR>"
-		
-		var ckNamePfx = reuseParameter("ckNamePfx");
-		console.log("PREFIX:"+ckNamePfx);
-		const arrP = Object.keys(localStorage).filter(k => k.startsWith(ckNamePfx) && k.endsWith(".00")).sort().map(k => ({ key: k, value: localStorage.getItem(k) }));
-		console.log(arrP);
-		var totSize = 0;
-		for (i = 0; i < arrP.length; i++) {	
-			var clef  = arrP[i].key.slice(0, -3);
-			const result = getLocalStorageStats(clef);
-			const itemNo = (i+1).toString().padStart(2, "0")
-			var btnID = "btnEfface"+itemNo;
-			html += "\n<TR ALIGN=CENTER>";
-			html += "\n<TD>"+itemNo+"</TD>";
-			html += "\n<TD>"+clef+"</TD>";
-			html += "\n<TD>"+(result.count - 1)+"</TD>";
-			html += "\n<TD>"+result.totalKB+"</TD>";
-			html += "\n<TD><input type='button' id='"+btnID+"' value='EFFACE' onclick='JavaScript:effaceUnePartie("+'"'+clef+'"'+")'></LI></TD>"
-			html += "\n</TR>";
-			totSize += parseInt(result.totalKB);
-			}
-		html += "\n</TABLE>";
-		html += "\n<CENTER><H3>EFFACEMENT DE PARTIES ("+totSize+"Kb. Limite: 5Mb)</H3></CENTER>";
-		html += "</BODY></HTML>"
-
-		var swKEEP = parent.frames["HDR"].document.getElementById("copie").checked;
-		if ( swKEEP ) {
-			const ficName = generateFileName("html");
-			const blob = new Blob([html], { type: "text/html;charset=utf-8" });
-			const link = document.createElement("a");
-			link.href = URL.createObjectURL(blob);
-			link.download = (ficName).replaceAll("_","");
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-			URL.revokeObjectURL(link.href);
-			}
-		var msgTXT = "Sélectionnez une partie à effacer!";
-		parent.frames["RESU"].document.getElementById("RESULTS").value = msgTXT;
-		parent.frames["RESU"].document.getElementById("RESULTATS").innerHTML = html;
-		}
-	}
-
-function getLocalStorageStats(prefix) 
-	{
-	console.log("STATS ON "+prefix);
-	const encoder = new TextEncoder();
-	const items = [];
-	let totalBytes = 0;
-	for (let i = 0; i < localStorage.length; i++) 
-		{
-		const key = localStorage.key(i);
-		if (key.startsWith(prefix)) 
-			{
-			const value = localStorage.getItem(key) ?? "";
-			items.push({ key,value,});
-			totalBytes += encoder.encode(key).length;
-			totalBytes += encoder.encode(value).length;
-			}
-		}
-	console.log(prefix+"\t"+items.length+"\t"+(totalBytes / 1024).toFixed(2));
-
-	return {
-		count: items.length,
-		totalKB: (totalBytes / 1024).toFixed(2),
-		};
-	}
-
-async function getLastModified(scriptUrl) 
-	{
-	console.log("Modif date of "+scriptUrl);
-  	const response = await fetch(scriptUrl, { method: "HEAD" });
-  	const lastModified = response.headers.get("Last-Modified");
-
-  	if (lastModified) {
-		var vs = new Date(lastModified).toLocaleString();
-		vs = toYYSSS(vs);
-  		} 
-	else {
-    	var vs = "inconnu";
-  		}
-	parent.frames["NAV"].document.LISTE.version.value = "Version: "+vs;
-	}
-
-	
-function toYYSSS(dateString) 
-	{
-	dateString = dateString.toUpperCase().replace(" AM", ",AM");
-	dateString = dateString.toUpperCase().replace(" PM", ",PM");
-	const laDate = dateString.split(",")[0];
-	const lheure = dateString.split(",")[1];
-
-  	const [month, day, year] = laDate.split("/").map(Number);
-	const [hours, minutes, seconds] = lheure.split(":").map(Number);
-
-  	const totSss = hours * 3600 + minutes * 60 + seconds;
-	const date = new Date(year, month - 1, day);
-  	const start = new Date(year, 0, 1);
-  	const dayOfYear = Math.floor((date - start) / 86400000) + 1;
-
-	const yy = String(year).slice(-2);
-  	const sss = String(dayOfYear).padStart(3, "0");
-	const YYSSS = yy + sss;
-	const versNO = YYSSS + "W" + String(totSss);
-
-	return versNO;
-	}
-
-function checkIfNodeJS()
-	{
-	var hdr1 = "?";
-	var hdr2 = "!";
-	var frameDoc = parent.frames["HDR"].document;
-
-	fetch("/")
-		.then(res => {
-			frameDoc.getElementById("DUREE").value = res.headers.get("x-powered-by");
-			//frameDoc.getElementById("DUREE").value += res.headers.get("server");
-			});
-  	}
-
-function lectureDonneesCachees()
-	{
-	var docFrame1 = parent.frames["TITRE"].document;
-	const nbrJoueurs  = docFrame1.getElementById("NBRJOUEURS").value;
-	const nbrAnnonces = docFrame1.getElementById("NBRANNONCES").value;
-	const tableJoueurs  = docFrame1.getElementById("JOUEURS").value;
-	const tableAnnonces = docFrame1.getElementById("ANNONCES").value;
-
-	var docFrame2 = parent.frames["RESU"].document;
-	var headerIN  = docFrame2.getElementById("headerIN").value;
-	headerIN = headerIN
-    	.replace(/&/g, "&amp;")
-    	.replace(/</g, "&lt;")
-    	.replace(/>/g, "&gt;")
-    	.replace(/"/g, "&quot;")
-    	.replace(/'/g, "&#39;");
-
-	var headerOUT = docFrame2.getElementById("headerOUT").value;
-	headerOUT = headerOUT
-    	.replace(/&/g, "&amp;")
-    	.replace(/</g, "&lt;")
-    	.replace(/>/g, "&gt;")
-    	.replace(/"/g, "&quot;")
-    	.replace(/'/g, "&#39;");
-
-
-	html = ""
-	html += "<HTML><BODY>\n";
-	html += "<PRE>\n";
-	html += "<HR>Nbre joueurs: "+nbrJoueurs+"n";
-	html += "<HR>Nbre annonces: "+nbrAnnonces+"\n";
-	html += "<HR>Joueurs:<BR><HR>"+tableJoueurs+"\n";
-	html += "<HR>Annonces:<BR><HR>"+tableAnnonces+"\n";
-	html += "<HR>HEADER-IN:<BR><HR>"+headerIN+"\n";
-	html += "<HR>HEADER-OUT:<BR><HR>"+headerOUT+"\n";
-	html += "\n</OL>\n</BODY></HTML>";
-
-	var opts = reuseParameter("defOpts");
-	const winCache = window.open("","",opts);
-	winCache.document.write(html);
-
-	}
-
-function stringToArray(data, sType)
-	{
-	switch (sType)
-		{
-		case "1D":
-			const array1D = data
-  				.trim()
-  				.split(/\r?\n/);      	
-			return array1D;
-			break;
-		case "2D":
-			const array2D = data
-  				.trim()
-  				.split(/\r?\n/)      	
-  				.map(line => line.split("!"));
-			return array2D;
-			break;
-		default:
-			return data;
-		}
-	}
-
-function arrayToHTML(data, sType) 
-	{
-	console.log("TYPE:"+sType);
-	console.log(data);
-
-	switch (sType)
-		{
-		case "2D":
-			const html2D = `
-    			<table border="1">
-      				${data.map(row => `
-        			<tr>
-          				${row.map(cell => `<td>${cell}</td>`).join("")}
-        			</tr>
-      				`).join("")}
-    			</table>
-  				`;     	
-			return html2D;
-			break;
-		case "1D":
-			const html1D = `
-    			<table border="1">
-      				${data.map(row => `
-        			<tr><td>${row}</td></tr>
-      				`).join("")}
-    			</table>
-  				`;  
-			alert(html1D);   	
-			return html1D;
-			break;
-		default:
-			return data;
-		}
-	}
+function getDayOfYear3(date = new Date()) 
+    {
+    const start = new Date(date.getFullYear(), 0, 1);
+    const day = Math.floor((date - start) / 86400000) + 1;
+    return String(day).padStart(3, '0');
+    }
+    
 
