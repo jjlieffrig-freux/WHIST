@@ -1464,19 +1464,19 @@ async function fetchFichier(fic, sType)
 function rebuildHTML(nTR, keyName,sKEY)
 	{
 	console.log('\u25A0'.repeat(25)+"FUNCTION REBUILDHTML"+'\u25A0'.repeat(25));
+
 	var totalPTS = 0;
 	var limHTML  = aRES.length;
 	var limCOLS  = aRES[0].length;
-	var htmlTAB  = "";
+
 	console.log("RECREATION D'UNE CHAINE HTML <TABLE> DE "+nTR+" LIGNE(S) et "+limCOLS+" COLONNES\nDEPUIS LA CLE PARTIE ["+keyName+"]");
 
 	var strURL  = location.hostname;
-	var htmlTAB = "";
 		
 	console.log("APPLICATION HOSTEE SUR SERVER '"+strURL+"'");
-	console.log("REBUILD\n"+htmlTAB);
 
-	htmlTAB += '<A NAME="TOP"></A>';
+
+	var htmlTAB = "";
 	htmlTAB += "\n<TABLE id='innerHtmlTable' CLASS='mytr' ID='POINTS' BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=100%>";
 	for (let i = 0; i< limHTML; i++) 
 		{	
@@ -1526,11 +1526,6 @@ function rebuildHTML(nTR, keyName,sKEY)
 					break;
 				case 2:
 					var tdHTML = hOrD + " align=LEFT>";
-					if ( i === 0){
-						aRES[i][j] = '<A HREF="#TOP" class="button">⬆</A>&nbsp;' + 
-									aRES[i][j] +
-									'&nbsp;<A HREF="#BOTTOM" class="button">⬇</A>';
-						}
 					if ( parseInt(aRES[i][3]) < 0 ) { var tdHTML = hOrD + " CLASS='PERDU1'>"; }
 					break;
 				case (rowSIZE - 1):
@@ -1563,7 +1558,6 @@ function rebuildHTML(nTR, keyName,sKEY)
 			}
     	}
 	htmlTAB += "\n</tbody>\n</TABLE>\n";
-	htmlTAB += '<A NAME="BOTTOM"></A>';
 
 	var sizeLS = String(getLocalStorageSize()) + "KB < 5MB";;
 	
@@ -3014,6 +3008,12 @@ function prepareActivity(strOption)
 		case "T":
 			lectureDonneesCachees()	
 			break;	
+		case "U":
+			gestionnaireData("J")	
+			break;
+		case "V":
+			gestionnaireData("A")	
+			break;
 		case "CNN":
 			choosePartie("CNN");
 			break;
@@ -3173,6 +3173,7 @@ function lectureSyncJSON(sType)
 	catch (error) {
     	console.error("Fetch failed:", error);
   		}
+	return true;
 	}
 
 function loadDatafromLS(sType)
@@ -3305,6 +3306,8 @@ function traiterDonnees(data, sType)
 			parent.frames["TITRE"].document.WHIST.ANNONCES.value = records; 
 			}
 		}
+	console.log("DATA: OK");
+	return true;
 	}
  
 async function lectureAsyncJSON(sType)
@@ -3767,3 +3770,59 @@ function arrayToHTML(data, sType)
 		}
 	}
 
+async function gestionnaireData(sType) 
+	{
+	var frameDoc = parent.frames["HDR"].document;
+	var typeWeb  = frameDoc.getElementById("DUREE").value 
+
+	switch (sType)
+		{
+		case "J":	
+			var fic = "JOUEURS.csv.json";
+			if ( typeWeb.toUpperCase === "EXPRESS" ) { var fic = "/JOUEURS" }; 
+			break;
+		case "A":
+			var fic = "POINTS.csv.json";
+			if ( typeWeb.toUpperCase === "EXPRESS" ) { var fic = "/ANNONCES" }; 
+			break;
+		default:
+			var msgTXT = "Choix invalide. A voir avec le concepteur";
+			parent.frames["RESU"].document.getElementById("RES").value = msgTXT;
+			return false;
+		}
+
+  	const response = await fetch(fic);
+  	const data = await response.json();
+  	const headers = Object.keys(data[0]);
+
+	var textAREA = [
+    	headers.join("!"),
+    	...data.map(row =>
+      		headers.map(h => `"${String(row[h]).replace(/"/g, '""')}"`).join("!")
+    		)
+  		].join("\n");
+
+	textAREA = textAREA.replaceAll('"','');
+	var arrayTXT  = textAREA.split("\n");	
+	var textAREA1 = "<p align=left>"+arrayTXT.join("<BR>")+"</P>";
+	arrayTXT.shift();
+	var textAREA2 = arrayTXT.join("\n");
+
+	console.log(arrayTXT);
+	console.log("===================== textAREA1")
+	console.log(textAREA1);
+	console.log("===================== textAREA2")
+	console.log(textAREA2);
+
+	parent.frames["RESU"].document.getElementById("RESULTATS").innerHTML = textAREA1;
+	if ( sType === "J" ) {
+		parent.frames["TITRE"].document.WHIST.JOUEURS.value = textAREA2;
+		}
+	if ( sType === "A" ) {
+		parent.frames["TITRE"].document.WHIST.ANNONCES.value = textAREA2;
+		}
+
+
+  	return
+
+	}

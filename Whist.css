@@ -12,6 +12,7 @@
 body {
   color: var(--text-color-1);
   background: var(--background-color-1);
+  font-size: 10px;;
 }
 
 .headers {

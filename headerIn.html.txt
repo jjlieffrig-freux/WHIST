@@ -3,6 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="Cache-Control" content="no-cache">
 <HEAD>
+
 <script>
 document.addEventListener('keydown', function(event) 
     {
@@ -28,9 +29,17 @@ document.addEventListener('keydown', function(event)
     z-index: 100;
     }
 
+#innerHtmlButtons {
+    border-collapse: collapse;
+}
+#innerHtmlButtons td, th {
+    border: none;
+    padding: 0px;
+}
+
 #innerHtmlTable thead th {
     position: sticky;
-    top: 0px; 
+    top: 35px; 
     margin: 0;
     padding: 5px;
     background: orange;
@@ -42,8 +51,8 @@ document.addEventListener('keydown', function(event)
     border-collapse: separate;
 }
 
-#innerHtmlTable th, td {
-    border: 1px solid #black;
+#innerHtmlTable tr, th, td {
+    border: 1px solid black;
     padding: 6px;
 }
 
@@ -60,5 +69,6 @@ document.addEventListener('keydown', function(event)
 </HEAD> 
 <BODY>
 
-<div id="tableWrapper" style="height:900px; overflow-y: auto;">
-<div id="RESULTATS"    style="height:900px; overflow-y: auto; border:0px;" class="table-container" name="RESULTATS"  >
+<div id="tableWrapper" style="height:700px; overflow-y: auto;">
+<div class="table-container" id="RESULTATS" name="RESULTATS" style="height:700px; overflow-y: auto; border:0px;">
+<A NAME="TOP"></A>
