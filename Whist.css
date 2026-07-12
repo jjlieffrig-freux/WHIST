@@ -276,6 +276,14 @@ table tr:first-child td {
 	font-size: 20px;
 }
 
+/*
+.effaceTable tr, th, td {
+	font-family: "Courier New", Courier, monospace;
+    border: 1px solid black;
+    padding: 6px;
+}
+*/
+
 .tdHote {
 	font-family: "Courier New", Courier, monospace;
 	font-size: 90%;
@@ -420,6 +428,11 @@ li {
 	display: inline-block;
 }
 */
+
+ul,
+ol {
+    text-align: left;
+}
 
 .text-style {
     font-size: 24px;

@@ -3,23 +3,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta http-equiv="Cache-Control" content="no-cache">
 <HEAD>
-
-<script>
-document.addEventListener('keydown', function(event) 
-    {
-    if (event.key === 'Escape') 
-        {
-        const etat = document.fullscreenElement;
-        if ( etat === null ) 
-            { 
-            document.documentElement.requestFullscreen();
-            } 
-        else {
-            document.exitFullscreen();
-            }
-        }
-    });
-</script>
 <style>
 
 #innerHtmlButtons {
@@ -27,19 +10,21 @@ document.addEventListener('keydown', function(event)
     top: 0px;
     padding: 0px;
     z-index: 100;
+    background: lightblue;
     }
 
 #innerHtmlButtons {
     border-collapse: collapse;
-}
+    }
+
 #innerHtmlButtons td, th {
     border: none;
     padding: 0px;
-}
+    }
 
 #innerHtmlTable thead th {
     position: sticky;
-    top: 35px; 
+    top: 30px; 
     margin: 0;
     padding: 5px;
     background: orange;
@@ -69,6 +54,15 @@ document.addEventListener('keydown', function(event)
 </HEAD> 
 <BODY>
 
-<div id="tableWrapper" style="height:700px; overflow-y: auto;">
-<div class="table-container" id="RESULTATS" name="RESULTATS" style="height:700px; overflow-y: auto; border:0px;">
+<div id="tableWrapper" style="height:600px; overflow-y: auto;">
+<div class="table-container" id="RESULTATS" name="RESULTATS" style="height:600px; overflow-y: auto; border:0px;">
+
 <A NAME="TOP"></A>
+
+<TABLE class="innerHtmlButtons" id="innerHtmlButtons" name="innerHtmlButtons" border=0 cellspacing=0 cellpadding=0 width=100%>
+<TR>
+<TD ALIGN=RIGHT WIDTH=45%><A HREF="#TOP" CLASS="button">↑</A></TD>
+<TD WIDTH=10%>&nbsp;</TD>
+<TD ALIGN=LEFT WIDTH=45%><A HREF="#BOTTOM" CLASS="button">↓</A></TD>
+</TR>
+</TABLE>

@@ -52,19 +52,25 @@ function prepareData()
     	console.log(">>> "+s.src);
 		if ( String(s.src).includes("WhistCalc.js")) { getLastModified(s.src) }
 		}
+	var msgTXT = "";
 	listFramesIndex();
 	//console.clear();
 	var arrayM = lectureSyncJSON("A");
+	msgTXT += "\nLecture fichier JSON des ANNONCES (Lgt="+arrayM.length+")"
 	var arrayJ = lectureSyncJSON("J");
-
+	msgTXT += "\nLecture fichier JSON des JOUEURS (Lgt="+arrayJ.length+")"
+	
 	remplissageEncodageJeux();
-
+	msgTXT += "\nPage web pour saisie des jeux en place";
+	
 	const ckNamePfx = reuseParameter("ckNamePfx");
 	const arrJ= Object.keys(localStorage).filter(k => k.startsWith(ckNamePfx)).sort().map(k => ({ key: k, value: localStorage.getItem(k) }));
 	if ( arrJ.length === 0 )
 		{
+		msgTXT += "\nCreation nouvelle partie";
+	
 		choosePartie("CNN");
-		console.clear();
+		//console.clear();
 		console.log("@".repeat(100));
 		const joueursPfx = reuseParameter("joueursPfx");
 		const lesJOUEURS = [];
@@ -82,9 +88,12 @@ function prepareData()
 		//== A PARTIR DU 22/06/26 rajout d'une colonne supplementaire dans la table de JEUX
 		//== Cette colonne contient le numero de l'annonce réalisée et a pour but de faciliter
 		//== la routine de calculs de statistiques.
-		var msgTXT = "Creation tableau 2D VIDE de "+xParties+"x"+xCols+" cells.";
+		msgTXT += "\nCreation tableau 2D VIDE de "+xParties+"x"+xCols+" cells.";
 		console.log(msgTXT);
 		aRES = twoDimensionArray(xParties , xCols, "EMPTY", 0);
+		console.log(aRES);
+		msgTXT += "\nMise à jour LIGNE 0 (header) du tableau 2D"
+	
 		aRES[0][0] = 'Jeux';			
 		aRES[0][1] = 'Donneur';
 		aRES[0][2] = 'Annonces de la partie ['+sCook+']';			
@@ -107,6 +116,8 @@ function prepareData()
 		var lsKey = sCook+".00";
 		localStorage.setItem(lsKey, lsVal);	
 		console.log(aRES);
+		msgTXT += "\NREGÉNÉRATION DU CIDE HTML POUR VOIRE TABLEAU 2D";
+	
 		rebuildHTML(0,sCook,"0");
 		}
 	}
@@ -364,8 +375,101 @@ function refreshPage()
 	parent.frames['RESU'].document.getElementById('RESULTATS').innerHTML = "";
 	}
 
-function effaceUnJeu()
+function effaceUnJeuSelection()
 	{
+	const ckNamePfx = reuseParameter("ckNamePFX");
+	var keyName = getCookie2(ckNamePfx); 
+	console.log("CLE DE LA PARTIE: "+keyName);
+
+	var hMsg = "";
+	hMsg += "\nSELECTIONNEZ LES JEUX A SUPPRIMER DANS LA PARTIE ["+keyName+"] "
+	hMsg += "\nPUIS CLIQUEZ SUR LE BOUTON ";
+	hMsg += "\n<input type='button' VALUE='EFFACE' ONCLICK='JavaScript:effaceJeuPartie()'";
+	
+	var html = "";
+	html += "\n<html><HEAD>";
+	html += "\n<link rel='stylesheet' href='Whist.css'>"
+	html += "\n<style>";
+	html += "\nbody { text-align: left; }";
+	html += "\n</style>";
+	html += "\n</HEAD><body>"
+
+	const swOUT = "LIST";
+	switch (swOUT) {
+		case ("LIST"):
+			html += "\n<HR>"+hMsg+"<HR>";
+			html += "\n<UL>";
+			break;
+		case ("TABLE"):
+			html += "\n<TABLE CLASS='effaceTable' id='effaceTable' name='effaceTable' BORDER=1 WIDTH=85% CELLSPACING=0 CELLPADDING=2>";
+			html += "\n<tr ALIGN=CENTER><th class='tdDonne' colspan=3>";
+			html += "\n"+hMsg;
+			html += "\n</th></tr>";
+			break;
+		default:
+			//RAF
+		}
+	
+	const arrayPartie = Object.keys(localStorage)
+    	.filter(key => key.startsWith(keyName))
+    	.map(key => ({
+        	key,
+        	value: localStorage.getItem(key)
+    		}))
+    	.sort((a, b) => a.key.localeCompare(b.key));
+
+	console.log(arrayPartie);
+	const stats = new Map(); var cptParties = 0; var cbInd = -1;
+	for(i=0; i<arrayPartie.length; i++) {
+		var cle  = arrayPartie[i].key;
+		var val  = arrayPartie[i].value;
+		var valS = val;
+		if ( i > 0 ) { 
+			val = val.split(",");
+			valS  = "";
+			valS += val[0].padEnd(3, " ");
+			valS += val[1].padEnd(6, " ");
+			valS += val[2].padEnd(45, " ");
+			for(j=3; j<val.length; j++) { valS += val[j].padEnd(9, " "); }
+			}
+		cbInd++;
+		cbIndex = String(cbInd).padStart(2, "0");
+		switch (swOUT) 
+			{
+			case ("LIST"):
+				html += "\n<LI style='white-space: nowrap;'>";
+				html += "\n<pre><input type='checkbox' id='"+cbIndex+"' unchecked>&nbsp;"+valS+"</pre></LI>";
+				break;
+			case ("TABLE"):
+				html += "\n<tr><td class='cellinfo'>&nbsp;&nbsp;&nbsp;";
+				html += "\n<input type='checkbox' id='"+cbIndex+"' unchecked>";
+				html += "&nbsp;&nbsp;&nbsp;</td>"
+				html += "\n<td>"+cle+"</td>";
+				html += "\n<td><pre>"+valS+"</pre></td></tr>";
+				break;
+			default:
+				//RAF
+			}
+		}
+	switch (swOUT) 
+		{
+		case ("LIST"):
+			html += "\n</P></OL>";
+			break;
+		case ("TABLE"):
+			html += "\n</TABLE>"
+			break;
+		default:
+			//RAF
+		}
+	html += "\n</body></html>"
+	parent.frames["RESU"].document.getElementById("RESULTATS").innerHTML = html;
+	}
+
+function effaceJeuPartie() 
+	{
+	return;
+
 	const ckNameDef = parent.frames["HDR"].document.HEADER.ckNameDef.value;
 	strD = parent.frames['HDR'].document.getElementById('COOKIE').value;
 	console.log("EFFACEMENT - NOM PARTIE:"+strD);
@@ -830,7 +934,12 @@ function impressionRes(strFORMAT)
 		var dataIN  	= parent.frames["RESU"].document.RES.headerIN.value;
 		var dataOUT 	= parent.frames["RESU"].document.RES.headerOUT.value;
 		var htmlString 	= parent.frames['RESU'].document.getElementById("RESULTATS").outerHTML;	
-		var webPage		= dataIN + "\n" + htmlString + "\n" + dataOUT
+		
+		var webPage = "";
+		//webPage += dataIN + "\n"; 
+		webPage += htmlString;
+		//webPage + "\n" + dataOUT;
+		
 		var webHead		= getCookie2(reuseParameter("ckNameDef"));
 		var optsWin		= reuseParameter("defOpts");
 
@@ -1253,7 +1362,7 @@ function memorise(strDATA1, cleJEU, StrOptionM)
 		msgTXT += "entre "+vainq1+" et "+vainq2+"\n";
 		msgTXT += "Entrez la valeur ["+ v1 + "] ou [" + v2 + "] pour valider le vainqueur";
 		do {
-			console.clear();
+			//console.clear();
 			console.log("Multi option? '"+StrOptionM+"' ");
 			if ( StrOptionM.toUpperCase() === "X" )
 				{
@@ -1474,9 +1583,12 @@ function rebuildHTML(nTR, keyName,sKEY)
 	var strURL  = location.hostname;
 		
 	console.log("APPLICATION HOSTEE SUR SERVER '"+strURL+"'");
-
-
+	
+	const dataIN  = parent.frames["RESU"].document.getElementById("headerIN").value;
+	const dataOUT = parent.frames["RESU"].document.getElementById("headerOUT").value;
+	
 	var htmlTAB = "";
+	htmlTAB += dataIN;
 	htmlTAB += "\n<TABLE id='innerHtmlTable' CLASS='mytr' ID='POINTS' BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=100%>";
 	for (let i = 0; i< limHTML; i++) 
 		{	
@@ -1558,6 +1670,7 @@ function rebuildHTML(nTR, keyName,sKEY)
 			}
     	}
 	htmlTAB += "\n</tbody>\n</TABLE>\n";
+	htmlTAB += dataOUT;
 
 	var sizeLS = String(getLocalStorageSize()) + "KB < 5MB";;
 	
@@ -1660,9 +1773,10 @@ function reloadPointsArray(strCookParam)
 	var msgTXT = "#".repeat(25)+" ("+boolStat+") Reload detected\t\tRECUP COOKIE:"+ckNameDef+"\tPARAM:"+cookParam;
 	console.log(msgTXT);
 
+	msgTXT = "";
 	if ( ! cookParam )
 		{
-		msgTXT = "Choisissez tout d'abord un nom de partie de WHIST dans le panneau de droite"
+		msgTXT += "\nChoisissez tout d'abord un nom de partie de WHIST dans le panneau de droite"
 		//alert(msgTXT);
 		//parent.frames['RES'].document.getElementById("RESULTS").value = msgTXT;
 		const docFrameR = parent.frames["RESU"].document;
@@ -1671,7 +1785,7 @@ function reloadPointsArray(strCookParam)
 		}
     console.log("Recharge en mémoire des parties depuis le 'LOCALSTORAGE' du browser'");
 	console.log("PARTIES DE WHIST DEMANDEES: "+cookParam);
-
+	msgTXT += "\nRecherche dans le LS de tous les jeux de la partie "+cookParam;
 	if ( checkFormFieldAvailability("RESU", "RES",	"RESULTS") ) {
 		parent.frames['RESU'].document.getElementById("RESULTS").value = "";
 		}
@@ -1709,7 +1823,7 @@ function reloadPointsArray(strCookParam)
 			}
 		if ( xcpt < 0 )
 			{
-			msgTXT = "Encore aucun jeu enregistré dans la partie ["+cookParam+"]";
+			msgTXT += "\nEncore aucun jeu enregistré dans la partie ["+cookParam+"]";
 			top.RESU.document.getElementById("RESULTS").value = msgTXT;
 			return;
 			}
@@ -1757,6 +1871,7 @@ function reloadPointsArray(strCookParam)
 	//== la routine de calculs de statistiques.
 	var xCols = (4 + xJOUEURS) + 1;
 
+	msgTXT += "\nCreation d'un tableau VIDE 2D de "+xParties+"x"+xCols;
 	aRES = twoDimensionArray(xParties , xCols, "EMPTY", 0);
 
 	console.log("LOCALSTORAGE triée par clefs ("+keyName+')');
@@ -1775,7 +1890,9 @@ function reloadPointsArray(strCookParam)
 			}
 		}
 	console.log("VALEURS PARAMETRES: "+ii+"\t"+keyName);
+	msgTXT += "\nCreation d'une chaine HTML contenant le tableau 2D";
 	rebuildHTML(ii,keyName,"0");
+	console.log(msgTXT);
 	return aRES;
     }
 
@@ -1901,8 +2018,12 @@ function choosePartie(nomPAR)
 	const ckNamePfx = reuseParameter("ckNamePfx");
 	const ckNameDef = reuseParameter("ckNameDef");
 
+	var msgTXT = "";
 	if ( nomPAR === "??" )
 		{
+		msgTXT += "Recherche les parties existantes dans le localStorage\n";
+		console.log(msgTXT);
+
 		//var keyName = parent.frames['TITRE'].document.getElementById("PARPFX").value;
 		keyName = ckNamePfx;
 		console.log("Regénère la liste des parties mémorisées sur le PREFIX:'"+keyName+"'");
@@ -1924,6 +2045,9 @@ function choosePartie(nomPAR)
 		}
 	if ( nomPAR === "CNN" )
 		{
+		msgTXT += "\nDemande de création d'une nouvelle partie";
+		console.log(msgTXT);
+
 		var nomPAR = prompt("Entrez le nom de votre nouvelle partie",strD);
 		nomPAR = nomPAR.toUpperCase();
 		nomPAR = nomPAR.replace(ckNamePfx,"");
@@ -1932,19 +2056,19 @@ function choosePartie(nomPAR)
 		switch (nomPAR)
 			{
 			case "":
-				mgTXT = "Vous avez entré aucun nom de PARTIE. Aucune action sera appliquée."
+				mgTXT += "\nEMPTY - Vous avez entré aucun nom de PARTIE. Aucune action sera appliquée."
 				nomPAR = null;
 				break;
 			case undefined:
-				mgTXT = "Vous avez entré aucun nom de PARTIE. Aucune action sera appliquée."
+				mgTXT += "\nUNDEF - Vous avez entré aucun nom de PARTIE. Aucune action sera appliquée."
 				nomPAR = null;
 				break;	
 			case null:
-				mgTXT = "Vous avez entré aucun nom de PARTIE. Aucune action sera appliquée."
+				mgTXT += "\nNULL - Vous avez entré aucun nom de PARTIE. Aucune action sera appliquée."
 				nomPAR = null;
 				break;	
 			default: 
-				msgTXT = "";
+				//msgTXT = "";
 			}
 		//parent.frames['RESU'].document.RES.getElementById('RESULTS').value = msgTXT;
 		top.RESU.document.getElementById("RESULTS").value = msgTXT;
@@ -1952,10 +2076,16 @@ function choosePartie(nomPAR)
 
 	if ( nomPAR != null )
 		{
+		msgTXT += "\nAnalyse de la nouvelle partie";
+		console.log(msgTXT);
+
 		var xCPT = -1;
 		console.log("NOM:"+nomPAR.slice(0,6)+"\t\tckNamePfx:"+ckNamePfx);
 		if ( nomPAR.slice(0,6) === ckNamePfx )
 			{
+			msgTXT += "\nNouvelle partie déjà existante. Lecture dans LS des jeux de cette partie";
+			console.log(msgTXT);
+
 			//===== C'est une PARTIE qui existe. On cherche les jeux de cette PARTIE =========
 			xCPT = 0;
 			document.HEADER.COOKIE.value = nomPAR;
@@ -1979,12 +2109,18 @@ function choosePartie(nomPAR)
 			var ckDATA = getCookie2(ckNameDef);
 			if ( ckDATA === ckNamePfx + nomPAR )
 				{
+				msgTXT += "\nNouvelle partie déjà crée mais ne contient AUCUN jeu";
+				console.log(msgTXT);
+
 				//===== PARTIE existante mais aucun jeux =====
-				var msgTXT = "La PARTIE ["+ckNamePfx+nomPAR+"] déjà créée. Pas de jeux dans cette PARTIE";
+				msgTXT += "\nLa PARTIE ["+ckNamePfx+nomPAR+"] déjà créée. Pas de jeux dans cette PARTIE";
 				console.log(msgTXT)
 				top.RESU.document.getElementById("RESULTS").value = msgTXT;
 				}
 			else {
+				msgTXT += "\nCréation de la nouvelle PARTIE. Suite....";
+				console.log(msgTXT);
+
 				//===== PARTIE nouvelle. On crée le COOKIE =====
 				msgTXT = "La partie de Whist ["+ckNamePfx+nomPAR+"] inexistante! En route pour la créer...";
 				console.log(msgTXT);
@@ -2007,16 +2143,20 @@ function choosePartie(nomPAR)
 					}
 				if ( xCPT > 0 )
 					{
-					msgTXT = "LA NOUVELLE PARTIE SOUHAITEE ["+nomPAR+"] EXISTE DEJA. CREATION REFUSEE";
+					msgTXT += "\nLA NOUVELLE PARTIE SOUHAITEE ["+nomPAR+"] EXISTE DEJA. CREATION REFUSEE";
 					//top.RESU.document.getElementById("RESULTS").value = msgTXT;
 					top.RESU.document.getElementById("RESULTATS").innerHTML = "";
 					}
 				else {
 					//===== CREATION NOUVEAU COOKIE POUR NOUVELLE PARTIE
 					nomPAR = ckNamePfx + nomPAR;
+					msgTXT += "\nCréation du nouveau cookie ["+nomPAR+"]";
+
 					var ckName = creerCookie(ckNameDef, nomPAR);
-					var ckName = createNewOptionSelect(nomPAR)
-					var msgTXT = "LE SYSTEME EST PRET A L'ENTREE DE JEUX POUR CETTE NOUVELLE PARTIE ["+ckName+"]";
+					var ckName = createNewOptionSelect(nomPAR);
+					msgTXT += "\nReset du tableau 2D pour le cookie "+nomPAR;
+					reloadPointsArray(ckName);
+					msgTXT += "\nLE SYSTEME EST PRET A L'ENTREE DE JEUX POUR CETTE NOUVELLE PARTIE ["+ckName+"]";
 					console.log(msgTXT);
 					//top.RESU.document.getElementById("RESULTS").value = msgTXT;
 					refreshPageDetail("HDR",msgTXT);
@@ -2026,11 +2166,13 @@ function choosePartie(nomPAR)
 			else {
 				//=== DEMANDE DE VISIONNAGE D'UNE PARTIE =====
 				var ckName = creerCookie(ckNameDef, nomPAR);
+				msgTXT += "\nDemande de visionnage de la PARTIE ["+ckName+"]";
+	
 				//var ckName = createNewOptionSelect(nomPAR);
-				var msgTXT = "Sélectionnez l'activité [RECHARGE PARTIE] pour charger la partie ["+ckName+"] en mémoire";
+				var msgTXT1 = "Sélectionnez l'activité [RECHARGE PARTIE] pour charger la partie ["+ckName+"] en mémoire\n";
 				//top.RESU.document.getElementById("RESULTS").value = msgTXT;
-				console.log(msgTXT);
-				refreshPageDetail("RESU",msgTXT);
+				console.log(msgTXT1);
+				refreshPageDetail("RESU",msgTXT1);
 				reloadPointsArray(ckName);
 				}
 			}
@@ -2039,7 +2181,7 @@ function choosePartie(nomPAR)
 		//===== CREATION NOUVEAU COOKIE POUR NOUVELLE PARTIE
 		//===== REFUSEE CAR LE NOM DE PARTIE EST "NULL"
 		//var ckName = createCookie(nomPAR)
-		//var msgTXT = "LE SYSTEME EST PRET A L'ENCODAGE DE LA PARTIE ["+ckName+"]";
+		//msgTXT += "LE SYSTEME EST PRET A L'ENCODAGE DE LA PARTIE ["+ckName+"]\n";
 		//top.RESU.document.getElementById("RESULTS").value = msgTXT;
 		//refreshPageDetail("RESU",msgTXT);
 		}
@@ -2572,7 +2714,7 @@ function noRepeatRandom()
 
 function specialSet(xSTR)
 	{
-	console.clear();
+	//console.clear();
 	const min = 1;
 	const max = 5;
 	const listNumbers = new Array(6).fill(0);
@@ -2942,7 +3084,7 @@ function multiGeneration()
 
 function prepareActivity(strOption) 
 	{
-	console.clear();
+	//console.clear();
 	switch (strOption)
 		{
 		case "A":
@@ -2959,7 +3101,7 @@ function prepareActivity(strOption)
 			manageWhistRes('EJ');
 			break;
 		case "E":
-			effaceUnJeu();
+			effaceUnJeuSelection();
 			break;
 		case "F":
 			displayCompile();
@@ -3021,6 +3163,7 @@ function prepareActivity(strOption)
 			// RAF
 		}
 	}
+
 
 function insertHelp()
 	{
@@ -3825,4 +3968,26 @@ async function gestionnaireData(sType)
 
   	return
 
+	}
+
+function manageRowDeletion(cellIx, cellData, rowIx, rowData)
+	{
+	console.log('\u25A0'.repeat(25)+"manageRowDeletion"+'\u25A0'.repeat(25));
+
+	const xPartie = parent.frames["HDR"].document.getElementById("COOKIE").value;
+	var targetRow = "Partie: "+xPartie+"\t"+rowIx+") ";
+	for (const cell of rowData.cells) {
+		targetRow += "["+cell.textContent.trim()+"]";
+        }
+	msgTEXT = "";
+	msgTEXT += "Voulez-vous effacer ce jeu?  <O>ui/<n>on?\n";
+	msgTEXT += "Ligne cible: "+targetRow;
+	do 	{
+		var rep = prompt(msgTXT,"n");
+		}
+	while ( !(rep ==="O" || rep === "n" ) );
+
+	if ( rep === "O" )
+		{
+		}
 	}

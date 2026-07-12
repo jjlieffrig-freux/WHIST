@@ -3,9 +3,35 @@
 
 </div>
 </div>
+</div>
 
+<script>
 
-</BODY>
+const docFrame = parent.frames["RESU"].document;
+
+docFrame.addEventListener("click", (event) => {
+    const row  = event.target.closest("tr");
+    const cell = event.target.closest("td");
+    
+    // Ignore clicks outside rows
+    if (!row || !table.contains(row)) return;
+    if (!cell) return;
+    
+    console.clear();
+    console.log("Clicked row:", row);
+    console.log("Row index:", row.rowIndex);
+    console.log("Cell text:", cell.textContent);
+    console.log("Column:", cell.cellIndex);
+    
+    //for (const cell of row.cells) {
+    //    console.log(cell.textContent);
+    //    }
+
+    manageRowDeletion(cell.cellIndex, cell.textContent, rowIndex, row);
+    
+});
+
+</script>
 
 </body>
 </html>
