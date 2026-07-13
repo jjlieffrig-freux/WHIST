@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <BODY onLoad="prepareData()">
 <FORM ID="WHIST" NAME="WHIST">
 
-<div id="toggleDIV2" style="height:800px; overflow-y:auto; border:0px;"> 
+<div CLASS="table-container"> 
 
 <TABLE ID="WHISTB" CLASS="tableTOP" BORDER="0" BORDERCOLOR="RED" CELLSPACING="0" CELLPADDING="0">
 
@@ -53,12 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		</optgroup>	
 				
 		<optgroup label="NAVIGATEUR" id="NAVIGATEUR">
-			<option value="B" style="color: RED;  font-weight: bold;">&nbsp;-&nbsp;13.&nbsp;REMISE A ZERO DE TOUTES LES PARTIES</option>
-			<option value='M' style="color: BLUE; font-weight: bold;">&nbsp;-&nbsp;14.&nbsp;AFFICHAGE MEMOIRE DU NAVIGATEUR</option>
-			<option value='S' style="color: BLUE; font-weight: bold;">&nbsp;-&nbsp;15.&nbsp;RESTAURE MEMOIRE DU NAVIGATEUR</option>
-			<option value='T' style="color: BLUE; font-weight: bold;">&nbsp;-&nbsp;16.&nbsp;VISIONAGE DES DONNEES CACHEES</option>
-			<option value='U' style="color: BLUE; font-weight: bold;">&nbsp;-&nbsp;16.&nbsp;GESTIONNAIRE\RELECTURE DES JOUEURS</option>
-			<option value='V' style="color: BLUE; font-weight: bold;">&nbsp;-&nbsp;17.&nbsp;GESTIONNAIRE\RELECTURE DES ANNONCES</option>
+			<option value='M' style="color: BLUE; font-weight: bold;">&nbsp;-&nbsp;13.&nbsp;VOIR & SAUVEGARDER LES PARTIES DE WHIST</option>
+			<option value="B" style="color: RED;  font-weight: bold;">&nbsp;-&nbsp;14.&nbsp;ON EFFACE (RESET) TOUTES LES PARTIES</option>
+			<option value='S' style="color: BLUE; font-weight: bold;">&nbsp;-&nbsp;15.&nbsp;RESTAURER LES PARTIES DE WHIST SAUVEGARDEES</option>
+			<option value='T' style="color: lightseagreen; font-weight: bold;">&nbsp;-&nbsp;16.&nbsp;VOIR LES DONNEES APPLICATION CACHEES</option>
+			<option value='U' style="color: lightseagreen; font-weight: bold;">&nbsp;-&nbsp;17.&nbsp;RELIRE FICHIER JOUEURS.. (⧉ MAJ EXCEL)</option>
+			<option value='V' style="color: lightseagreen; font-weight: bold;">&nbsp;-&nbsp;18.&nbsp;RELIRE FICHIER POINTS... (⧉ MAJ EXCEL)</option>
 		</optgroup>
 				
 		<optgroup label="INFO" id="INFO">
@@ -123,10 +123,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		<BR><TABLE BORDER=0 WIDTH="100%">
 			<TR>
-				<TD VALIGN="MIDDLE" ALIGN="CENTER">
-				&nbsp;
-				<input type="button" value="IMPRIME" ONCLICK="JavaScript:imprimePoints()">
-				&nbsp;
+				<TD VALIGN="MIDDLE" ALIGN="LEFT WIDTH=70%">
+				<input type="button" value="-" ONCLICK="JavaScript:changeFontSize('-')">
+				<input type="button" value="+" ONCLICK="JavaScript:changeFontSize('+')">
+				</TD><TD>
+				<!--input type="button" value="IMPRIME" ONCLICK="JavaScript:imprimePoints()"-->
 				<input type="button" value="CALCUL" ONCLICK="JavaScript:calculator('')">
 				</TD>
 			</TR>
@@ -139,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <TR>
 	<TD CLASS="GENERAL1" >
 		<BR>
-		<input type="checkbox" checked data-target="fs2" value="Matrice" onchange="JavaScript:remplissageEncodageJeux()">
+		&nbsp;&nbsp;[<input type="checkbox" checked data-target="fs2" value="Matrice" onchange="JavaScript:remplissageEncodageJeux()">]
 		<label for="toggle"><B>Matrice des jeux</B></label> 
 		<fieldset id="fs2">
 		<legend>JEUX</legend>
@@ -165,7 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
 <!-- ============================ PARAMETRES APPLICATION (ON/OFF) ===================================== -->
 <TR><TD CLASS="GENERAL1" >
 	
-	<br><input type="checkbox" id="toggleDIV">
+	<br>&nbsp;&nbsp;[<input type="checkbox" id="toggleDIV">]
 	<label for="toggleDIV"><B>Parametres application</B></label> <br>&nbsp;
 
 	<div class="details">
@@ -215,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <TABLE BORDER="0" BORDERCOLOR="RED" WIDTH="85%" CELLSPACING=0 CELLPADDING=0>
         <TR VALIGN=TOP>
             <TD width=300px CLASS="GENERAL1" >
-                <input type="checkbox" id="toggleSelect"><label for="toggleSelect">&nbsp;<B>Choisir couleur</B></label> 
+                &nbsp;&nbsp;[<input type="checkbox" id="toggleSelect"><label for="toggleSelect">&nbsp;<B>Choisir couleur</B></label>]
                 <BR>
 
                 <TABLE BORDER=0 BORDERCOLOR=GREEN>
@@ -258,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </TABLE>
 </TD></TR>	
 </TABLE> 
-</div>
+
 
 <script>
 //* ======= SCRIPT REQUIS POUR OPTION "CHANGER COULEURS" =========
@@ -289,9 +290,9 @@ document.getElementById("colors").addEventListener("change", (e) => {
     changeItemColors(e.target.value);
     }); 
 
-
 </script>
 
+</div>
 </FORM>
 
 </BODY>

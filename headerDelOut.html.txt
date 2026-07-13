@@ -1,0 +1,16 @@
+</TABLE> 
+
+<script>
+function effacerJeuxBis()  
+    {
+    const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+    console.log(checked);
+    var arrayCB = "";
+    checked.forEach(cb => { arrayCB += cb.id+"!" });
+    //alert(arrayCB);
+    console.log(arrayCB);
+    }
+</script>
+
+</body>
+</html> 

@@ -196,7 +196,9 @@ async function sendHtmlFileToPdf(textINFO, swCONNECT)
             <TR ALIGN=CENTER VALIGN=MIDDLE><TD>
                     <TABLE BORDER=0 WIDTH="100%">
                     <TR VALIGN=MIDDLE ALIGN=CENTER><TD>
-                        <div CLASS="table-container" name="RESULTATS" id="RESULTATS" style="height:800px; overflow-y:auto; border:0px;"> </div>
+                        <div class="horizontal-scroll">
+                            <div CLASS="table-container" name="RESULTATS" id="RESULTATS"> </div>
+                        </div>
                     </TD></TR>
                     </TABLE>
             </TD></TR>
@@ -211,6 +213,8 @@ async function sendHtmlFileToPdf(textINFO, swCONNECT)
     <TABLE BORDER="0" WIDTH="100%"><TR>
     <TD><textarea id="headerIN"  name="headerIN"  ROWS=8 COLS=30 class="headers"></textarea></TD>
     <TD><textarea id="headerOUT" name="headerOUT" ROWS=8 COLS=30 class="headers"></textarea></TD>
+    <TD><textarea id="headerDELIN"  name="headerDELIN"  ROWS=8 COLS=30 class="headers"></textarea></TD>
+    <TD><textarea id="headerDELOUT" name="headerDELOUT" ROWS=8 COLS=30 class="headers"></textarea></TD>
     </TR></TABLE>             
 </TD></TR>
 </TABLE>
@@ -233,8 +237,10 @@ function readFile(xFile, xDiv)
         console.error("ERREUR: "+err);
         }
     };
-readFile("./headerIN.html.txt","headerIN");
-readFile("./headerOUT.html.txt","headerOUT");
+readFile("./headerIn.html.txt","headerIN");
+readFile("./headerOut.html.txt","headerOUT");
+readFile("./headerDelIn.html.txt","headerDELIN");
+readFile("./headerDelOut.html.txt","headerDELOUT");
 </script>
 
 </FORM>

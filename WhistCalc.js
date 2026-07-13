@@ -8,7 +8,6 @@
 let ckNamePfx   = "WHIST-"; 
 let ckNameDef   = "PARTIES-WHIST";
 
-
 console.log("1>>>"+ckNameDef+"\t"+ckNamePfx);
 console.log("@".repeat(50)+" "+sessionStorage.getItem("reloaded"));
 
@@ -35,6 +34,82 @@ if ( sessionStorage.getItem("reloaded") ) {
 else {
     sessionStorage.setItem("reloaded", "false");
     }
+
+function checkNavigateur()
+	{
+	var msgTXT = "";
+	var status = false
+	if (navigator.userAgentData) {
+		const brands = navigator.userAgentData.brands;
+		console.log(brands);
+		const hasGoogleChrome = brands.some(item => item.brand === "Google Chrome");
+		if ( hasGoogleChrome ) {
+			msgTXT += "Bravo. Vous surfez avec Google Chrome. Tout va bien se passer"
+			status = true;
+			}
+		else {
+			msgTXT += "Aïe. Vous surfez avec "+navig[2]+". Garantis pas le sans fautes";
+			}
+		parent.frames["RESU"].document.RES.RESULTS.value = msgTXT;
+		}
+	return status;
+	}
+
+function changeFontSize(action)
+	{
+	const expires = new Date();
+	var valCookie = 0;
+	var sizePCcookName = reuseParameter("ckNameDef") + "-SCREEN";
+	if ( document.cookie.includes(sizePCcookName) )
+		{
+		const cookies = document.cookie.split(";");
+    	for (let cookie of cookies) {
+        	cookie = cookie.trim();
+        	if (cookie.startsWith(sizePCcookName + "=")) {
+            	valCookie = cookie.substring(name.length + 1).split("=")[1];
+				valCookie = valCookie.replace(")","");
+        		}
+			}
+		valCookie = parseInt(valCookie);
+		}
+	else {
+		valCookie = 100;
+		expires.setTime(expires.getTime() + 7 * 24 * 60 * 60 * 1000);
+		document.cookie =
+			encodeURIComponent(sizePCcookName) + "=" +
+			encodeURIComponent(valCookie) +
+			"; expires=" + expires.toUTCString() +
+			"; path=/";
+		}
+
+	switch(action) 
+		{
+		case "-": 
+			sizePC = valCookie - 15;
+			break;
+		case "+":
+			sizePC = valCookie + 15; 
+			break;
+		default:
+			sizePC = valCookie; 
+		}
+	var msgTXT = parent.frames.length+"x la dimension de caractères de "+valCookie+"% à "+sizePC+"%";
+	console.log(msgTXT);
+
+	for (let i = 0; i < parent.frames.length; i++) {
+    	const doc = parent.frames[i].document;
+		doc.body.style.zoom = String(sizePC)+"%";
+		}
+	valCookie = sizePC;
+	document.cookie = encodeURIComponent(sizePCcookName) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";	document.cookie = encodeURIComponent(sizePCcookName) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+    expires.setTime(expires.getTime() + 7 * 24 * 60 * 60 * 1000);
+	document.cookie =
+        encodeURIComponent(sizePCcookName) + "=" +
+        encodeURIComponent(valCookie) +
+        "; expires=" + expires.toUTCString() +
+        "; path=/";
+	parent.frames["RESU"].document.getElementById("RESULTS").value = msgTXT;
+	}
 
 function prepareData()
 	{
@@ -63,6 +138,8 @@ function prepareData()
 	remplissageEncodageJeux();
 	msgTXT += "\nPage web pour saisie des jeux en place";
 	
+	let navStatus = checkNavigateur();
+
 	const ckNamePfx = reuseParameter("ckNamePfx");
 	const arrJ= Object.keys(localStorage).filter(k => k.startsWith(ckNamePfx)).sort().map(k => ({ key: k, value: localStorage.getItem(k) }));
 	if ( arrJ.length === 0 )
@@ -119,6 +196,18 @@ function prepareData()
 		msgTXT += "\NREGÉNÉRATION DU CIDE HTML POUR VOIRE TABLEAU 2D";
 	
 		rebuildHTML(0,sCook,"0");
+		}
+	}
+
+function checkNavigator()
+	{
+	const isChrome = navigator.userAgentData?.brands.some(
+    	b => b.brand === "Google Chrome"
+  		) ?? false;
+	alert(isChrome);
+	if ( !isChrome ) {
+		var msgTEXT = "Vous n'utilisez pas Google chrome. Dommage. Des soucis en perspectives dès lors;"
+		parent.frames["RESU"].document.getElementById("RESULTATS").value = msgTEXT;
 		}
 	}
 
@@ -380,36 +469,9 @@ function effaceUnJeuSelection()
 	const ckNamePfx = reuseParameter("ckNamePFX");
 	var keyName = getCookie2(ckNamePfx); 
 	console.log("CLE DE LA PARTIE: "+keyName);
-
-	var hMsg = "";
-	hMsg += "\nSELECTIONNEZ LES JEUX A SUPPRIMER DANS LA PARTIE ["+keyName+"] "
-	hMsg += "\nPUIS CLIQUEZ SUR LE BOUTON ";
-	hMsg += "\n<input type='button' VALUE='EFFACE' ONCLICK='JavaScript:effaceJeuPartie()'";
 	
-	var html = "";
-	html += "\n<html><HEAD>";
-	html += "\n<link rel='stylesheet' href='Whist.css'>"
-	html += "\n<style>";
-	html += "\nbody { text-align: left; }";
-	html += "\n</style>";
-	html += "\n</HEAD><body>"
+	var html = parent.frames["RESU"].document.RES.headerDELIN.value;
 
-	const swOUT = "LIST";
-	switch (swOUT) {
-		case ("LIST"):
-			html += "\n<HR>"+hMsg+"<HR>";
-			html += "\n<UL>";
-			break;
-		case ("TABLE"):
-			html += "\n<TABLE CLASS='effaceTable' id='effaceTable' name='effaceTable' BORDER=1 WIDTH=85% CELLSPACING=0 CELLPADDING=2>";
-			html += "\n<tr ALIGN=CENTER><th class='tdDonne' colspan=3>";
-			html += "\n"+hMsg;
-			html += "\n</th></tr>";
-			break;
-		default:
-			//RAF
-		}
-	
 	const arrayPartie = Object.keys(localStorage)
     	.filter(key => key.startsWith(keyName))
     	.map(key => ({
@@ -418,7 +480,6 @@ function effaceUnJeuSelection()
     		}))
     	.sort((a, b) => a.key.localeCompare(b.key));
 
-	console.log(arrayPartie);
 	const stats = new Map(); var cptParties = 0; var cbInd = -1;
 	for(i=0; i<arrayPartie.length; i++) {
 		var cle  = arrayPartie[i].key;
@@ -434,40 +495,32 @@ function effaceUnJeuSelection()
 			}
 		cbInd++;
 		cbIndex = String(cbInd).padStart(2, "0");
-		switch (swOUT) 
-			{
-			case ("LIST"):
-				html += "\n<LI style='white-space: nowrap;'>";
-				html += "\n<pre><input type='checkbox' id='"+cbIndex+"' unchecked>&nbsp;"+valS+"</pre></LI>";
-				break;
-			case ("TABLE"):
-				html += "\n<tr><td class='cellinfo'>&nbsp;&nbsp;&nbsp;";
-				html += "\n<input type='checkbox' id='"+cbIndex+"' unchecked>";
-				html += "&nbsp;&nbsp;&nbsp;</td>"
-				html += "\n<td>"+cle+"</td>";
-				html += "\n<td><pre>"+valS+"</pre></td></tr>";
-				break;
-			default:
-				//RAF
+		html += '\n<tr align=top id="tROW">\n<td id="titre2">&nbsp;&nbsp;&nbsp;';		
+		if ( i > 0 ) {
+			html += "\n<input type='checkbox' id='"+cbIndex+"' unchecked class='large-checkbox'>";
 			}
+		html += "&nbsp;&nbsp;&nbsp;</td>\n<td>&nbsp;"+cle+"&nbsp;</td>";
+		html += "\n<td>&nbsp;<pre>"+valS+"</pre>\n</td></tr>";
 		}
-	switch (swOUT) 
-		{
-		case ("LIST"):
-			html += "\n</P></OL>";
-			break;
-		case ("TABLE"):
-			html += "\n</TABLE>"
-			break;
-		default:
-			//RAF
-		}
-	html += "\n</body></html>"
+		html += parent.frames["RESU"].document.RES.headerDELOUT.value;
 	parent.frames["RESU"].document.getElementById("RESULTATS").innerHTML = html;
 	}
 
-function effaceJeuPartie() 
+function effacerJeux()  
+    {
+    const checked = document.querySelectorAll('input[type="checkbox"]:checked');
+	const keyName = parent.frames["HDR"].document.getElementById("COOKIE").value;
+    console.log(checked);
+    var arrayCB = "";
+    checked.forEach(cb => { arrayCB += keyName+"."+cb.id+"!" });
+    console.log(arrayCB);
+    effaceJeuPartie(arrayCB);
+    }
+
+function effaceJeuPartie(xCB) 
 	{
+	//alert(xCB.split("!"));
+	console.log(xCB.split("!"));
 	return;
 
 	const ckNameDef = parent.frames["HDR"].document.HEADER.ckNameDef.value;
@@ -934,12 +987,17 @@ function impressionRes(strFORMAT)
 		var dataIN  	= parent.frames["RESU"].document.RES.headerIN.value;
 		var dataOUT 	= parent.frames["RESU"].document.RES.headerOUT.value;
 		var htmlString 	= parent.frames['RESU'].document.getElementById("RESULTATS").outerHTML;	
-		
-		var webPage = "";
-		//webPage += dataIN + "\n"; 
-		webPage += htmlString;
+		//webPage += dataIN + "\n";
 		//webPage + "\n" + dataOUT;
-		
+
+		var webPage = "";
+		webPage += "<HTML>";
+		webPage += "\n<meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>";
+		webPage += "\n<meta http-equiv='Cache-Control' content='no-cache'>";
+		webPage += "\n<HEAD></HEAD>\n<BODY>";
+		webPage += htmlString;
+		webPage += "\n</BODY></HTML>";
+
 		var webHead		= getCookie2(reuseParameter("ckNameDef"));
 		var optsWin		= reuseParameter("defOpts");
 
@@ -1779,8 +1837,9 @@ function reloadPointsArray(strCookParam)
 		msgTXT += "\nChoisissez tout d'abord un nom de partie de WHIST dans le panneau de droite"
 		//alert(msgTXT);
 		//parent.frames['RES'].document.getElementById("RESULTS").value = msgTXT;
-		const docFrameR = parent.frames["RESU"].document;
-		docFrameR.getElementByID("RESULTS").value = msgTXT;
+		//const docFrameR = parent.frames["RESU"].document;
+		//docFrameR.getElementByID("RESULTS").value = msgTXT;
+		console.log(msgTXT);
 		return;
 		}
     console.log("Recharge en mémoire des parties depuis le 'LOCALSTORAGE' du browser'");
@@ -3838,16 +3897,33 @@ function lectureDonneesCachees()
     	.replace(/"/g, "&quot;")
     	.replace(/'/g, "&#39;");
 
+	var headerDELIN = docFrame2.getElementById("headerDELIN").value;
+	headerDELIN = headerDELIN
+    	.replace(/&/g, "&amp;")
+    	.replace(/</g, "&lt;")
+    	.replace(/>/g, "&gt;")
+    	.replace(/"/g, "&quot;")
+    	.replace(/'/g, "&#39;");
+
+	var headerDELOUT = docFrame2.getElementById("headerDELOUT").value;
+	headerDELOUT = headerDELOUT
+    	.replace(/&/g, "&amp;")
+    	.replace(/</g, "&lt;")
+    	.replace(/>/g, "&gt;")
+    	.replace(/"/g, "&quot;")
+    	.replace(/'/g, "&#39;");
 
 	html = ""
 	html += "<HTML><BODY>\n";
 	html += "<PRE>\n";
-	html += "<HR>Nbre joueurs: "+nbrJoueurs+"n";
+	html += "<HR>Nbre joueurs: "+nbrJoueurs+"\n";
 	html += "<HR>Nbre annonces: "+nbrAnnonces+"\n";
 	html += "<HR>Joueurs:<BR><HR>"+tableJoueurs+"\n";
 	html += "<HR>Annonces:<BR><HR>"+tableAnnonces+"\n";
 	html += "<HR>HEADER-IN:<BR><HR>"+headerIN+"\n";
 	html += "<HR>HEADER-OUT:<BR><HR>"+headerOUT+"\n";
+	html += "<HR>HEADER-DEL-IN:<BR><HR>"+headerDELIN+"\n";
+	html += "<HR>HEADER-DEL-OUT:<BR><HR>"+headerDELOUT+"\n";
 	html += "\n</OL>\n</BODY></HTML>";
 
 	var opts = reuseParameter("defOpts");
@@ -3905,7 +3981,7 @@ function arrayToHTML(data, sType)
       				`).join("")}
     			</table>
   				`;  
-			alert(html1D);   	
+			//(html1D);   	
 			return html1D;
 			break;
 		default:

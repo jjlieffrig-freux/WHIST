@@ -61,8 +61,8 @@
 
 <TABLE class="innerHtmlButtons" id="innerHtmlButtons" name="innerHtmlButtons" border=0 cellspacing=0 cellpadding=0 width=100%>
 <TR>
-<TD ALIGN=RIGHT WIDTH=45%><A HREF="#TOP" CLASS="button">↑</A></TD>
+<TD ALIGN=RIGHT WIDTH=45%><A HREF="#TOP" CLASS="button">⬆</A></TD>
 <TD WIDTH=10%>&nbsp;</TD>
-<TD ALIGN=LEFT WIDTH=45%><A HREF="#BOTTOM" CLASS="button">↓</A></TD>
+<TD ALIGN=LEFT WIDTH=45%><A HREF="#BOTTOM" CLASS="button">⬇</A></TD>
 </TR>
 </TABLE>
