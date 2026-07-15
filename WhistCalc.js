@@ -115,6 +115,12 @@ function prepareData()
 	{
 	//console.clear();
 	console.log('\u25A0'.repeat(25)+"FUNCTION PREPAREDATA"+'\u25A0'.repeat(25));
+
+	for (let i = 0; i < parent.frames.length; i++) {
+			const doc = parent.frames[i].document;
+			doc.body.style.zoom = "80%";
+			}
+
 	var xPOS = top.location.href.indexOf("?")
 	console.log("Controle URL sur '?'. Pos="+xPOS);
 	if ( xPOS > 1 )
@@ -128,74 +134,131 @@ function prepareData()
 		if ( String(s.src).includes("WhistCalc.js")) { getLastModified(s.src) }
 		}
 	var msgTXT = "";
+	msgTXT += "\nPage web pour saisie des jeux en place";
+
 	listFramesIndex();
-	//console.clear();
+
 	var arrayM = lectureSyncJSON("A");
 	msgTXT += "\nLecture fichier JSON des ANNONCES (Lgt="+arrayM.length+")"
 	var arrayJ = lectureSyncJSON("J");
 	msgTXT += "\nLecture fichier JSON des JOUEURS (Lgt="+arrayJ.length+")"
-	
-	remplissageEncodageJeux();
-	msgTXT += "\nPage web pour saisie des jeux en place";
-	
+		
 	let navStatus = checkNavigateur();
 
-	const ckNamePfx = reuseParameter("ckNamePfx");
-	const arrJ= Object.keys(localStorage).filter(k => k.startsWith(ckNamePfx)).sort().map(k => ({ key: k, value: localStorage.getItem(k) }));
-	if ( arrJ.length === 0 )
+	var xParties     = reuseParameter("nbrJeux");
+	
+	const ckNamePfx  = reuseParameter("ckNamePfx");
+	const prefix     = ckNamePfx;
+	const suffix     = ".00";
+	const regex      = new RegExp(`^${prefix}.*${suffix}$`);
+	const arrPARTIES = Object.keys(localStorage).filter(key => regex.test(key))
+	
+	const joueursPfx = reuseParameter("joueursPfx");
+ 	const arrJOUEURS = Object.keys(localStorage).filter(k => k.startsWith(joueursPfx))
+
+	var flagCREATE = 0;
+	if ( arrPARTIES.length === 0 ) {
+		flagCREATE = 1;
+		if ( arrJOUEURS.length  < 4 ) { flagCREATE++; } 
+		if ( parseInt(xParties) < 1 ) { flagCREATE++; } 
+		}
+	else {
+		flagCREATE = 5;
+		if ( arrJOUEURS.length  < 4 ) { flagCREATE++; } 
+		if ( parseInt(xParties) < 1 ) { flagCREATE++; } 
+		}
+	switch (flagCREATE)
 		{
-		msgTXT += "\nCreation nouvelle partie";
-	
-		choosePartie("CNN");
-		//console.clear();
-		console.log("@".repeat(100));
-		const joueursPfx = reuseParameter("joueursPfx");
-		const lesJOUEURS = [];
-		for (let i = 0; i < localStorage.length; i++) {
-    		const key = localStorage.key(i);
-			const val = localStorage.getItem(key)
-			if (key.startsWith(joueursPfx)) { lesJOUEURS.push(val); }
-			}
-		lesJOUEURS.sort();
-		var sCook = parent.frames['HDR'].document.HEADER.COOKIE.value;
-		//var lesJOUEURS = parent.frames["TITRE"].document.getElementById("JOUEURS").value;
-		console.log(lesJOUEURS);
-		var xParties    = reuseParameter("nbrJeux");
-		var xCols 	    = (4 + lesJOUEURS.length) + 1;
-		//== A PARTIR DU 22/06/26 rajout d'une colonne supplementaire dans la table de JEUX
-		//== Cette colonne contient le numero de l'annonce réalisée et a pour but de faciliter
-		//== la routine de calculs de statistiques.
-		msgTXT += "\nCreation tableau 2D VIDE de "+xParties+"x"+xCols+" cells.";
-		console.log(msgTXT);
-		aRES = twoDimensionArray(xParties , xCols, "EMPTY", 0);
-		console.log(aRES);
-		msgTXT += "\nMise à jour LIGNE 0 (header) du tableau 2D"
-	
-		aRES[0][0] = 'Jeux';			
-		aRES[0][1] = 'Donneur';
-		aRES[0][2] = 'Annonces de la partie ['+sCook+']';			
-		aRES[0][3] = 'Points';		
-		for (i = 0; i < lesJOUEURS.length; i++) 
+		case 0:
+			msgTXT = "Impossible techniquement";
+			break;
+		case 1:
+			msgTXT = "OK! Encodage nouvelle partie de whist demandée";
+			break;
+		case 2:
+			msgTXT = "Pas moyen de connaitre la liste des joueurs";
+			break;
+		case 3:
+			msgTXT = "Pas de liste des joueurs et pas de limite de jeux";
+			break;
+		case 5:
+			msgTXT = "OK!Déjà "+arrPARTIES.length+" partie(s) de Whist en cours..."
+			break;
+		case 6:
+			msgTXT = arrPARTIES.length+" partie(s) de Whist en cours et pas de JOUEURS";
+			break;
+		case 7:
+			msgTXT = arrPARTIES.length+" partie(s) de Whist en cours et pas de JOUEURS ni de limite de jeux";
+			break;
+		default:
+			msgTXT = "Inconnu techniquement";
+		}
+	console.clear();
+	msgTXT  = "FLAG="+flagCREATE+"\t"+msgTXT;
+	msgTXT += "\n#PARTIES="+arrPARTIES.length+"\t#JOUEURS="+arrJOUEURS.length+"\t#MAX.PARTIES="+xParties;
+	console.log(msgTXT);
+	//alert(msgTXT);
+	if ( flagCREATE === 5 )
+		{
+		//RAF
+		}
+	else {
+		if ( flagCREATE !== 1 )
 			{
-			var joueurID = lesJOUEURS[i].split("!");
-			var dataJ = "["+(i+1)+"-"+joueurID[1]+"]";
-			j = i + 4;
-			aRES[0][j] = dataJ;
-			console.log("("+i+","+j+")\t"+dataJ);
+			//--- Il y a un soucis de recupérations de données (#joueurs, limite jeux, ...)
+			alert(msgTXT);
 			}
-		aRES[0][xCols - 1] = 'C-Jeu';
-		var lnLine = "";
-		for(i = 0; i < xCols; i++)
-			{
-			lnLine +=aRES[0][i] + ","
+		else {
+			msgTXT += "\nCreation nouvelle partie";
+			const arrJOUEURS = [];
+			for (let i = 0; i < localStorage.length; i++) {
+				const key = localStorage.key(i);
+				const val = localStorage.getItem(key)
+				if (key.startsWith(joueursPfx)) { arrJOUEURS.push(val); }
+				}
+			arrJOUEURS.sort();
+
+			remplissageEncodageJeux();
+			choosePartie("CNN");
+
+			console.log("@".repeat(100));
+			var sCook 	    = parent.frames['HDR'].document.HEADER.COOKIE.value;
+			var xCols 	    = (4 + arrJOUEURS.length) + 1;
+			//== A PARTIR DU 22/06/26 rajout d'une colonne supplementaire dans la table de JEUX
+			//== Cette colonne contient le numero de l'annonce réalisée et a pour but de faciliter
+			//== la routine de calculs de statistiques.
+			msgTXT += "\nCreation tableau 2D VIDE de "+xParties+"x"+xCols+" cells.";
+			console.log(msgTXT);
+			aRES = twoDimensionArray(xParties , xCols, "EMPTY", 0);
+			console.log(aRES);
+			msgTXT += "\nMise à jour LIGNE 0 (header) du tableau 2D"
+		
+			aRES[0][0] = 'Jeux';			
+			aRES[0][1] = 'Donneur';
+			aRES[0][2] = 'Annonces de la partie ['+sCook+']';			
+			aRES[0][3] = 'Points';		
+			for (i = 0; i < arrJOUEURS.length; i++) 
+				{
+				var joueurID = arrJOUEURS[i].split("!");
+				var dataJ = "["+(i+1)+"-"+joueurID[1]+"]";
+				j = i + 4;
+				aRES[0][j] = dataJ;
+				console.log("("+i+","+j+")\t"+dataJ);
+				}
+			aRES[0][xCols - 1] = 'C-Jeu';
+			var lnLine = "";
+			for(i = 0; i < xCols; i++)
+				{
+				lnLine +=aRES[0][i] + ","
+				}
+			var lsVal = lnLine.slice(0, -1);
+			var lsKey = sCook+".00";
+			localStorage.setItem(lsKey, lsVal);	
+			console.log(aRES);
+			msgTXT += "\NREGÉNÉRATION DU CODE HTML POUR VOIRE TABLEAU 2D";
+		
+			rebuildHTML(0,sCook,"0");
 			}
-		var lsVal = lnLine.slice(0, -1);
-		var lsKey = sCook+".00";
-		localStorage.setItem(lsKey, lsVal);	
-		console.log(aRES);
-		msgTXT += "\NREGÉNÉRATION DU CIDE HTML POUR VOIRE TABLEAU 2D";
-	
-		rebuildHTML(0,sCook,"0");
 		}
 	}
 
@@ -1924,6 +1987,11 @@ function reloadPointsArray(strCookParam)
 	var xParties    = reuseParameter("nbrJeux");
 	const arrayJ    = nbrJoueurs.split('\n');
 	var xJOUEURS	= arrayJ.length - 1;
+	if ( xJOUEURS < 4 ) {
+		var joueursPfx = reuseParameter("joueursPfx");
+ 		arrayJ = Object.keys(localStorage).filter(k => k.startsWith(joueursPfx))
+		xJOUEURS = arrayJ.length - 1;
+		}
 
 	//== A PARTIR DU 22/06/26 rajout d'une colonne supplementaire dans la table de JEUX
 	//== Cette colonne contient le numerode l'annonce réalisée et a pour but de faciliter
@@ -2740,7 +2808,7 @@ function checkFormFieldAvailability(wPage, wForm, wField)
 	var swAVAILABLE = false;
 	const frame = parent.frames[wPage];
 	try {
-    	const frame = parent.frames["RESU"];
+    	//const frame = parent.frames["RESU"];
 		console.log("FRAME:"+wPage+" is '"+frame.document.readyState+"'");
 		if (frame.document.readyState === "complete") {
     		const field = frame.document.forms[wForm].elements[wField];
