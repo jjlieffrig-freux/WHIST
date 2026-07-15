@@ -1,7 +1,7 @@
 :root {
   --primary: lightgreen;
   --secondary: #044d22;
-  --danger: #ef9e90;
+  --danger: rgb(243, 127, 127);
   --info: lightgoldenrodyellow;
   --text-color-1: green;
   --text-color-2: BLACK;
@@ -53,6 +53,24 @@ body {
     background-color: white;
 }
 
+.contenant {
+  display: flex;
+  gap: 0px; /* Optional spacing */
+  background: var(--background-color-1);
+}
+
+.infoMEM {
+   	font-family: 'Courier New', Courier, monospace;
+   	font-weight: bold;
+   	font-size: 100%;
+	border: none;
+	color: black;
+	padding: 1px;
+	border-radius: 5px;
+	width: 100%;
+	background: var(--background-color-1);
+  	}
+
 .btn-primary {
 	color: var(--primary);
   	background: var(--secondary);
@@ -63,8 +81,8 @@ body {
 	cursor: pointer;
 }
 
-.btn-danger {
-	color: var(--text-color-1);
+.btn-important {
+	color: var(--text-color-2);
   	background: var(--danger);
 }
 
@@ -383,9 +401,10 @@ fieldset {
     font-weight: bold;
 }
 
-fieldset legend {
+legend {
 	background: var(--background-color-1);
-  	padding: 0 8px;
+	text-align: start;
+  	padding: 0px;
 }
 
 .viewinfo {
@@ -459,7 +478,7 @@ ol {
 	}
 
 .GENERAL1 {
-	font-family: "Arial";
+	font-family: "Courier New", Courier, monospace;
 	font-size: 100%;
 	font-weight: bold;
 	color: black;
@@ -529,18 +548,6 @@ input[type="button"] {
 .pButtons:hover {
   background-color: #005fa3;
 }
-
-.infoMEM {
-   	font-family: 'Courier New', Courier, monospace;
-   	font-weight: bold;
-   	font-size: 60%;
-	border: none;
-	color: black;
-	padding: 1px;
-	border-radius: 5px;
-	width: 100%;
-	background: var(--background-color-1);
-  	}
 
 .persLI1 {
 	font-family: 'Courier New', Courier, monospace;

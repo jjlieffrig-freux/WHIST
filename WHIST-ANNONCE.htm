@@ -93,8 +93,13 @@ document.addEventListener("DOMContentLoaded", () => {
 <TR>
 	<TD CLASS="GENERAL1" >
 		<fieldset id="fs3">
-		<legend>ANNONCES</legend>
-		<SELECT name="RESULTATSJEU" id="RESULTATSJEU" SIZE="8" onclick="JavaScript:startOptionsSelect(this.options[this.selectedIndex].value)">
+		<legend>
+				<TABLE BORDER="0"><TR>
+  				<TD><INPUT TYPE="TEXT" class="infoMEM" id="NBRANNONCES" NAME="NBRANNONCES" SIZE="2" VALUE="?" readonly ></div>
+  				<TD><p class="infoMEM">ANNONCES</p></TD>
+				</TR></TABLE>
+		</legend>
+		<SELECT name="RESULTATSJEU" id="RESULTATSJEU" SIZE="1" onclick="JavaScript:startOptionsSelect(this.options[this.selectedIndex].value)">
 			<option CLASS="empty" value='?'>SELECTIONNEZ L'ANNONCE REALISEE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
 			</SELECT>
 
@@ -115,20 +120,21 @@ document.addEventListener("DOMContentLoaded", () => {
 				//selectJEU.style.fontWeight = bold;
 				});
 			selectJEU.addEventListener('blur', () => {
-				selectJEU.size = 8;
+				selectJEU.size = 1;
 				selectJEU.style.fontSize = "80%";
 				//selectJEU.style.fontWeight = bold;
 				});
 		</script>
 
 		<BR><TABLE BORDER=0 WIDTH="100%">
-			<TR>
-				<TD VALIGN="MIDDLE" ALIGN="LEFT WIDTH=70%">
-				<input type="button" value="-" ONCLICK="JavaScript:changeFontSize('-')">
-				<input type="button" value="+" ONCLICK="JavaScript:changeFontSize('+')">
-				</TD><TD>
+			<TR VALIGN="MIDDLE" >
+				<TD ALIGN="LEFT">
+				<input type="button" value="⇩ A" ONCLICK="JavaScript:changeFontSize('-')">
+				</TD><TD ALIGN="CENTER">
 				<!--input type="button" value="IMPRIME" ONCLICK="JavaScript:imprimePoints()"-->
-				<input type="button" value="ENCODE LE JEU" ONCLICK="JavaScript:calculator('')">
+				<input type="button" class="btn-important" value="ENCODE LE JEU" ONCLICK="JavaScript:calculator('')">
+				</TD><TD ALIGN="RIGHT">
+				<input type="button" value="⇧ A" ONCLICK="JavaScript:changeFontSize('+')">
 				</TD>
 			</TR>
 			</TABLE>
@@ -139,25 +145,19 @@ document.addEventListener("DOMContentLoaded", () => {
 <!-- ============================ MATRICE DES JEUX (ON/OFF) ===================================== -->
 <TR>
 	<TD CLASS="GENERAL1" >
-		<BR>
-		&nbsp;&nbsp;[<input type="checkbox" checked data-target="fs2" value="Matrice" onchange="JavaScript:remplissageEncodageJeux()">]
-		<label for="toggle"><B>Matrice des jeux</B></label> 
 		<fieldset id="fs2">
-		<legend>JEUX</legend>
-
-		<DIV id="JOUEURSHTM"><BR><B></B></DIV>
-
+		<legend>
+			<TABLE BORDER="0" CELLPADDING="0" CELLSOACING="0"><TR>
+				<TD><p class="infoMEM">Matrice des&nbsp;</p></TD>
+  				<TD><INPUT TYPE="TEXT" class="infoMEM" id="NBRJOUEURS" NAME="NBRJOUEURS" SIZE="1" VALUE="?" readonly></TD>
+				<TD><p class="infoMEM">JOUEURS</p></TD>
+			</TR></TABLE>
+		</legend>	
+		<DIV id="JOUEURSHTM"></DIV>
 		</fieldset>
 
 		<SCRIPT>
-		document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-			const fs = document.getElementById(cb.dataset.target);
-			function update() {
-				fs.hidden = !cb.checked;
-				}
-			cb.addEventListener('change', update);
-			update();
-			});
+		remplissageEncodageJeux();
 		</SCRIPT>
 
 		</TD>
@@ -194,9 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	<TABLE BORDER="0" BORDERCOLOR="BLACK" CELLPADDING="0" CELLSPACING="0" width=100%>
 	<TR VALIGN="TOP"  class='celldetail2'>
 		<TD class='celldetail2'>	<TEXTAREA 			id="AIDEAPP"	 NAME="AIDEAPP"  	ROWS=1 COLS=1 			readonly style="display:none;"></TEXTAREA></TD>
-		<TD class='celldetail2'>	<INPUT TYPE="TEXT" 	id="NBRJOUEURS"  NAME="NBRJOUEURS" 	SIZE="3"	VALUE="?"  	readonly style="display:block;"></TD>
 		<TD class='celldetail2'>	<TEXTAREA 			id="JOUEURS"	 NAME="JOUEURS"  	ROWS=2 COLS=30 			readonly style="display:block;"></TEXTAREA></TD>
-		<TD class='celldetail2'>	<INPUT TYPE="TEXT" 	id="NBRANNONCES" NAME="NBRANNONCES" SIZE="3"	VALUE="?"  	readonly style="display:block;"></TD>
 		<TD class='celldetail2'>	<TEXTAREA 			id="ANNONCES"	 NAME="ANNONCES" 	ROWS=2 COLS=30 			readonly style="display:block;"></TEXTAREA></TD>
 		</TR>
 	<TR>

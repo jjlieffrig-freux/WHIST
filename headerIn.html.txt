@@ -33,12 +33,12 @@
 
 #innerHtmlTable {
     width: 100%;
-    border-collapse: separate;
+    /* border-collapse: separate; */
 }
 
 #innerHtmlTable tr, th, td {
     border: 1px solid black;
-    padding: 6px;
+    padding: 0px;
 }
 
 .button {

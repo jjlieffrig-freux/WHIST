@@ -28,12 +28,14 @@ if ( sessionStorage.getItem("reloaded") ) {
 		//textarea.value = msgTXT;
 		//let partNO = parent.frames["HDR"].document.getElementById("COOKIE").value;	
 		//msgTXT = "Recharge les données "+partNO;
-		reloadPointsArray();;
+		//reloadPointsArray();;
 		}
     } 
 else {
     sessionStorage.setItem("reloaded", "false");
-    }
+	}
+
+//manageNomPartie();
 
 function checkNavigateur()
 	{
@@ -48,7 +50,7 @@ function checkNavigateur()
 			status = true;
 			}
 		else {
-			msgTXT += "Aïe. Vous surfez avec "+navig[2]+". Garantis pas le sans fautes";
+			msgTXT += "Aïe. Vous surfez avec "+brands[2].brand+". Doute sur le bon déroulement. Utilisez 'CHROME'!";
 			}
 		parent.frames["RESU"].document.RES.RESULTS.value = msgTXT;
 		}
@@ -59,7 +61,7 @@ function changeFontSize(action)
 	{
 	const expires = new Date();
 	var valCookie = 0;
-	var sizePCcookName = reuseParameter("ckNameDef") + "-SCREEN";
+	var sizePCcookName = "SCREENSIZE-whist";
 	if ( document.cookie.includes(sizePCcookName) )
 		{
 		const cookies = document.cookie.split(";");
@@ -1710,7 +1712,7 @@ function rebuildHTML(nTR, keyName,sKEY)
 	
 	var htmlTAB = "";
 	htmlTAB += dataIN;
-	htmlTAB += "\n<TABLE id='innerHtmlTable' CLASS='mytr' ID='POINTS' BORDER=1 CELLSPACING=0 CELLPADDING=5 WIDTH=100%>";
+	htmlTAB += "\n<TABLE id='innerHtmlTable' CLASS='mytr' ID='POINTS' BORDER=1 BORDERCOLOR='RED' CELLSPACING=0 CELLPADDING=5 WIDTH=100%>";
 	for (let i = 0; i< limHTML; i++) 
 		{	
 		if ( i === 0 ) { 
@@ -2367,8 +2369,6 @@ function getCookie2(cname)
     return ckName
 	}
 
-manageNomPartie();
-
 function manageNomPartie()
 	{
 	console.log("Recherche de parties en traitement...");
@@ -2414,8 +2414,6 @@ function manageNomPartie()
 		}
 	document.write("</SELECT>");
 	}
-
-
 
 function createNewOptionSelect(nomPartieNew)
 	{
@@ -3379,7 +3377,7 @@ function generationSelectAnnoncesOptions(sOPT)
 			select.appendChild(option);
 			}
 
-		msgTXT = "Les 'ANNONCES' ont été insérées dans le formulaire";
+		msgTXT = "Les 'ANNONCES' ont été inscrites dans le listing des points.";
 		const swOK = checkFormFieldAvailability("RESU", "RES", "RESULTS")
 		if (swOK) { parent.frames["RESU"].document.getElementById("RESULTS").value = msgTXT; }
 
