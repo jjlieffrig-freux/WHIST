@@ -13,6 +13,61 @@
 
 <body>
 
+<FORM ID="RES"  NAME="RES">
+
+<TABLE CLASS="tableTOP" BORDER="0" BORDERCOLOR="BLUE" CELLSPACING="0" CELLPADDING="0" WIDTH="100%" HEIGHT="100%">
+
+<TR VALIGN="TOP" ALIGN=CENTER>
+    <TD><TEXTAREA CLASS="blink" name="RESULTS" id="RESULTS" ROWS=1 COLS=90></TEXTAREA></TD>
+</TR>
+
+<TR VALIGN="TOP" ALIGN=CENTER>
+    <TD><div class="table-container" name="RESULTATS" id="RESULTATS"></div></TD>                             
+</TR>
+
+<TR VALIGN="TOP" ALIGN=CENTER>
+<TD>
+    <TABLE BORDER="0" BORDERCOLOR="RED" WIDTH="100%"><TR>
+    <TD><textarea id="headerIN"     name="headerIN"     ROWS=8 COLS=30 class="headers"></textarea></TD>
+    <TD><textarea id="headerOUT"    name="headerOUT"    ROWS=8 COLS=30 class="headers"></textarea></TD>
+    <TD><textarea id="headerDELIN"  name="headerDELIN"  ROWS=8 COLS=30 class="headers"></textarea></TD>
+    <TD><textarea id="headerDELOUT" name="headerDELOUT" ROWS=8 COLS=30 class="headers"></textarea></TD>
+    </TR></TABLE>
+</TD>    
+</TR>
+
+</TABLE>
+
+<script>
+function readFile(xFile, xDiv) 
+    {
+    console.log("==================== LECTURE fichier '"+xFile+"' in <div> = "+xDiv)
+    try {
+        fetch(xFile)
+            .then(response => {
+                return response.text();
+                })
+            .then(text => {
+                console.log(text);
+                document.getElementById(xDiv).textContent = text;
+                });
+        } 
+    catch (err) {
+        console.error("ERREUR: "+err);
+        }
+    };
+readFile("./headerIn.html.txt","headerIN");
+readFile("./headerOut.html.txt","headerOUT");
+readFile("./headerDelIn.html.txt","headerDELIN");
+readFile("./headerDelOut.html.txt","headerDELOUT");
+
+window.onload = function () {
+    top.frameReady("RESU");
+    };
+</script>
+
+</FORM>
+
 <script>
 
 async function savePdf()
@@ -178,72 +233,6 @@ async function sendHtmlFileToPdf(textINFO, swCONNECT)
     }
 
 </script>
-
-<FORM ID="RES"  NAME="RES">
-
-<TABLE CLASS="tableTOP" BORDER="0" BORDERCOLOR="BLUE" CELLSPACING="0" CELLPADDING="0" WIDTH="100%" HEIGHT="100%">
-<TR VALIGN="TOP" ALIGN=CENTER>
-    <TD>
-
-    <TABLE class="mytr" BORDER="0" BORDERCOLOR="RED" CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
-    <TR ALIGN="CENTER" VALIGN="TOP">    
-        <TD CLASS="celldetail">
-            <TEXTAREA CLASS="blink" name="RESULTS"   id="RESULTS"  ROWS=1 COLS=90 style="display:line; border:0px"> </TEXTAREA>
-            </TD>
-    </TR><TR>
-        <TD CLASS="celldetail">
-            <TABLE BORDER=0 BORDERCOLOR="GREEN" WIDTH=100% HEIGHT=100%>
-            <TR ALIGN=CENTER VALIGN=MIDDLE><TD>
-                    <TABLE BORDER=0 BORDERCOLOR="AQUA" WIDTH="100%">
-                    <TR VALIGN=MIDDLE ALIGN=CENTER><TD>
-                        <div class="horizontal-scroll">
-                            <div CLASS="table-container" name="RESULTATS" id="RESULTATS"> </div>
-                        </div>
-                    </TD></TR>
-                    </TABLE>
-            </TD></TR>
-            </TABLE>
-        </TD>
-    </TR>
-    </TABLE>
-
-    </TD>
-</TR>
-<TR><TD>
-    <TABLE BORDER="0" WIDTH="100%"><TR>
-    <TD><textarea id="headerIN"  name="headerIN"  ROWS=8 COLS=30 class="headers"></textarea></TD>
-    <TD><textarea id="headerOUT" name="headerOUT" ROWS=8 COLS=30 class="headers"></textarea></TD>
-    <TD><textarea id="headerDELIN"  name="headerDELIN"  ROWS=8 COLS=30 class="headers"></textarea></TD>
-    <TD><textarea id="headerDELOUT" name="headerDELOUT" ROWS=8 COLS=30 class="headers"></textarea></TD>
-    </TR></TABLE>             
-</TD></TR>
-</TABLE>
-
-<script>
-function readFile(xFile, xDiv) 
-    {
-    console.log("==================== LECTURE fichier '"+xFile+"' in <div> = "+xDiv)
-    try {
-        fetch(xFile)
-            .then(response => {
-                return response.text();
-                })
-            .then(text => {
-                console.log(text);
-                document.getElementById(xDiv).textContent = text;
-                });
-        } 
-    catch (err) {
-        console.error("ERREUR: "+err);
-        }
-    };
-readFile("./headerIn.html.txt","headerIN");
-readFile("./headerOut.html.txt","headerOUT");
-readFile("./headerDelIn.html.txt","headerDELIN");
-readFile("./headerDelOut.html.txt","headerDELOUT");
-</script>
-
-</FORM>
 
 </body>
 </html>

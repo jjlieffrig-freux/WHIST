@@ -9,6 +9,7 @@
 <script src="WhistCalc.js"></script>
 
 <script>
+
 setInterval(refreshTime, 1000);
 //checkHote();
 
@@ -36,26 +37,26 @@ function analyseCookie()
 	console.log("BROWSER:"+userAgent);
 
 	let browser = "Unknown";
-	if ( userAgent.includes("Firefox") ) { browser = "Firefox"; }
-	if ( userAgent.includes("Edg")     ) { browser = "Edge";    }
-	if ( userAgent.includes("Safari")  ) { browser = "Safari";  }
-	if ( userAgent.includes("Brave")   ) { browser = "Brave";   }
-	if ( userAgent.includes("Chrome")  ) { browser = "Chrome";  }
+	if ( userAgent.includes("Firefox") ) { browser = "Browser Firefox"; }
+	if ( userAgent.includes("Edg")     ) { browser = "Browser Edge";    }
+	if ( userAgent.includes("Safari")  ) { browser = "Browser Safari";  }
+	if ( userAgent.includes("Brave")   ) { browser = "Browser Brave";   }
+	if ( userAgent.includes("Chrome")  ) { browser = "Browser Chrome";  }
 
 	const swDisplay = 2;
 	switch (swDisplay)
 		{
 		case 1: 
 			// Affichage du LOCALSTORAGE & COOKIE du navigateur
-			var btnBROWSER = '<button type="button" class="btn-primary" ONCLICK="JavaScript:viewLS()">'+browser+'</button>';
+			var btnBROWSER = '<button type="button" class="btn-important" ONCLICK="JavaScript:viewLS()">'+browser+'</button>';
 			break;
 		case 2: 
 			// Affichage des infos sur le navigateur
-			var btnBROWSER = '<button type="button" class="btn-primary" ONCLICK="JavaScript:getBrowserInfo()">'+browser+'</button>';
+			var btnBROWSER = '<button type="button" class="btn-important" ONCLICK="JavaScript:getBrowserInfo()">'+browser+'</button>';
 			break;
 		default: 
 			// Sinon..... Affichage des infos sur le navigateur
-			var btnBROWSER = '<button type="button" class="btn-primary" ONCLICK="JavaScript:getBrowserInfo()">'+browser+'</button>';
+			var btnBROWSER = '<button type="button" class="btn-important" ONCLICK="JavaScript:getBrowserInfo()">'+browser+'</button>';
 		}
 	document.getElementById("BRWBOUT").innerHTML = btnBROWSER;
 }
@@ -135,7 +136,7 @@ function listAllParties()
 	const sParties = viewLocalStorage(0);
 
 	var strBUTTON  = "";
-	var cpt=0
+	var cpt=0;
 	var strANN = reuseParameter("annoncesPfx");
 	var strJOU = reuseParameter("joueursPfx");
 	var strAPP = reuseParameter("application");
@@ -183,75 +184,57 @@ function rafraichir2Pages() {
 
 </HEAD>
 
-<BODY BGCOLOR="LIGHTGREY" onLoad="JavaScript:checkChargementPage()">
+<BODY>
 <FORM ID="HEADER" NAME="HEADER">
 
-<TABLE ID="WHISTB" CLASS="tableTOP" BORDER="0" BORDERCOLOR=BLACK CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
+<TABLE style="all: unset;" ID="WHISTB" CLASS="tableTOP" BORDER="0" BORDERCOLOR=BLACK CELLSPACING="0" CELLPADDING="0" WIDTH="100%">
 <TR VALIGN=TOP>
 	<TD> 
-		<TABLE BORDER="0" BORDERCOLOR=BLUE CELLSPACING="0" CELLPADDING="0">
-		<colgroup>
-			<col style="width: 10%;">
-			<col style="width: 100%;">
-			<col style="width: 10%;">
-			<col style="width: 5%;">
-		</colgroup>
-		<TR VALIGN="TOP">
-			<TD ALIGN="LEFT">
-				<br><INPUT TYPE="TEXT" NAME="HEURE1"    ID="HEURE1"    VALUE="H:M:S" SIZE="10" style="border-style : hidden;" disabled CLASS="WHISTEURS"><BR>
-				<br><INPUT TYPE="TEXT" NAME="ckNamePfx" ID="ckNamePfx" VALUE="?"     SIZE="15" style="border-style : hidden;" disabled CLASS="WHISTEURS">	
-				<br><INPUT TYPE="TEXT" NAME="ckNameDef"	ID="ckNameDef" VALUE="?"     SIZE="15" style="border-style : hidden;" disabled CLASS="WHISTEURS">
-				<br><INPUT TYPE="TEXT" NAME="sizeLS"	ID="sizeLS"    VALUE="0"     SIZE="25" style="border-style : hidden;" disabled CLASS="WHISTEURS">
-				<BR><INPUT TYPE="TEXT" NAME="NHOTE"     ID="NHOTE"     VALUE="?"     SIZE="30" style="border-style : hidden;" disabled CLASS="WHISTEURS" onchange="JavaScript:checkHote()">
-			</TD>
-			<TD>
-				<TABLE BORDER="0" cellspacing="0" cellpadding="0" WIDTH="95%" HEIGHT="100px">	
-				<TR VALIGN=TOP ALIGN="center">
-					<TD>
-						<TABLE BORDER="1" style="border: 2px solid green;">
-						<TR>
-							<TD>
-								<button type="button" class="btn-important" onclick="rafraichir2Pages()">R</button>		
-							</TD>
-							<TD>
-								<SELECT style="font-size: 20px" WIDTH=100% name='NOMPARTIE' id='NOMPARTIE' SIZE=1 ONCLICK="JavaScript:choosePartie(this.options[this.selectedIndex].value)"">
-								<option value='??'>LES PARTIES EN COURS ET MEMORISEES</option>"
-								</SELECT>
-							</TD>
-						</TR></TABLE> 
-					</TD>
-				</TR> 
-				<TR class=".div1" VALIGN="BOTTOM" ALIGN="CENTER" style="height: 65px;">
-					<TD>
-						<p id="pButtons"></p>
-					</TD>
-				</TR>
-				</TABLE>
-			</TD>
-			<TD>&nbsp;</TD>
-			<TD>
-				<BR><U CLASS="WHISTEURS">STATISTIQUES PARTIE EN COURS</U>
-				<BR>Partie......:&nbsp;<INPUT TYPE="TEXT" VALUE="?"   ID="COOKIE"  NAME="COOKIE"  SIZE="20"  style="border-style : hidden;" disabled CLASS="WHISTEURS">
-				<BR>Browser.....:&nbsp;<DIV ID="BRWBOUT"  NAME="BRWBOUT" CLASS="WHISTEURS" STYLE="display:inline-block;" disabled></DIV>
-				<BR>Nombre Jeux.:&nbsp;<INPUT TYPE="TEXT" VALUE=0     ID="NPARTIE" NAME="NPARTIE" SIZE="9"   style="border-style : hidden;" disabled CLASS="WHISTEURS"> 
-				<input type="checkbox" id="copie" unchecked>
-				<BR>Total Points:&nbsp;<INPUT TYPE="TEXT" VALUE=0     ID="ENJEU"   NAME="ENJEUX"  SIZE="9"   style="border-style : hidden;" disabled CLASS="WHISTEURS"> 	
-				<BR>HTTP type...:&nbsp;<INPUT TYPE="TEXT" VALUE="?"   ID="DUREE"   NAME="DUREE"   SIZE="10"   style="border-style : hidden;" disabled CLASS="WHISTEURS">	
-				
-			</TD>
-		</TR>
-		<TR>
-			<TD colspan="4">&nbsp;
-				<div id="hasard" name="hasard"> ? </div>
-			</TD>
-		</TR>
-		</TABLE>
-	</div>
-	</TD>
-	</TR>
-	</TABLE>
+		<table id="WITHBORDER">
+		<tr ALIGN="LEFT">
+			<td><INPUT TYPE="TEXT" NAME="HEURE1"    ID="HEURE1"    VALUE="H:M:S" SIZE="10" style="border-style : hidden;" disabled CLASS="WHISTEURS1"></td>
+			<td><INPUT TYPE="TEXT" NAME="ckNamePfx" ID="ckNamePfx" VALUE="?"     SIZE="15" style="border-style : hidden;" disabled CLASS="WHISTEURS2"></td>
+			<td><INPUT TYPE="TEXT" NAME="ckNameDef" ID="ckNameDef" VALUE="?"     SIZE="15" style="border-style : hidden;" disabled CLASS="WHISTEURS1"></td>
+			<td><INPUT TYPE="TEXT" NAME="sizeLS"	ID="sizeLS"    VALUE="Taille LS indeterminée"     SIZE="25" style="border-style : hidden;" disabled CLASS="WHISTEURS2"></td>
+			<td><INPUT TYPE="TEXT" NAME="NHOTE"     ID="NHOTE"     VALUE="Pas de hôte choisi"     SIZE="30" style="border-style : hidden;" disabled CLASS="WHISTEURS1" onchange="JavaScript:checkHote()"></td>
+			</tr>
+		
+			<tr ALIGN=LEFT VALIGN="TOP" CLASS="WHISTEURS2">
+				<td><INPUT TYPE="TEXT" VALUE="?"   ID="COOKIE"  NAME="COOKIE"  SIZE="20"  style="border-style : hidden;" disabled CLASS="WHISTEURS"></td>
+				<td>#Jeux:<INPUT TYPE="TEXT" VALUE=0     ID="NPARTIE" NAME="NPARTIE" SIZE="9"   style="border-style : hidden;" disabled CLASS="WHISTEURS"></td>
+				<td>Pts:<INPUT TYPE="TEXT" VALUE=0     ID="ENJEU"   NAME="ENJEUX"  SIZE="9"   style="border-style : hidden;" disabled CLASS="WHISTEURS"></td>
+				<td><DIV ID="BRWBOUT"  NAME="BRWBOUT" disabled></DIV></td>
+				<td ALIGN=LEFT><INPUT TYPE="TEXT" VALUE="?"   ID="DUREE"   NAME="DUREE"   SIZE="30"  style="border-style : hidden;" disabled CLASS="WHISTEURS"></td>
+				</tr>
 
-<BR>
+		<tr align="center" height="8%">
+			<td colspan="5">
+				<TABLE>
+				<TR><TD>
+					<div class="row">
+						<button type="button" class="btn-important" onclick="rafraichir2Pages()">R</button>
+						<SELECT CLASS="PARTIES" name='NOMPARTIE' id='NOMPARTIE' SIZE=1 ONCLICK="JavaScript:choosePartie(this.options[this.selectedIndex].value)"">
+						<option value='??'>PARTIES MEMORISEES</option>"
+						</SELECT>
+					</div></TD>
+					<TD COLSPAN="4"><p id="pButtons" align="left"></p></TD>
+				</TR></TABLE> 
+			</td>
+			</tr>
+		</table>
+	</TD>
+</TR><TR>
+	<TD colspan="4">&nbsp;<div id="hasard" name="hasard"> ? </div></TD>
+	</TR>
+</TABLE>
+
 </FORM>
+
+<SCRIPT>
+window.onload = function () {
+    top.frameReady("HDR");
+	checkChargementPage();
+	};	
+</SCRIPT>
 </BODY>
 </HTML>

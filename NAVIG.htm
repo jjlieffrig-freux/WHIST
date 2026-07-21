@@ -16,7 +16,7 @@
 <TABLE ID="WHISTB" CLASS="tableTOP"  BORDER=0 BORDERCOLOR="GREEN" WIDTH=80% CELLSPACING=0 CELLPADDING=5>   
 <TR VALIGN=TOP CLASS="CARAC">
     <TD ALIGN=CENTER WIDTH="25%">
-        <INPUT CLASS="CARAC" TYPE="BUTTON" VALUE="AGRANDIR"  ONCLICK="JavaScript:impressionRes('LARGE')">
+        <INPUT CLASS="CARAC" TYPE="BUTTON" VALUE="AGRANDIR"  ONCLICK="JavaScript:impressionRes('LARGE')">&nbsp;&nbsp;<input type="checkbox" id="copie" unchecked style="transform: scale(2);margin:0px;">
         </TD>
     <TD ALIGN=CENTER WIDTH="25%">
         <INPUT CLASS="CARAC" TYPE="BUTTON" VALUE="IMPRIME"  ONCLICK="JavaScript:impressionRes('PRINT')">
@@ -25,17 +25,25 @@
         <input CLASS="CARAC" type="button" VALUE="CSV" ID="CSV" onclick="JavaScript:impressionRes('CSV')">
         </TD>
     <TD ALIGN=CENTER WIDTH="25%">
-        <input class="infoMEM" type="text" id="version" name="version" SIZE="15" readonly value="" >
+        <input class="infoMEM" type="text" id="version" name="version" SIZE="25" readonly value="" >
         </TD>
 </TR>
 </TABLE>
 <BR>
 
 <SCRIPT>
-getLastModified("WhistCalc.js");
+const pageName = window.location.pathname.split('/').pop();
+console.log("'"+pageName+"'' recherche le numero de version")
+const nVer = getLastModified("WhistCalc.js");
+console.log("version:"+nVer);
 </SCRIPT>
 
 </FORM>
+<SCRIPT>
+window.onload = function () {
+    top.frameReady("NAV");
+    };
+</SCRIPT>
 
 </BODY>
 </HTML>

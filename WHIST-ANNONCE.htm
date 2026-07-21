@@ -19,93 +19,39 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </HEAD>
 
-<BODY onLoad="prepareData()">
+<BODY>
 <FORM ID="WHIST" NAME="WHIST">
 
-<div CLASS="table-container"> 
+<div class="MENU-CONTAINER">
 
-<TABLE ID="WHISTB" CLASS="tableTOP" BORDER="0" BORDERCOLOR="RED" CELLSPACING="0" CELLPADDING="0">
+<TABLE CLASS="tableTOP" ID="WHISTB" BORDER="0" BORDERCOLOR="RED" CELLSPACING="0" CELLPADDING="0">
 
-<!-- ============================ MENU PRINCIPAL ================================================== -->
-<TR ALIGN="CENTER">	
-	<TD CLASS="GENERAL1" >
-		<BR><fieldset id="fs1">
-		<legend>ACTIONS</legend>
-		<SELECT NAME="ACTION" ID="ACTION" SIZE=1 ONCHANGE="JavaScript:prepareActivity(this.options[this.selectedIndex].value)">
-			<option value="?" style="color: lightgrey; ">CHOISISSEZ UNE ACTIVITE</option>
-		<optgroup label="PARTIES" id="PARTIES">
-			<option value="CNN">&nbsp;-&nbsp;1.&nbsp;CREER UNE NOUVELLE PARTIE DE WHIST</option>	
-			<option value="A">&nbsp;-&nbsp;2.&nbsp;EFFACER UNE PARTIE DE WHIST</option>
-			<option value="E">&nbsp;-&nbsp;3.&nbsp;EFFACE UN JEU D'UNE PARTIE EN COURS</option>
-			<option value="C">&nbsp;-&nbsp;4.&nbsp;CHARGE UNE PARTIE DEPUIS UN FICHIER</option>
-			<option value="D">&nbsp;-&nbsp;5.&nbsp;SAUVE  UNE PARTIE DANS UN FICHIER</option>
-		</optgroup>
-				
-		<optgroup label="SAISON" id="SAISON">	
-			<option value="F">&nbsp;-&nbsp;6.&nbsp;RESULTATS SUR TOUTE UNE SAISON</option>
-			<option value="Q">&nbsp;-&nbsp;7.&nbsp;STATISTIQUES SUR TOUTE UNE SAISON</option>	
-		</optgroup>
-				
-		<optgroup label="JEUX" id="JEUX">
-			<option value="J">&nbsp;-&nbsp;10.&nbsp;GENERE AU HAZARD UN "SEUL"</option>
-			<option value="K">&nbsp;-&nbsp;11.&nbsp;GENERE AU HAZARD UN "EMBALLAGE"</option>
-			<option value="P">&nbsp;-&nbsp;12.&nbsp;GENERE AU HAZARD UNE SERIE D'ANNONCES</option>
-		</optgroup>	
-				
-		<optgroup label="NAVIGATEUR" id="NAVIGATEUR">
-			<option value='M' style="color: BLUE; font-weight: bold;">&nbsp;-&nbsp;13.&nbsp;VOIR & SAUVEGARDER LES PARTIES DE WHIST</option>
-			<option value="B" style="color: RED;  font-weight: bold;">&nbsp;-&nbsp;14.&nbsp;ON EFFACE (RESET) TOUTES LES PARTIES</option>
-			<option value='S' style="color: BLUE; font-weight: bold;">&nbsp;-&nbsp;15.&nbsp;RESTAURER LES PARTIES DE WHIST SAUVEGARDEES</option>
-			<option value='T' style="color: lightseagreen; font-weight: bold;">&nbsp;-&nbsp;16.&nbsp;VOIR LES DONNEES APPLICATION CACHEES</option>
-			<option value='U' style="color: lightseagreen; font-weight: bold;">&nbsp;-&nbsp;17.&nbsp;RELIRE FICHIER JOUEURS.. (⧉ MAJ EXCEL)</option>
-			<option value='V' style="color: lightseagreen; font-weight: bold;">&nbsp;-&nbsp;18.&nbsp;RELIRE FICHIER POINTS... (⧉ MAJ EXCEL)</option>
-		</optgroup>
-				
-		<optgroup label="INFO" id="INFO">
-			<option value="I">&nbsp;-&nbsp;20.&nbsp;INFORMATION&nbsp;&nbsp;&nbsp;SUR L'APPLICATION</option>
-			<option value='O'>&nbsp;-&nbsp;21.&nbsp;AVERTISSEMENT&nbsp;SUR L'APPLICATION</option>
-			<option value="G">&nbsp;-&nbsp;22.&nbsp;VOIR LA LISTE DES JOUEURS</option>
-			<option value="H">&nbsp;-&nbsp;23.&nbsp;VOIR LA LISTE DES ANNONCES</option>
-			<option value="R">&nbsp;-&nbsp;24.&nbsp;QRcode APPLICATION</option>
-			<option value="L">&nbsp;-&nbsp;25.&nbsp;RAFRAICHIR LES MENUS</option>
-		</optgroup>
-		</SELECT>
-		</fieldset>
-
-		<script>
-			const select = document.getElementById('ACTION');
-			select.addEventListener('focus', () => {
-				select.size = 20;
-				});
-			select.addEventListener('blur', () => {
-				select.selectedIndex = 0;
-				select.size = 1;
-				});
-			select.addEventListener('change', () => {
-				select.selectedIndex = 0;
-				select.size = 1;
-				});
-		</script>
-		</TD>
-	</TR>
-
-<!-- ============================ LISTE DES ANNONCES ===================================== -->
+<!-- ============================ MATRICE DES JEUX (ON/OFF) ===================================== -->
 <TR>
 	<TD CLASS="GENERAL1" >
-		<fieldset id="fs3">
+		<fieldset id="fs2">
 		<legend>
-				<TABLE BORDER="0"><TR>
-  				<TD><INPUT TYPE="TEXT" class="infoMEM" id="NBRANNONCES" NAME="NBRANNONCES" SIZE="2" VALUE="?" readonly ></div>
-  				<TD><p class="infoMEM">ANNONCES</p></TD>
-				</TR></TABLE>
-		</legend>
+			<TABLE CLASS="MENUCATEGORIES" BORDER="0" CELLSPACING="0" CELLPADDING="0">
+			<TR width="auto">
+				<TD><p class="infoMEM">MATRICE:&nbsp;</p></TD>
+				<TD><INPUT TYPE="TEXT" class="infoMEM" id="NBRANNONCES" NAME="NBRANNONCES" SIZE="2" VALUE="?" readonly >
+  				<TD><p class="infoMEM">JEUX&nbsp;/</p></TD>
+  				<TD><INPUT TYPE="TEXT" class="infoMEM" id="NBRJOUEURS" NAME="NBRJOUEURS" SIZE="1" VALUE="?" readonly></TD>
+				<TD><p class="infoMEM">JOUEURS</p></TD>
+			</TR></TABLE>
+		</legend>	
+		<div id="JOUEURSHTM"></div>
+		<BR>
 		<SELECT name="RESULTATSJEU" id="RESULTATSJEU" SIZE="1" onclick="JavaScript:startOptionsSelect(this.options[this.selectedIndex].value)">
-			<option CLASS="empty" value='?'>SELECTIONNEZ L'ANNONCE REALISEE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+			<option value='??'>SELECTIONNEZ L'ANNONCE REALISEE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
 			</SELECT>
 
 		<script>
 			//document.write(generationSelectAnnoncesOptions());
-			const selectJEU = document.getElementById('RESULTATSJEU');
+			var selectJEU = document.getElementById('RESULTATSJEU');
+		
+			selectJEU.options[0].style.color = "WHITE";
+    		selectJEU.options[0].style.backgroundColor = "BLACK";
 
 			selectJEU.addEventListener('change', () => {
 				selectJEU.size = 1;
@@ -125,36 +71,22 @@ document.addEventListener("DOMContentLoaded", () => {
 				//selectJEU.style.fontWeight = bold;
 				});
 		</script>
+		</fieldset>
 
 		<BR><TABLE BORDER=0 WIDTH="100%">
-			<TR VALIGN="MIDDLE" >
-				<TD ALIGN="LEFT">
-				<input type="button" value="⇩ A" ONCLICK="JavaScript:changeFontSize('-')">
-				</TD><TD ALIGN="CENTER">
-				<!--input type="button" value="IMPRIME" ONCLICK="JavaScript:imprimePoints()"-->
-				<input type="button" class="btn-important" value="ENCODE LE JEU" ONCLICK="JavaScript:calculator('')">
-				</TD><TD ALIGN="RIGHT">
-				<input type="button" value="⇧ A" ONCLICK="JavaScript:changeFontSize('+')">
+		<TR VALIGN="MIDDLE" >
+			<TD ALIGN="LEFT">
+				<!-- input type="button" value="⇩ A" ONCLICK="JavaScript:changeFontSize('-')" -->
+				<!-- input type="button" value="⇧ A" ONCLICK="JavaScript:changeFontSize('+')" -->
+				<!-- input type="button" value="IMPRIME" ONCLICK="JavaScript:imprimePoints()" -->
 				</TD>
-			</TR>
-			</TABLE>
-		</fieldset>
-		</TD>
-	</TR>
-
-<!-- ============================ MATRICE DES JEUX (ON/OFF) ===================================== -->
-<TR>
-	<TD CLASS="GENERAL1" >
-		<fieldset id="fs2">
-		<legend>
-			<TABLE BORDER="0" CELLPADDING="0" CELLSOACING="0"><TR>
-				<TD><p class="infoMEM">Matrice des&nbsp;</p></TD>
-  				<TD><INPUT TYPE="TEXT" class="infoMEM" id="NBRJOUEURS" NAME="NBRJOUEURS" SIZE="1" VALUE="?" readonly></TD>
-				<TD><p class="infoMEM">JOUEURS</p></TD>
-			</TR></TABLE>
-		</legend>	
-		<DIV id="JOUEURSHTM"></DIV>
-		</fieldset>
+			<TD ALIGN="CENTER">
+				<button type="button" class="btn-important" ONCLICK="JavaScript:calculator('')">ENCODE LE JEU DANS LA GRILLE</button>
+				</TD>
+			<TD ALIGN="RIGHT">
+				</TD>
+		</TR>
+		</TABLE>
 
 		<SCRIPT>
 		remplissageEncodageJeux();
@@ -163,48 +95,150 @@ document.addEventListener("DOMContentLoaded", () => {
 		</TD>
 	</TR>
 
+<!-- ============================ MENU PRINCIPAL ================================================== -->
+
+<TR ALIGN="CENTER">	
+	<TD CLASS="GENERAL1" >
+		<BR><fieldset id="fs1">
+		<legend>ACTIONS</legend>
+		<SELECT NAME="ACTION" ID="ACTION" SIZE=5 onchange="JavaScript:prepareActivity(this.options[this.selectedIndex].value)">
+			<option value="??">CHOISISSEZ UNE ACTIVITE</option>
+			<option value="CNN">&nbsp;&nbsp;&nbsp;NOUVELLE PARTIE DE WHIST</option>	
+			<option value="F">&nbsp;&nbsp;&nbsp;RESULTATS SUR UNE SAISON</option>
+			<option value="Q">&nbsp;&nbsp;&nbsp;STATISTIQUES SUR UNE SAISON</option>	
+			<option value="W">&nbsp;&nbsp;&nbsp;CHANGER LA TAILLE DES CARACTERES</option>		
+			<option value="??">&nbsp;&nbsp;&nbsp;</option>	
+
+		<option value="???">GESTION</option>
+			<option value="A">&nbsp;&nbsp;&nbsp;EFFACER UNE PARTIE DE WHIST</option>
+			<option value="E">&nbsp;&nbsp;&nbsp;EFFACE UN JEU D'UNE PARTIE EN COURS</option>
+			<option value="C">&nbsp;&nbsp;&nbsp;CHARGE UNE PARTIE DEPUIS UN FICHIER</option>
+			<option value="D">&nbsp;&nbsp;&nbsp;SAUVE  UNE PARTIE DANS UN FICHIER</option>
+				
+		<option value="???">JEUX</option>
+			<option value="J">&nbsp;&nbsp;&nbsp;GENERE AU HAZARD UN "SEUL"</option>
+			<option value="K">&nbsp;&nbsp;&nbsp;GENERE AU HAZARD UN "EMBALLAGE"</option>
+			<option value="P">&nbsp;&nbsp;&nbsp;GENERE AU HAZARD UNE SERIE D'ANNONCES</option>
+
+				
+		<option value="???">NAVIGATEUR</option>
+			<option value='M' style="color: BLUE; font-weight: bold;">&nbsp;&nbsp;&nbsp;VOIR & SAUVEGARDER LES PARTIES DE WHIST</option>
+			<option value="B" style="color: RED;  font-weight: bold;">&nbsp;&nbsp;&nbsp;ON EFFACE (RESET) TOUTES LES PARTIES</option>
+			<option value='S'>&nbsp;&nbsp;&nbsp;RESTAURER LES PARTIES DE WHIST SAUVEGARDEES</option>
+			<option value='T'>&nbsp;&nbsp;&nbsp;VOIR LES DONNEES APPLICATION CACHEES</option>
+			<option value='U'>&nbsp;&nbsp;&nbsp;RELIRE FICHIER JOUEURS.. (⧉ MAJ EXCEL)</option>
+			<option value='V'>&nbsp;&nbsp;&nbsp;RELIRE FICHIER POINTS... (⧉ MAJ EXCEL)</option>
+
+				
+		<option value="???">INFO</option>
+			<option value="I">&nbsp;&nbsp;&nbsp;INFORMATION&nbsp;&nbsp;&nbsp;SUR L'APPLICATION</option>
+			<option value='O'>&nbsp;&nbsp;&nbsp;AVERTISSEMENT&nbsp;SUR L'APPLICATION</option>
+			<option value="G">&nbsp;&nbsp;&nbsp;VOIR LA LISTE DES JOUEURS</option>
+			<option value="H">&nbsp;&nbsp;&nbsp;VOIR LA LISTE DES ANNONCES</option>
+			<option value="R">&nbsp;&nbsp;&nbsp;QRcode APPLICATION</option>
+			<option value="L">&nbsp;&nbsp;&nbsp;RAFRAICHIR LES MENUS</option>
+
+		</SELECT>
+		</fieldset>
+
+		<script>
+			//var selectJEU = document.querySelector("ACTION");
+			var select = document.getElementById('ACTION');
+			for (let i = 5; i < select.options.length; i++) {
+				switch (select.value)
+					{
+					case "CNN": 
+						select.options[i].style.color = "blue";
+    					select.options[i].style.backgroundColor = "lightblue";
+						break;
+					case "???": 
+						select.options[i].style.color = "orange";
+    					select.options[i].style.backgroundColor = "lightgrey";
+						break;
+					case "??": 
+						select.options[i].style.color = "white";
+    					select.options[i].style.backgroundColor = "black";
+						break;
+					default:
+						select.options[i].style.color = "black";
+    					select.options[i].style.backgroundColor = "lightgrey";
+					}
+				}
+			select.options[0].style.color = "WHITE";
+			select.options[0].style.backgroundColor = "BLACK";
+
+			select.addEventListener('focus', () => {
+				select.size = 20;
+				});
+			select.addEventListener('blur', () => {
+				select.selectedIndex = 0;
+				select.size = 1;
+				});
+			select.addEventListener('change', () => {
+				select.selectedIndex = 0;
+				select.size = 1;
+				});
+		</script>
+		</TD>
+	</TR>
+
 <!-- ============================ PARAMETRES APPLICATION (ON/OFF) ===================================== -->
 <TR><TD CLASS="GENERAL1" >
 	
-	<br>&nbsp;&nbsp;[<input type="checkbox" id="toggleDIV">]
-	<label for="toggleDIV"><B>Parametres application</B></label> <br>&nbsp;
-
-	<div class="details">
-	
-	<TABLE BORDER="1" BORDERCOLOR="BLUE" WIDTH="100%" HEIGHT="100%">
-	<TR VALIGN="TOP" ALIGN="LEFT">
-	<TD class='celldetail2' WIDTH="40%">
-		<TEXTAREA name="PARAM" id="PARAM" ROWS=14 COLS=20 style="display:line; border:1px"> </TEXTAREA>
-		</TD>
-	<TD class='celldetail2'>
-		    switch:		<input type="text" id="switch"    	name="switch" 			SIZE="8"   readonly value="?" >
-		<br>ckNameDef:	<input type="text" id="ckNameDef" 	name="ckNameDef" 		SIZE="15"  readonly value="PARTIES-WHIST">
-		<br>ckNamePfx:	<input type="text" id="ckNamePfx" 	name="ckNamePfx" 		SIZE="15"  readonly value="WHIST-" >
-		<br>joueursPfx:	<input type="text" id="joueursPfx" 	name="joueursPfx" 		SIZE="15"  readonly value="WHISTER.">
-		<br>annoncesPfx:<input type="text" id="annoncesPfx" name="annoncesPfx" 		SIZE="15"  readonly value="ANNONCES.">
-		<br>application:<input type="text" id="application" name="application" 		SIZE="15"  readonly value="0-WHISTAPP.">
-		<br>defOpts:	<input type="text" id="defOpts" 	name="defOpts" 			SIZE="50"  readonly value="height=500,width=1100,top=100,left=100,resizable=yes">
-		<br>sepCSV:		<input type="text" id="sepCSV" 		name="sepCSV" 			SIZE="8"   readonly value="!" >
-		<br>bSquare:	<input type="text" id="bSquare" 	name="bSquare" 			SIZE="8"   readonly value="'\u25A0'">
-		<br>nbrJeux:	<input type="text" id="nbrJeux" 	name="nbrJeux" 			SIZE="8"   readonly value="100">
-	</TD>	
-	</TR>
-	</TABLE>
-	<CENTER>
-	<TABLE BORDER="0" BORDERCOLOR="BLACK" CELLPADDING="0" CELLSPACING="0" width=100%>
-	<TR VALIGN="TOP"  class='celldetail2'>
-		<TD class='celldetail2'>	<TEXTAREA 			id="AIDEAPP"	 NAME="AIDEAPP"  	ROWS=1 COLS=1 			readonly style="display:none;"></TEXTAREA></TD>
-		<TD class='celldetail2'>	<TEXTAREA 			id="JOUEURS"	 NAME="JOUEURS"  	ROWS=2 COLS=30 			readonly style="display:block;"></TEXTAREA></TD>
-		<TD class='celldetail2'>	<TEXTAREA 			id="ANNONCES"	 NAME="ANNONCES" 	ROWS=2 COLS=30 			readonly style="display:block;"></TEXTAREA></TD>
+	<TABLE>
+		<TR>
+			<TD><label></TD>
+			<TD>&nbsp;<input type="checkbox" class='cbMatrice' id="showDetailsParam"></TD>
+			<TD><p class="infoMEM">&nbsp;Parametres application</p></label></TD>
 		</TR>
-	<TR>
-		<TD colspan="5" align="center"  class='celldetail'>
-			<button onclick="JavaScript:window.open('setConfig.html', 'popup', 'height=500,width=1100,top=100,left=100,resizable=yes')">CONFIG&nbsp;PARAMETRES</button>
-		</TD>
-	</TR>
 	</TABLE>
+
+	<div id="detailsParam" class="hidden">
+	
+		<TABLE BORDER="1" BORDERCOLOR="BLUE" WIDTH="100%" HEIGHT="100%">
+		<TR VALIGN="TOP" ALIGN="LEFT">
+		<TD class='celldetail2' WIDTH="40%">
+			<TEXTAREA name="PARAM" id="PARAM" ROWS=14 COLS=20 style="display:line; border:1px"> </TEXTAREA>
+			</TD>
+		<TD class='celldetail2'>
+				switch:		<input type="text" id="switch"    	name="switch" 			SIZE="8"   readonly value="?" >
+			<br>ckNameDef:	<input type="text" id="ckNameDef" 	name="ckNameDef" 		SIZE="15"  readonly value="PARTIES-WHIST">
+			<br>ckNamePfx:	<input type="text" id="ckNamePfx" 	name="ckNamePfx" 		SIZE="15"  readonly value="WHIST-" >
+			<br>joueursPfx:	<input type="text" id="joueursPfx" 	name="joueursPfx" 		SIZE="15"  readonly value="WHISTER.">
+			<br>annoncesPfx:<input type="text" id="annoncesPfx" name="annoncesPfx" 		SIZE="15"  readonly value="ANNONCES.">
+			<br>application:<input type="text" id="application" name="application" 		SIZE="15"  readonly value="0-WHISTAPP.">
+			<br>defOpts:	<input type="text" id="defOpts" 	name="defOpts" 			SIZE="50"  readonly value="height=500,width=1100,top=100,left=100,resizable=yes">
+			<br>sepCSV:		<input type="text" id="sepCSV" 		name="sepCSV" 			SIZE="8"   readonly value="!" >
+			<br>bSquare:	<input type="text" id="bSquare" 	name="bSquare" 			SIZE="8"   readonly value="'\u25A0'">
+			<br>nbrJeux:	<input type="text" id="nbrJeux" 	name="nbrJeux" 			SIZE="8"   readonly value="100">
+		</TD>	
+		</TR>
+		</TABLE>
+
+		<CENTER>
+		<TABLE BORDER="0" BORDERCOLOR="BLACK" CELLPADDING="0" CELLSPACING="0" width=100%>
+		<TR VALIGN="TOP"  class='celldetail2'>
+			<TD class='celldetail2'>	<TEXTAREA 			id="AIDEAPP"	 NAME="AIDEAPP"  	ROWS=1 COLS=1 			readonly style="display:none;"></TEXTAREA></TD>
+			<TD class='celldetail2'>	<TEXTAREA 			id="JOUEURS"	 NAME="JOUEURS"  	ROWS=2 COLS=30 			readonly style="display:block;"></TEXTAREA></TD>
+			<TD class='celldetail2'>	<TEXTAREA 			id="ANNONCES"	 NAME="ANNONCES" 	ROWS=2 COLS=30 			readonly style="display:block;"></TEXTAREA></TD>
+			</TR>
+		<TR>
+			<TD colspan="5" align="center"  class='celldetail'>
+				<button onclick="JavaScript:window.open('setConfig.html', 'popup', 'height=500,width=1100,top=100,left=100,resizable=yes')">CONFIG&nbsp;PARAMETRES</button>
+			</TD>
+		</TR>
+		</TABLE>
+		</CENTER>
 
 	</div>
+
+<script>
+const checkboxP = document.getElementById("showDetailsParam");
+const detailsParam = document.getElementById("detailsParam");
+checkboxP.addEventListener("change", () => {
+    detailsParam.classList.toggle("hidden", !checkboxP.checked);
+	});
+</script>
 
 </TD>
 </TR>
@@ -214,13 +248,24 @@ document.addEventListener("DOMContentLoaded", () => {
     <TABLE BORDER="0" BORDERCOLOR="RED" WIDTH="85%" CELLSPACING=0 CELLPADDING=0>
         <TR VALIGN=TOP>
             <TD width=300px CLASS="GENERAL1" >
-                &nbsp;&nbsp;[<input type="checkbox" id="toggleSelect"><label for="toggleSelect">&nbsp;<B>Choisir couleur</B></label>]
-                <BR>
+
+				<TABLE>
+					<TR>
+						<TD><label></TD>
+						<TD>&nbsp;<input type="checkbox" class='cbMatrice' id="showDetailsColor"></TD>
+						<TD><p class="infoMEM">&nbsp;Changer&nbsp;couleurs</p></label></TD>
+					</TR>
+				</TABLE>
+
+            <div id="detailsColor" class="hidden">
 
                 <TABLE BORDER=0 BORDERCOLOR=GREEN>
-                <TR><TD>&nbsp;&nbsp;</TD><TD>
-                <!--select size=6 id="colors" name="colors" style="display: none;" onchange="JavaScript:changeItemColors(this.options[this.selectedIndex].value)" -->
-                <select size=6 id="colors" name="colors" style="display: none;">
+                <TR>
+
+				<TD>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
+				
+				<TD>
+	            <select class="PARTIES" size=6 id="colors" name="colors">
                 <option value="lightblue">lightblue</option>
                 <option value="lightcoral">lightcoral</option>
                 <option value="lightcyan">lightcyan</option>
@@ -242,27 +287,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 <option value="green">green</option>                                  
                 <option value="black">black</option>                                  
                 </select>
-            	</TD></TR></TABLE>
-
-                </TD>
+            	</TD>
             
-            <td ALIGN="LEFT" WIDTH="200px">
-                <TABLE border=0 BORDERCOLOR=GREEN>
-                <TR ALIGN=RIGHT VALIGN=BOTTOM><TD><p id="TXFOND"   class="NOTEXT" style="display: none;">BACKGROUNDS: <input type='checkbox' value='BG'   id='BGCOL'  NAME='BGCOL'  style="display: none;" unchecked></p></TD></TR>
-                <TR ALIGN=RIGHT VALIGN=MIDDLE><TD><p id="TXBOUTON" class="NOTEXT" style="display: none;">BOUTONS:     <input type='checkbox' value='BU'   id='BGBUT'  NAME='BGBUT'  style="display: none;" unchecked></p></TD></TR>
-                <TR ALIGN=RIGHT VALIGN=TOP><TD><p id="TXTEXTE"  class="NOTEXT" style="display: none;">TEXTES:      <input type='checkbox' value='RE'   id='BGTXT'  NAME='BGTXT'  style="display: none;" unchecked></p></TD></TR>
-                </TABLE>
+            	<td ALIGN="LEFT" WIDTH="200px">
+					<TABLE border=0 BORDERCOLOR=AQUA>
+					<TR ALIGN=RIGHT VALIGN=BOTTOM><TD><p id="TXFOND"   >BACKGROUNDS: <input type='checkbox' class='cbMatrice' value='BG'   id='BGCOL'  NAME='BGCOL'  unchecked></p></TD></TR>
+					<TR ALIGN=RIGHT VALIGN=MIDDLE><TD><p id="TXBOUTON" >BOUTONS:     <input type='checkbox' class='cbMatrice' value='BU'   id='BGBUT'  NAME='BGBUT'  unchecked></p></TD></TR>
+					<TR ALIGN=RIGHT VALIGN=TOP>   <TD><p id="TXTEXTE"  >TEXTES:      <input type='checkbox' class='cbMatrice' value='RE'   id='BGTXT'  NAME='BGTXT'  unchecked></p></TD></TR>
+					</TABLE>
                 </td>
-        </TR>
-    </TABLE>
-</TD></TR>	
-</TABLE> 
 
-
-<script>
+        		</TR>
+    			</TABLE>
+			<script>
 //* ======= SCRIPT REQUIS POUR OPTION "CHANGER COULEURS" =========
 
-const checkbox = document.getElementById("toggleSelect");
+//const checkbox = document.getElementById("toggleSelect");
 const selectCO = document.getElementById("colors");
 const cbFOND   = document.getElementById("BGCOL");
 const cbBOUTON = document.getElementById("BGBUT");
@@ -271,15 +311,15 @@ const txFond   = document.getElementById("TXFOND");
 const txBOUTON = document.getElementById("TXBOUTON");
 const txTEXTE  = document.getElementById("TXTEXTE");
 
-checkbox.addEventListener("change", function () {
-    selectCO.style.display 	= this.checked ? "inline-block" : "none";
-    cbFOND.style.display 	= this.checked ? "inline-block" : "none";
-    cbBOUTON.style.display 	= this.checked ? "inline-block" : "none";
-    cbTEXTE.style.display 	= this.checked ? "inline-block" : "none";
-    txFond.style.display 	= this.checked ? "inline-block" : "none";
-    txBOUTON.style.display 	= this.checked ? "inline-block" : "none";
-    txTEXTE.style.display 	= this.checked ? "inline-block" : "none"; 
-    });
+// checkbox.addEventListener("change", function () {
+//     selectCO.style.display 	= this.checked ? "inline-block" : "none";
+//     cbFOND.style.display 	= this.checked ? "inline-block" : "none";
+//     cbBOUTON.style.display 	= this.checked ? "inline-block" : "none";
+//     cbTEXTE.style.display 	= this.checked ? "inline-block" : "none";
+//     txFond.style.display 	= this.checked ? "inline-block" : "none";
+//     txBOUTON.style.display 	= this.checked ? "inline-block" : "none";
+//     txTEXTE.style.display 	= this.checked ? "inline-block" : "none"; 
+//     });
 
 document.getElementById("colors").addEventListener("change", (e) => {
     for (let i = 0; i < window.frames.length; i++) {
@@ -287,10 +327,28 @@ document.getElementById("colors").addEventListener("change", (e) => {
         }
     changeItemColors(e.target.value);
     }); 
+</script> 
 
+</div> 
+
+<script>
+	const checkboxC = document.getElementById("showDetailsColor");
+	const detailsColor = document.getElementById("detailsColor");
+	checkboxC.addEventListener("change", () => {
+		detailsColor.classList.toggle("hidden", !checkboxC.checked);
+		});
 </script>
 
-</div>
+</TD></TR>	
+</TABLE> 
+
+<script>
+window.onload = function () {
+    top.frameReady("TITRE");
+	prepareData();
+	};
+</script>
+
 </FORM>
 
 </BODY>

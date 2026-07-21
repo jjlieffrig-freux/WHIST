@@ -1,41 +1,70 @@
-//const { captureRejectionSymbol } = require("events");
+console.log('\u058D'.repeat(25)+"DEMARRAGE JS"+'\u058D'.repeat(25));
+console.log("Chargement JS dans frame ["+window.name+"] et ajustement taille police")
 
-//let sepCSV	  = "!";					//* caractere séparation pour CSV
-//let joueursPfx  = "WHISTER.";
-//let annoncesPfx = "ANNONCES.";
-//let opts        = "height=500,width=1100,top=100,left=100,resizable=yes";
-//var msgTXT 	  = "";
-let ckNamePfx   = "WHIST-"; 
-let ckNameDef   = "PARTIES-WHIST";
+function init()
+	{
+	//const { captureRejectionSymbol } = require("events");
+	//let sepCSV	  = "!";					//* caractere séparation pour CSV
+	//let joueursPfx  = "WHISTER.";
+	//let annoncesPfx = "ANNONCES.";
+	//let opts        = "height=500,width=1100,top=100,left=100,resizable=yes";
+	//var msgTXT 	  = "";
+	let ckNamePfx   = "WHIST-"; 
+	let ckNameDef   = "PARTIES-WHIST";
 
-console.log("1>>>"+ckNameDef+"\t"+ckNamePfx);
-console.log("@".repeat(50)+" "+sessionStorage.getItem("reloaded"));
+	console.log("1>>>"+ckNameDef+"\t"+ckNamePfx);
+	console.log("@".repeat(50)+" "+sessionStorage.getItem("reloaded"));
 
-console.log("1) Check switch sur URL " + top.location.href);
-var xPOS = top.location.href.indexOf("?")
-console.log("1) Controle URL sur '?'. Pos="+xPOS);
-//parent.frames["TITRE"].document.getElementById("switch").value = "";
-//if ( xPOS > -1) { parent.frames["TITRE"].document.getElementById("switch").value = "?"; }
+	console.log("1) Check switch sur URL " + top.location.href);
+	var xPOS = top.location.href.indexOf("?")
+	console.log("1) Controle URL sur '?'. Pos="+xPOS);
+	//parent.frames["TITRE"].document.getElementById("switch").value = "";
+	//if ( xPOS > -1) { parent.frames["TITRE"].document.getElementById("switch").value = "?"; }
 
-if ( sessionStorage.getItem("reloaded") ) {
+	if ( sessionStorage.getItem("reloaded") ) {
 
-	let strURL = window.location.href;
-	msgTXT = "Pages actualisées "+strURL;
-	if ( strURL.indexOf("NAVIG.htm") > 0 ) {
-		//console.clear();
-		console.log(msgTXT);
-		//let textarea = parent.frames["RESU"].document.getElementById("RESULTS");
-		//textarea.value = msgTXT;
-		//let partNO = parent.frames["HDR"].document.getElementById("COOKIE").value;	
-		//msgTXT = "Recharge les données "+partNO;
-		//reloadPointsArray();;
+		let strURL = window.location.href;
+		msgTXT = "Pages actualisées "+strURL;
+		if ( strURL.indexOf("NAVIG.htm") > 0 ) {
+			//console.clear();
+			console.log(msgTXT);
+			//let textarea = parent.frames["RESU"].document.getElementById("RESULTS");
+			//textarea.value = msgTXT;
+			//let partNO = parent.frames["HDR"].document.getElementById("COOKIE").value;	
+			//msgTXT = "Recharge les données "+partNO;
+			//reloadPointsArray();;
+			}
+		} 
+	else {
+		sessionStorage.setItem("reloaded", "false");
 		}
-    } 
-else {
-    sessionStorage.setItem("reloaded", "false");
+
+	//manageNomPartie();
 	}
 
-//manageNomPartie();
+function setDefaultFontSizeOnLoad()
+	{
+	const sizeFont = 90;
+	const sizePCcookName = "SCREENSIZE-whist";
+
+	if ( !document.cookie.includes(sizePCcookName) )
+		{
+		const expires = new Date();
+		document.cookie = encodeURIComponent(sizePCcookName) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";	document.cookie = encodeURIComponent(sizePCcookName) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+		expires.setTime(expires.getTime() + 7 * 24 * 60 * 60 * 1000);
+		document.cookie =
+			encodeURIComponent(sizePCcookName) + "=" +
+			encodeURIComponent(sizeFont) +
+			"; expires=" + expires.toUTCString() +
+			"; path=/";
+		}
+	console.log("Il y a "+parent.frames.length+" frames à charger...");
+	for (let i = 0; i < parent.frames.length; i++) {
+		const doc = parent.frames[i].document;
+		var sSizeFont = String(sizeFont)
+		doc.body.style.zoom = String(sSizeFont)+"%";
+		}
+	}
 
 function checkNavigateur()
 	{
@@ -89,6 +118,15 @@ function changeFontSize(action)
 		case "-": 
 			sizePC = valCookie - 15;
 			break;
+		case "-+":
+			do 	{
+				var rep = prompt("Changement de la taille des caractères (en %).\n[20;150]-Proposition: 80%",80);
+				if ( rep === "" ) { rep = 80; }
+				rep = parseInt(rep);
+				}
+			while ( !( rep > 19 && rep < 151 ) );
+			sizePC = rep;
+			break;
 		case "+":
 			sizePC = valCookie + 15; 
 			break;
@@ -115,14 +153,11 @@ function changeFontSize(action)
 
 function prepareData()
 	{
-	//console.clear();
 	console.log('\u25A0'.repeat(25)+"FUNCTION PREPAREDATA"+'\u25A0'.repeat(25));
-
-	for (let i = 0; i < parent.frames.length; i++) {
-			const doc = parent.frames[i].document;
-			doc.body.style.zoom = "80%";
-			}
-
+    
+	init();
+	setDefaultFontSizeOnLoad();
+	
 	var xPOS = top.location.href.indexOf("?")
 	console.log("Controle URL sur '?'. Pos="+xPOS);
 	if ( xPOS > 1 )
@@ -139,6 +174,7 @@ function prepareData()
 	msgTXT += "\nPage web pour saisie des jeux en place";
 
 	listFramesIndex();
+	checkIfNodeJS();
 
 	var arrayM = lectureSyncJSON("A");
 	msgTXT += "\nLecture fichier JSON des ANNONCES (Lgt="+arrayM.length+")"
@@ -195,7 +231,7 @@ function prepareData()
 		default:
 			msgTXT = "Inconnu techniquement";
 		}
-	console.clear();
+	//console.clear();
 	msgTXT  = "FLAG="+flagCREATE+"\t"+msgTXT;
 	msgTXT += "\n#PARTIES="+arrPARTIES.length+"\t#JOUEURS="+arrJOUEURS.length+"\t#MAX.PARTIES="+xParties;
 	console.log(msgTXT);
@@ -280,13 +316,13 @@ function remplissageEncodageJeux()
 	{		
     var ligneData = "";
 	var thisHtml  = `
-<TABLE BORDER=1 BORDERCOLOR=BLUE CELLSPACING=0 CELLPADDING=0 WIDTH=100%>
+<TABLE CLASS="MATRICE" BORDER=0 BORDERCOLOR=RED CELLSPACING=10 CELLPADDING=2 WIDTH=100%>
 <TR ALIGN=CENTER VALIGN='TOP'>
-<TD CLASS="tdHote"   >H<BR>O<BR>T<BR>E</TD>
-<TD CLASS="tdDonne"  >D<BR>O<BR>N<BR>N<BR>E</TD>
-<TD CLASS="tdEnjeu"  >E<BR>N<BR>J<BR>E<BR>U</TD>
-<TD CLASS="tdContre" >C<BR>O<BR>N<BR>T<BR>R<BR>E</TD>
-<TD CLASS="tdJoueurs"><BR><B><U><SPAN CLASS='WHISTEURS'>Joueurs</SPAN></U></B><BR><BR></TD>
+<TD WIDTH=10%   CLASS="tdHote"   >H<BR>Ô<BR>T<BR>E</TD>
+<TD WIDTH=10%   CLASS="tdDonne"  >D<BR>O<BR>N<BR>N<BR>E</TD>
+<TD WIDTH=10%   CLASS="tdEnjeu"  >E<BR>N<BR>J<BR>E<BR>U</TD>
+<TD WIDTH=10%   CLASS="tdContre" >C<BR>O<BR>N<BR>T<BR>R<BR>E</TD>
+<TD WIDTH=60%   CLASS="tdJoueurs"><BR><BR><B><U>Joueurs</U></B><BR><BR></TD>
 </TR>`;
 
 	let joueursPfx  = "WHISTER.";
@@ -300,17 +336,18 @@ function remplissageEncodageJeux()
 		var data  = arrJ[i].value.toString().split("!");
 		var pNom  = "JOUEUR" + i.toString().padStart(2, "0");
 		var key   = data[0]+"-"+data[1];
-		var pIde  = " ["+key+"] "+data[2]+" ";
+		//var pIde  = " ["+key+"] "+data[2]+" ";
+		var pIde  = "["+key+"]";
 
 		ligneData += pIde+"\n";
 		console.log("Création ligne de HTML checkBox pour: '"+pIde+"'");
 
-		thisHtml += "\n"+"<TR>";
-		thisHtml += "\n"+"<TD CLASS='tdHote'>	 	<input type='checkbox' value='"+key+"' NAME='HOTEPAR'  id='HOTEPAR'  unchecked onchange='JavaScript:checkHote()'></TD>";
-		thisHtml += "\n"+"<TD CLASS='tdDonne'>		<input type='checkbox' value='"+key+"' NAME='DONNEPAR' id='DONNEPAR' unchecked ></TD>";
-		thisHtml += "\n"+"<TD CLASS='tdEnjeu'> 		<input type='checkbox' value='"+key+"' NAME='ENJEUPAR' id='ENJEUPAR' unchecked ></TD>";
-		thisHtml += "\n"+"<TD CLASS='tdContre'> 	<input type='checkbox' value='"+key+"' NAME='JOUERPAR' id='JOUERPAR' unchecked ></TD>";
-		thisHtml += "\n"+"<TD CLASS='tdJoueurs'> 	<SPAN CLASS='WHISTEURS'><b>"+pIde+"</b></SPAN></TD>";
+		thisHtml += "\n"+"<TR ALIGN=CENTER VALIGN=MIDDLE>";
+		thisHtml += "\n"+"<TD CLASS='tdHote'>	 	<input type='checkbox' class='cbMatrice' value='"+key+"' NAME='HOTEPAR'  id='HOTEPAR'  unchecked onchange='JavaScript:checkHote()'></TD>";
+		thisHtml += "\n"+"<TD CLASS='tdDonne'>		<input type='checkbox' class='cbMatrice' value='"+key+"' NAME='DONNEPAR' id='DONNEPAR' unchecked ></TD>";
+		thisHtml += "\n"+"<TD CLASS='tdEnjeu'> 		<input type='checkbox' class='cbMatrice' value='"+key+"' NAME='ENJEUPAR' id='ENJEUPAR' unchecked ></TD>";
+		thisHtml += "\n"+"<TD CLASS='tdContre'> 	<input type='checkbox' class='cbMatrice' value='"+key+"' NAME='JOUERPAR' id='JOUERPAR' unchecked ></TD>";
+		thisHtml += "\n"+"<TD CLASS='tdJoueurs'> 	<b>"+pIde+"</b></TD>";
 		thisHtml += "\n"+"</TR>";
 		}
 	thisHtml += "</TABLE>";
@@ -348,17 +385,35 @@ function listFramesIndex()
 		}
 	}
 
+function getCookieByPrefix(prefix) 
+	{
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        if (name.startsWith(prefix)) {
+            return {
+                name: name,
+                value: decodeURIComponent(value)
+            	};
+        	}
+    	}
+    return null;
+	}
+
 function viewLocalStorage(swOPTION)
 	{
 	// swOPTION = 0 => return list of available parties to build buttons in ENTETE.htm
 	// swOPTION = 1 => display/clean issues of all localStorage content in frame RESU.htm
 	// swOPTION = 2 => display all localStorage content in pop-up window
 
+	const srcCook    = "SCREENSIZE-whist";
 	var arrayParties = [];
 	var cookieName   = reuseParameter("ckNameDef");
 	if ( typeof cookieName !== "undefined" ) {
-		var strCookie = getCookie2(cookieName);
+		var strCookie = getCookie2(cookieName);	
 		}
+	var strCookie = getCookieByPrefix(cookieName);
+	const screenCookie = getCookieByPrefix(srcCook);
 	const ckNamePfx = reuseParameter("ckNamePfx");
 	const ckNameDef = reuseParameter("ckNameDef");
 	let joueursPfx  = reuseParameter("joueursPfx"); 
@@ -396,7 +451,15 @@ function viewLocalStorage(swOPTION)
 
 	var flag	   = true;
 	var htmlString = "";
-	var csvString  = "<H3>\n<PRE style='text-align:left;'>COOKIE: "+strCookie+"\n";
+	var csvString  = "<H3>\n<PRE style='text-align:left;'>"
+	
+	if (strCookie) {
+		csvString += "COOKIE: "+strCookie.name+"="+strCookie.value+"\n";
+		}
+	if (screenCookie) {
+		csvString += "COOKIE: "+screenCookie.name+"="+screenCookie.value+"\n";
+		}
+	
 	var cptParties = 0;
 	var xcpt = -1;
 
@@ -1066,7 +1129,7 @@ function impressionRes(strFORMAT)
 		var webHead		= getCookie2(reuseParameter("ckNameDef"));
 		var optsWin		= reuseParameter("defOpts");
 
-		var swKEEP = parent.frames["HDR"].document.getElementById("copie").checked;
+		var swKEEP = parent.frames["NAV"].document.getElementById("copie").checked;
 		if ( swKEEP ) {
 			const ficName = generateFileName("html");
 			const blob = new Blob([webPage], { type: "text/html;charset=utf-8" });
@@ -1778,7 +1841,10 @@ function rebuildHTML(nTR, keyName,sKEY)
 					if ( parseInt(aRES[i][3]) < 0 ) { var tdHTML = hOrD + " align=CENTER CLASS='PERDU2'>";}
 					break;
 				default:
-					var tdHTML = hOrD + " align=CENTER>";
+					strCLASS = "";
+					if ( i > 0 ) { strCLASS = "CLASS='celldata'"; }
+					strCLASS = "CLASS='celldata'";
+					var tdHTML = hOrD + strCLASS+" align=CENTER>";
 				}
 			if ( i === 0 ) 
 				{ 
@@ -2362,8 +2428,13 @@ function getCookie2(cname)
 	var ckName = "";
 	for (const element of parts)
 		{
-		if ( element.split("=")[0] === cname ) { var ckName = element.split("=")[1] }
-		var ckName = element.split("=")[1]
+		console.log("'"+(element.split("=")[0]).trim()+"'::'"+cname+"'");
+		if ( (element.split("=")[0]).trim() === cname ) { var ckName = element.split("=")[1] }
+		//var ckName = element.split("=")[1]
+		}
+	if ( ckName === "" ) {
+		var msgTXT = "Veuillez charger une partie ou bien en créer une nouvelle";
+		parent.frames["RESU"].document.getElementById("RESULTS").value = msgTXT;
 		}
 	console.log("COOKIE VALUE='"+ckName+"'");
     return ckName
@@ -2445,8 +2516,14 @@ function checkHote()
 		var arrayJ = frameDoc.WHIST.JOUEURS.value.split("\n");
 		}
 	var swAVAIL  = checkFormFieldAvailability("TITRE","WHIST","HOTEPAR");
-	if ( swAVAIL ) { 
+	if ( swAVAIL ) 
+		{ 
 		var elms = frameDoc.querySelectorAll("[name='HOTEPAR']");
+		}
+	else {
+		msgTXT = "N'ouliez pas de dire qui invite ce soir..."
+		parent.frames['RESU'].document.getElementById("RESULTS").value = msgTXT;
+		return false;
 		}
 	var xCPT = 0;
 	for(var i = 0; i < elms.length; i++) 
@@ -2980,6 +3057,8 @@ function resetJeu(xCODE)
 
 function displayParameters(strINFO)
 	{
+	console.log('\u25A0'.repeat(25)+"displayParameters("+strINFO+')\u25A0'.repeat(25));
+
 	var HtmlParams = "";	
 	HtmlParams += "<"+"!DOCTYPE html"+">\n";
 	HtmlParams += "<HTML><HEAD>";
@@ -3049,6 +3128,7 @@ function displayParameters(strINFO)
 	HtmlParams += '</TR>\n</thead>\n<tbody>';
 
 	const arrayP = nbrPARAM.split('\n');
+	console.log(arrayP);
 
 	for (i = 0; i < arrayP.length-1; i++) 
 		{
@@ -3210,6 +3290,8 @@ function multiGeneration()
 function prepareActivity(strOption) 
 	{
 	//console.clear();
+	console.log("OPTION MENU: '"+strOption+"'");
+	parent.frames["RESU"].document.getElementById("RESULTS").value = strOption
 	switch (strOption)
 		{
 		case "A":
@@ -3281,6 +3363,9 @@ function prepareActivity(strOption)
 		case "V":
 			gestionnaireData("A")	
 			break;
+		case "W":
+			changeFontSize('-+');	
+			break;
 		case "CNN":
 			choosePartie("CNN");
 			break;
@@ -3329,8 +3414,8 @@ function generationSelectAnnoncesOptions(sOPT)
 	var sep2 = '\u00A0';
 	var esp  = "_".repeat(25);
 	var esp  = sep2.repeat(25);
-	var spa1 = sep2.repeat(2);
-	var spa2 = sep2.repeat(3);
+	var spa1 = sep2.repeat(1);
+	var spa2 = sep2.repeat(1);
 
 	var CTL1 = "?";
 	var opt2 = "";
@@ -3363,12 +3448,14 @@ function generationSelectAnnoncesOptions(sOPT)
 				var disa = "";
 				break;
 			default:
-				var colr = " CLASS='couleur2'";
+				var colr = " CLASS='couleur3'";
 				//var disa = " disabled";
 				var disa = "";
 			}
 		tabPts += "<TR "+colr+"><TD>"+jeu+"<TD>"+res+"</TD><TD>"+pts+"</TD></TR>"
-		opt2 += "<option "+disa+" value='" + msg1 + "' "+colr+">&nbsp;" + msg2 + spa1 +"</option>\n";
+		var xOpt = "<option "+disa+" value='" + msg1 + "' "+colr+">&nbsp;" + msg2 + spa1 +"</option>\n";
+		opt2 += xOpt;
+		console.log("CREATE OPTION "+i+":\t"+xOpt);
 
 		if ( sOPT !== "HTML" ) {
 			const option = document.createElement("option");
@@ -3540,7 +3627,9 @@ function traiterDonnees(data, sType)
 				alert("Problème de logique au niveau des fichiers JSON - TYPE "+sType+" INCONNU");
 			}
 		}	
+	console.log("°".repeat(100));
 	console.log("LOOP creation array ("+sType+") contient "+cpt+" rows");
+	console.log("et sauvetage dans les zones LOCALSTORAGE");
 	let joueursPfx  = reuseParameter("joueursPfx");
 	let annoncesPfx = reuseParameter("annoncesPfx");
 	if ( cpt > -1 ) {
@@ -3564,7 +3653,8 @@ function traiterDonnees(data, sType)
 		}
 	if ( records != "" ) 
 		{ 
-		console.log("Stockage "+(cpt+1)+" données ("+sType+") dans TEXTAREA");
+		console.log("°".repeat(100));
+		console.log("Stockage "+(cpt+1)+" données ("+sType+") dans zone INPUT/TEXTAREA");
 		if ( sType === "J" ) { 
 			parent.frames["TITRE"].document.WHIST.NBRJOUEURS.value  = cpt + 1;
 			parent.frames["TITRE"].document.WHIST.JOUEURS.value  = records; 
@@ -3641,17 +3731,17 @@ function startOptionsSelect(sOPT)
 	}
 
 function reuseParameter(paramName) {
-	console.log('\u25A0'.repeat(25)+"FUNCTION REUSEPARAMETER"+'\u25A0'.repeat(25));
+	//console.log('\u25A0'.repeat(25)+"FUNCTION REUSEPARAMETER"+'\u25A0'.repeat(25));
 	console.log("Recherche du parametre '"+paramName+"'...");
 
 	var paramValue = "?";
 	var paramAppli = "0-WHISTAPP.";
 
 	const input = parent.frames?.["TITRE"]?.document?.getElementById(paramName);
-	//console.log("Depuis FRAMESET? '"+input+"'")
+	console.log("Depuis FRAMESET? '"+input+"'")
 	if ( input?.value?.trim() ) {
   		paramValue = input.value;
-		//console.log("OK:", input.value);
+		console.log("OK:", input.value);
 		}
 	else {
 		const arrParam = Object.keys(localStorage).filter(k => k.startsWith(paramAppli)).sort().map(k => ({ key: k, value: localStorage.getItem(k) }));
@@ -3714,7 +3804,7 @@ function changeItemColors(strCol)
             console.log("BG - Terminé");
             if ( i === 0 )
                 {
-                const fs = ["fs1", "fs2", "fs3"];
+                const fs = ["fs1", "fs2"];
                 for (let j=0; j<fs.length; j++) {
                     var fieldset = top.frames[i].document.getElementById(fs[j]);
                     fieldset.style.backgroundColor = strCol;
@@ -3887,7 +3977,7 @@ function getLocalStorageStats(prefix)
 
 async function getLastModified(scriptUrl) 
 	{
-	console.log("Modif date of "+scriptUrl);
+	console.log("'NAVIG.htm' demande la date de la dernière modification du fichier '"+scriptUrl+"'");
   	const response = await fetch(scriptUrl, { method: "HEAD" });
   	const lastModified = response.headers.get("Last-Modified");
 
@@ -3899,6 +3989,7 @@ async function getLastModified(scriptUrl)
     	var vs = "inconnu";
   		}
 	parent.frames["NAV"].document.LISTE.version.value = "Version: "+vs;
+	return vs;
 	}
 
 	
@@ -3933,7 +4024,14 @@ function checkIfNodeJS()
 
 	fetch("/")
 		.then(res => {
-			frameDoc.getElementById("DUREE").value = res.headers.get("x-powered-by");
+			for (const [name, value] of res.headers.entries()) {
+      			console.log("=========================> "+name + ": " + value);
+				if ( name.toLowerCase() === "server" ) {
+					// Sample: SimpleHTTP/0.6 Python/3.9.6
+					frameDoc.getElementById("DUREE").value = value
+					}
+  				}
+			//frameDoc.getElementById("DUREE").value = res.headers.get("x-powered-by");
 			//frameDoc.getElementById("DUREE").value += res.headers.get("server");
 			});
   	}
