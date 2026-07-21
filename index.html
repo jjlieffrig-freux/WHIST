@@ -9,10 +9,28 @@
 
 <head>
 <title>WHIST</title>
+
 <link rel="stylesheet" href="whist.css">
 
+<script>
+let nbChargees = 0;
+
+function frameReady(nom) {
+    nbChargees++;
+    console.log(nom + " chargée (" + nbChargees + "/4)");
+
+    if (nbChargees === 4) {
+        console.log("Toutes les frames sont chargées.");
+
+        // Ici vous pouvez faire :
+        // top.frames["RESU"].document.body.style.zoom = "80%";
+        // etc.
+    }
+}
+</script>
+
 <frameset cols="26%,*" resize 			border="3" bordercolor="lightgrey">
-	<frame     src="WHIST-ANNONCE.htm" 	name="TITRE" id="TITRE"	scrolling="yes" resize>
+	<frame    src="WHIST-ANNONCE.htm" 	name="TITRE" id="TITRE"	scrolling="yes" resize>
 	<frameset rows="15%,*,5%" resize  	border="3" bordercolor="lightgrey">
 		<frame src="ENTETE.htm" 		name="HDR"	 id="HDR"	scrolling="auto" resize>
 		<frame src="DETAIL.htm" 		name="RESU"	 id="RESU"	scrolling="YES"  resize>
@@ -20,19 +38,10 @@
 		</frameset>
 
 <NOFRAME>
-<FORM NAME=INDEX>
-<input type="text" id="switch"    	name="switch" 		value="?"           	SIZE="1"  style="display:none;";>
-<input type="text" id="ckNameDef" 	name="ckNameDef" 	value="PARTIES-WHIST" 	SIZE="12" style="display:none;";>
-<input type="text" id="ckNamePfx" 	name="ckNamePfx" 	value="WHIST-" 	  		SIZE="1"  style="display:none;";>
-<input type="text" id="joueursPfx" 	name="joueursPfx" 	value="WHISTER."		SIZE="1"  style="display:none;";>
-<input type="text" id="annoncesPfx" name="annoncesPfx" 	value="ANNONCES."		SIZE="1"  style="display:none;";>
-<input type="text" id="defOpts" 	name="defOpts" 		value="?"				SIZE="1"  style="display:none;";>
-<input type="text" id="sepCSV" 		name="sepCSV" 		value="!"            	SIZE="1"  style="display:none;";>
-<input type="text" id="bSquare" 	name="bSquare" 		value="'\u25A0'"       	SIZE="1"  style="display:none;";>
-<input type="text" id="nbrJeux" 	name="nbrJeux" 		value="100"            	SIZE="1"  style="display:none;";>
-</FORM>
+
 </NOFRAME>
 
 </frameset>
+
 </head>
 </html>
