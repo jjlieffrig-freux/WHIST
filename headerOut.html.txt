@@ -31,6 +31,16 @@ docFrame.addEventListener("click", (event) => {
     
 });
 
+function scrollLeftDiv() {
+    const div = document.getElementById("myDiv");
+    div.scrollLeft -= 200;    // Move 200 pixels to the left
+}
+
+function scrollRightDiv() {
+    const div = document.getElementById("myDiv");
+    div.scrollLeft += 200;    // Move 200 pixels to the right
+}
+
 </script>
 
 </body>

@@ -59,10 +59,12 @@ function setDefaultFontSizeOnLoad()
 			"; path=/";
 		}
 	console.log("Il y a "+parent.frames.length+" frames à charger...");
+	var sSizeFont = String(sizeFont)
 	for (let i = 0; i < parent.frames.length; i++) {
-		const doc = parent.frames[i].document;
-		var sSizeFont = String(sizeFont)
-		doc.body.style.zoom = String(sSizeFont)+"%";
+		parent.frames[i].onload = () => {
+    		const doc = parent.frames[i].document;
+    		doc.body.style.zoom = String(sSizeFont)+"%";
+			};
 		}
 	}
 
@@ -405,6 +407,9 @@ function viewLocalStorage(swOPTION)
 	// swOPTION = 0 => return list of available parties to build buttons in ENTETE.htm
 	// swOPTION = 1 => display/clean issues of all localStorage content in frame RESU.htm
 	// swOPTION = 2 => display all localStorage content in pop-up window
+
+	var sizeLS = String(getLocalStorageSize()) + "KB < 5MB";
+	parent.frames["HDR"].document.getElementById('sizeLS').value = sizeLS;
 
 	const srcCook    = "SCREENSIZE-whist";
 	var arrayParties = [];
@@ -1861,7 +1866,7 @@ function rebuildHTML(nTR, keyName,sKEY)
 	htmlTAB += "\n</tbody>\n</TABLE>\n";
 	htmlTAB += dataOUT;
 
-	var sizeLS = String(getLocalStorageSize()) + "KB < 5MB";;
+	var sizeLS = String(getLocalStorageSize()) + "KB < 5MB";
 	
 	//var totauxPts = totalPTS;
 
@@ -2053,8 +2058,8 @@ function reloadPointsArray(strCookParam)
 		var nbrJoueurs = frameDoc.WHIST.JOUEURS.value;
 		}
 	var xParties    = reuseParameter("nbrJeux");
-	const arrayJ    = nbrJoueurs.split('\n');
-	var xJOUEURS	= arrayJ.length - 1;
+	var arrayJ      = nbrJoueurs.split('\n');
+	var xJOUEURS	= arrayJ.length - 1; 
 	if ( xJOUEURS < 4 ) {
 		var joueursPfx = reuseParameter("joueursPfx");
  		arrayJ = Object.keys(localStorage).filter(k => k.startsWith(joueursPfx))
@@ -2235,6 +2240,7 @@ function choosePartie(nomPAR)
 				console.log("Ajout <option> au tag HTML <SELECT>: "+strPartie);
 				}
 			}
+		select1.add(new Option("NOUVELLE PARTIE", "CNN"));
 		console.log(keys);
 		return;
 		}
@@ -3932,7 +3938,7 @@ function effaceUnePartie(xPartie)
 		html += "\n<CENTER><H3>EFFACEMENT DE PARTIES ("+totSize+"Kb. Limite: 5Mb)</H3></CENTER>";
 		html += "</BODY></HTML>"
 
-		var swKEEP = parent.frames["HDR"].document.getElementById("copie").checked;
+		var swKEEP = parent.frames["NAV"].document.getElementById("copie").checked;
 		if ( swKEEP ) {
 			const ficName = generateFileName("html");
 			const blob = new Blob([html], { type: "text/html;charset=utf-8" });
@@ -4187,7 +4193,7 @@ async function gestionnaireData(sType)
 
 	textAREA = textAREA.replaceAll('"','');
 	var arrayTXT  = textAREA.split("\n");	
-	var textAREA1 = "<p align=left>"+arrayTXT.join("<BR>")+"</P>";
+	var textAREA1 = "<p class='arrow' align=left>"+arrayTXT.join("<BR>")+"</P>";
 	arrayTXT.shift();
 	var textAREA2 = arrayTXT.join("\n");
 

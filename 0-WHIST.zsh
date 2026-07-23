@@ -7,3 +7,4 @@ clear
 
 cd /usr/local/bin
 node run /Users/chef/WHIST/WHIST-NJS/public/dev/web.js
+

@@ -155,7 +155,7 @@ function listAllParties()
 			default:
 				cpt++;
 				console.log("ENTETE: Trouvé PARTIE n°"+cpt+": "+partie);
-				if (cpt%4==0) { strBUTTON += "<BR>"; } 
+				if (cpt%6==0) { strBUTTON += "<BR>"; } 
 				strBUTTON += "<input type='button'   class='btn-primary' value='"+partie+"' ONCLICK='JavaScript:choosePartie(this.value)'>&nbsp;"
 			}
 		});
@@ -207,17 +207,17 @@ function rafraichir2Pages() {
 				<td ALIGN=LEFT><INPUT TYPE="TEXT" VALUE="?"   ID="DUREE"   NAME="DUREE"   SIZE="30"  style="border-style : hidden;" disabled CLASS="WHISTEURS"></td>
 				</tr>
 
-		<tr align="center" height="8%">
+		<tr align="center" height="5%">
 			<td colspan="5">
-				<TABLE>
-				<TR><TD>
+				<TABLE BORDER="0" BORDERCOLOR="RED" CELLPADDING="0" CELLSPACING="0">
+				<TR BGCOLOR=LIGHTGREY ><TD VALIGN="MIDDLE">
 					<div class="row">
-						<button type="button" class="btn-important" onclick="rafraichir2Pages()">R</button>
+						<button type="button"  class="icon-button" onclick="rafraichir2Pages()"><IMG SRC="refresh.jpeg" class="img-button"></button>
 						<SELECT CLASS="PARTIES" name='NOMPARTIE' id='NOMPARTIE' SIZE=1 ONCLICK="JavaScript:choosePartie(this.options[this.selectedIndex].value)"">
 						<option value='??'>PARTIES MEMORISEES</option>"
 						</SELECT>
 					</div></TD>
-					<TD COLSPAN="4"><p id="pButtons" align="left"></p></TD>
+					<TD class="top" COLSPAN="4"><p id="pButtons" align="left"></p></TD>
 				</TR></TABLE> 
 			</td>
 			</tr>
